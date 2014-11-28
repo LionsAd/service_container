@@ -76,6 +76,22 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
       'class' => 'Drupal\Core\Variable',
     );
 
+    $services['lock'] = array(
+      'class' => 'Drupal\Core\Lock\DatabaseLockBackend',
+      'arguments' => array('@database'),
+      'tags' => array(
+        array('name' => 'backend_overridable'),
+      ),
+    );
+
+    $services['lock.persistent'] = array(
+      'class' => 'Drupal\Core\Lock\PersistentDatabaseLockBackend',
+      'arguments' => array('@database'),
+      'tags' => array(
+        array('name' => 'backend_overridable'),
+      ),
+    );
+
     // @todo Make it  possible to register all ctools plugins here.
 
     return array(
