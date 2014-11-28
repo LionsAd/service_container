@@ -2,16 +2,18 @@
 
 /**
  * @file
- * Contains \Drupal\d8\Lock\DatabaseLockBackend.
+ * Contains \Drupal\service_provider\Lock\DatabaseLockBackend.
  */
 
-namespace Drupal\d8\Lock;
+namespace Drupal\service_provider\Lock;
 
 use DatabaseConnection;
 use Drupal\Core\Lock\DatabaseLockBackend as BaseDatabaseLockBackend;
 
 /**
  * @see \Drupal\Core\Lock\DatabaseLockBackend
+ *
+ * @codeCoverageIgnore
  */
 class DatabaseLockBackend extends BaseDatabaseLockBackend {
 

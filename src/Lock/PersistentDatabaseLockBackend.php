@@ -2,15 +2,17 @@
 
 /**
  * @file
- * Contains \Drupal\d8\Lock\PersistentDatabaseLockBackend.
+ * Contains \Drupal\service_provider\Lock\PersistentDatabaseLockBackend.
  */
 
-namespace Drupal\d8\Lock;
+namespace Drupal\service_provider\Lock;
 
 use DatabaseConnection;
 
 /**
  * @see \Drupal\Core\Lock\PersistentDatabaseLockBackend
+ *
+ * @codeCoverageIgnore
  */
 class PersistentDatabaseLockBackend extends DatabaseLockBackend {
 

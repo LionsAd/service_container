@@ -14,6 +14,8 @@ use Drupal\service_container\Plugin\Discovery\CToolsPluginDiscovery;
  * Provides render cache service definitions.
  *
  * @codeCoverageIgnore
+ *
+ * @todo The alter part is unit testable.
  */
 class ServiceContainerServiceProvider implements ServiceProviderInterface {
 

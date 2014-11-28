@@ -2,15 +2,17 @@
 
 /**
  * @file
- * Contains \Drupal\d8\StringTranslation\StringTranslation.
+ * Contains \Drupal\service_provider\StringTranslation\StringTranslation.
  */
 
-namespace Drupal\d8\StringTranslation;
+namespace Drupal\service_provider\StringTranslation;
 
 use Drupal\Core\StringTranslation\TranslationInterface;
 
 /**
  * Provides a t() based string translation.
+ *
+ * @codeCoverageIgnore
  */
 class StringTranslation implements TranslationInterface {
 

@@ -2,16 +2,20 @@
 
 /**
  * @file
- * Contains Drupal\d8\Extension\ModuleHandler.
+ * Contains Drupal\service_provider\Extension\ModuleHandler.
  */
 
-namespace Drupal\d8\Extension;
+namespace Drupal\service_provider\Extension;
 
 use Drupal\Core\Extension\Extension;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 
 /**
  * Class that manages modules in a Drupal installation.
+ *
+ * @codeCoverageIgnore
+ *
+ * @todo: Some of this might be unit-testable.
  */
 class ModuleHandler implements ModuleHandlerInterface {
 
