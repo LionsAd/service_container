@@ -2,10 +2,10 @@
 
 /**
  * @file
- * Contains \Drupal\service_container\Tests\DependencyInjection\MockService
+ * Contains \Drupal\Tests\service_container\DependencyInjection\MockService
  */
 
-namespace Drupal\service_container\Tests\DependencyInjection;
+namespace Drupal\Tests\service_container\DependencyInjection;
 
 use ReflectionClass;
 use Drupal\service_container\DependencyInjection\Container;

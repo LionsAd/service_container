@@ -2,10 +2,10 @@
 
 /**
  * @file
- * Contains \Drupal\service_container\Tests\Plugin\DefaultPluginManagerTest
+ * Contains \Drupal\Tests\service_container\Plugin\DefaultPluginManagerTest
  */
 
-namespace Drupal\service_container\Tests\Plugin;
+namespace Drupal\Tests\service_container\Plugin;
 
 use Drupal\Component\Plugin\FallbackPluginManagerInterface;
 use Drupal\Component\Plugin\Exception\PluginNotFoundException;
@@ -76,7 +76,7 @@ class DefaultPluginManagerTest extends \PHPUnit_Framework_TestCase {
     $this->pluginManager = new DefaultPluginManager($discovery);
     $plugin_manager = $this->pluginManager;
 
-    $this->fallbackPluginManager = Mockery::mock('\Drupal\service_container\Tests\Plugin\TestFallbackPluginManager[getFallbackPluginId]', array($discovery));
+    $this->fallbackPluginManager = Mockery::mock('\Drupal\Tests\service_container\Plugin\TestFallbackPluginManager[getFallbackPluginId]', array($discovery));
     $this->fallbackPluginManager
       ->shouldReceive('getFallbackPluginId')
       ->with('bar', array())

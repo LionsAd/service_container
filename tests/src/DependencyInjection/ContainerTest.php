@@ -2,10 +2,10 @@
 
 /**
  * @file
- * Contains \Drupal\service_container\Tests\DependencyInjection\ContainerTest
+ * Contains \Drupal\Tests\service_container\DependencyInjection\ContainerTest
  */
 
-namespace Drupal\service_container\Tests\DependencyInjection;
+namespace Drupal\Tests\service_container\DependencyInjection;
 
 use Drupal\service_container\DependencyInjection\Container;
 use Drupal\service_container\DependencyInjection\ContainerInterface;
@@ -221,7 +221,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
    *   Associated array with parameters and services.
    */
   protected function getMockContainerDefinition() {
-    $fake_service = Mockery::mock('alias:Drupal\service_container\Tests\DependencyInjection\FakeService');
+    $fake_service = Mockery::mock('alias:Drupal\Tests\service_container\DependencyInjection\FakeService');
     $parameters = array();
     $parameters['some_config'] = 'foo';
     $parameters['some_other_config'] = 'lama';
@@ -236,7 +236,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
       'class' => get_class($fake_service),
     );
     $services['service.provider'] = array(
-      'class' => '\Drupal\service_container\Tests\DependencyInjection\MockService',
+      'class' => '\Drupal\Tests\service_container\DependencyInjection\MockService',
       'arguments' => array('@other.service', '%some_config%'),
       'calls' => array(
         array('setContainer', array('@service_container')),
@@ -253,9 +253,9 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
     $services['factory_class'] = array(
       'class' => '\Drupal\service_container\ServiceContainer\ControllerInterface',
       'factory_method' => 'getFactoryMethod',
-      'factory_class' => '\Drupal\service_container\Tests\DependencyInjection\MockService',
+      'factory_class' => '\Drupal\Tests\service_container\DependencyInjection\MockService',
       'arguments' => array(
-        '\Drupal\service_container\Tests\DependencyInjection\MockService',
+        '\Drupal\Tests\service_container\DependencyInjection\MockService',
         array(NULL, 'bar'),
       ),
       'calls' => array(
@@ -267,15 +267,15 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
       'factory_method' => 'getFactoryMethod',
     );
     $services['circular_dependency'] = array(
-      'class' => '\Drupal\service_container\Tests\DependencyInjection\MockService',
+      'class' => '\Drupal\Tests\service_container\DependencyInjection\MockService',
       'arguments' => array('@circular_dependency'),
     );
     $services['service_parameter_not_exists'] = array(
-      'class' => '\Drupal\service_container\Tests\DependencyInjection\MockService',
+      'class' => '\Drupal\Tests\service_container\DependencyInjection\MockService',
       'arguments' => array('@service.provider', '%not_exists', -1),
     );
     $services['service_dependency_not_exists'] = array(
-      'class' => '\Drupal\service_container\Tests\DependencyInjection\MockService',
+      'class' => '\Drupal\Tests\service_container\DependencyInjection\MockService',
       'arguments' => array('@service_not_exists', '%some_config'),
     );
 

@@ -7,11 +7,12 @@
     "psr-0": {
       "Drupal\\Component\\": "../lib/",
       "Drupal\\Core\\": "../lib/",
-      "ServiceContainer": "../lib/"
+      "ServiceContainer": "../lib/",
       "Drupal": "../lib/"
     },
     "psr-4": {
       "Drupal\\service_container\\": "../src/",
+      "Drupal\\Tests\\service_container\\": "src/"
     }
   }
 }

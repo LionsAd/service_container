@@ -2,10 +2,10 @@
 
 /**
  * @file
- * Contains \Drupal\service_container\Tests\DependencyInjection\CachedContainerBuilderTest
+ * Contains \Drupal\Tests\service_container\DependencyInjection\CachedContainerBuilderTest
  */
 
-namespace Drupal\service_container\Tests\DependencyInjection;
+namespace Drupal\Tests\service_container\DependencyInjection;
 
 use Drupal\service_container\DependencyInjection\ContainerBuilder;
 use Drupal\service_container\DependencyInjection\ContainerInterface;

@@ -2,10 +2,10 @@
 
 /**
  * @file
- * Contains \Drupal\service_container\Tests\DependencyInjection\ContainerBuilderTest
+ * Contains \Drupal\Tests\service_container\DependencyInjection\ContainerBuilderTest
  */
 
-namespace Drupal\service_container\Tests\DependencyInjection;
+namespace Drupal\Tests\service_container\DependencyInjection;
 
 use Drupal\service_container\DependencyInjection\ContainerBuilder;
 use Drupal\service_container\DependencyInjection\ContainerInterface;
@@ -60,7 +60,7 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase {
     // Set up definitions for the Fake plugin manager.
     $definitions = array(
       'fake_provider' => array(
-        'class' => '\Drupal\service_container\Tests\DependencyInjection\FakeProvider',
+        'class' => '\Drupal\Tests\service_container\DependencyInjection\FakeProvider',
       ),
     );
 
