@@ -46,6 +46,32 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
       'arguments' => array('default'),
     );
 
+    $services['serialization.phpserialize'] = array(
+      'class' => 'Drupal\Component\Serialization\PhpSerialize',
+    );
+
+    $parameters['factory.keyvalue'] = array();
+    $parameters['factory.keyvalue.expirable'] = array();
+    $services['keyvalue'] = array(
+      'class' => 'Drupal\Core\KeyValueStore\KeyValueFactory',
+      'arguments' => array('@service_container', '%factory.keyvalue%')
+    );
+    $services['keyvalue.database'] = array(
+      'class' => 'Drupal\Core\KeyValueStore\KeyValueDatabaseFactory',
+      'arguments' => array('@serialization.phpserialize', '@database')
+    );
+    $services['keyvalue.expirable'] = array(
+      'class' => 'Drupal\Core\KeyValueStore\KeyValueExpirableFactory',
+      'arguments' => array('@service_container', '%factory.keyvalue.expirable%')
+    );
+    $services['keyvalue.expirable.database'] = array(
+      'class' => 'Drupal\Core\KeyValueStore\KeyValueDatabaseExpirableFactory',
+      'arguments' => array('@serialization.phpserialize', '@database'),
+      'tags' => array(
+        array('name' => 'needs_destruction'),
+      ),
+    );
+
     // @todo Make it  possible to register all ctools plugins here.
 
     return array(
