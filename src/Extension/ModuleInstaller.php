@@ -11,6 +11,8 @@ use Drupal\Core\Extension\ModuleInstallerInterface;
 
 /**
  * Provides a module installer compatible with D7.
+ *
+ * @codeCoverageIgnore
  */
 class ModuleInstaller implements ModuleInstallerInterface {
 
