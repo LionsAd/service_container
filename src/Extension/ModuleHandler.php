@@ -106,14 +106,21 @@ class ModuleHandler implements ModuleHandlerInterface {
    * {@inheritdoc}
    */
   public function setModuleList(array $module_list = array()) {
-    throw new \BadMethodCallException('ModuleHandler::addProfile is not implemented.');
+    // Convert an array of module filenames to an array of module info, keyed by
+    // module name.
+    foreach ($module_list as $module_name => $filename) {
+      $module_list[$module_name] = array(
+        'filename' => $filename,
+      );
+    }
+    module_list(FALSE, FALSE, FALSE, $module_list);
   }
 
   /**
    * {@inheritdoc}
    */
   public function addModule($name, $path) {
-    throw new \BadMethodCallException('ModuleHandler::addProfile is not implemented.');
+    throw new \BadMethodCallException('ModuleHandler::addModule is not implemented.');
   }
 
   /**
