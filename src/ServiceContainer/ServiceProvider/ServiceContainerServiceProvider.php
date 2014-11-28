@@ -73,7 +73,7 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
     );
 
     $services['variable'] = array(
-      'class' => 'Drupal\Core\Variable',
+      'class' => 'Drupal\service_container\Variable',
     );
 
     $services['lock'] = array(
