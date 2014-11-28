@@ -7,10 +7,8 @@ set -e
 DIR=$(dirname $0)
 cd $DIR
 
-# Decide whether we want to install drush via GIT/composer on the longrun,
-# given that pear might disappear.
-pear channel-discover pear.drush.org
-pear install drush/drush
+composer global require drush/drush:dev-master --prefer-source
+phpenv rehash
 
 # Install Drupal 7.x
 git clone --branch 7.x --depth 1 http://git.drupal.org/project/drupal.git
