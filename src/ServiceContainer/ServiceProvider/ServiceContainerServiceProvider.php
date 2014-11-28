@@ -39,6 +39,13 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
       'class' => '\Drupal\service_container\Extension\ModuleInstaller',
     );
 
+    $services['database'] = array(
+      'class' => 'Drupal\Core\Database\Connection',
+      'factory_class' => 'Drupal\Core\Database\Database',
+      'factory_method' => 'getConnection',
+      'arguments' => array('default'),
+    );
+
     // @todo Make it  possible to register all ctools plugins here.
 
     return array(
