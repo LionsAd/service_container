@@ -30,6 +30,15 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
       'class' => '\Drupal\service_container\DependencyInjection\Container',
     );
 
+    $services['module_handler'] = array(
+      'class' => '\Drupal\service_container\Extension\ModuleHandler',
+      'arguments' => array(DRUPAL_ROOT),
+    );
+
+    $services['module_installer'] = array(
+      'class' => '\Drupal\service_container\Extension\ModuleInstaller',
+    );
+
     // @todo Make it  possible to register all ctools plugins here.
 
     return array(
