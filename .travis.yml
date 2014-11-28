@@ -6,9 +6,16 @@ php:
   - 5.6
   - hhvm
 
-before_script: "./tests/install.sh"
+before_script:
+  - mkdir -p ./tests/build/logs
+  - ./tests/install.sh
 
-script: "./tests/run-tests.sh"
+script:
+  - ./tests/run-tests.sh --coverage-clover build/logs/clover.xml
+
+after_script:
+  - cd ./tests
+  - php vendor/bin/coveralls -v
 
 notifications:
   email: false
