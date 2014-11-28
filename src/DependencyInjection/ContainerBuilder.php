@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * Contains \Drupal\service_container\DependencyInjection\ContainerBuilder
@@ -74,12 +75,9 @@ class ContainerBuilder implements ContainerBuilderInterface {
     foreach ($container_definition['services'] as $service => $definition) {
       if (isset($definition['tags'])) {
         foreach ($definition['tags'] as $tag) {
-          $tag_name = $tag[0];
-          $tag_arguments = array();
-          if (!empty($tag[1])) {
-            $tag_arguments = $tag[1];
-          }
-          $container_definition['tags'][$tag_name][$service][] = $tag_arguments;
+          $tag_name = $tag['name'];
+          unset($tag['name']);
+          $container_definition['tags'][$tag_name][$service][] = $tag;
         }
       }
     }

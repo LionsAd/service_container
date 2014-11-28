@@ -24,6 +24,7 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
    */
   public function getContainerDefinition() {
     $parameters = array();
+    $parameters['service_container.static_event_listeners'] = array();
 
     $services = array();
     $services['service_container'] = array(
@@ -73,7 +74,7 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
     );
 
     $services['variable'] = array(
-      'class' => 'Drupal\Core\Variable',
+      'class' => 'Drupal\service_container\Variable',
     );
 
     $services['lock'] = array(

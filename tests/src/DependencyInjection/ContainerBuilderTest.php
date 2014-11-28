@@ -31,8 +31,8 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase {
     // Alter the definition in a specified way.
     $altered_definition = $this->containerDefinition;
 
-    $altered_definition['services']['some_service']['tags'][] = array('bar' => array());
-    $altered_definition['services']['some_service']['tags'][] = array('baz' => array());
+    $altered_definition['services']['some_service']['tags'][] = array('name' => 'bar');
+    $altered_definition['services']['some_service']['tags'][] = array('name' => 'baz');
     $altered_definition['parameters']['some_other_config'] = 'lama';
 
     $this->alteredDefinition = $altered_definition;
@@ -47,8 +47,8 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase {
     $service_provider->shouldReceive('alterContainerDefinition')
       ->with(
         Mockery::on(function(&$container_definition) {
-          $container_definition['services']['some_service']['tags'][] = array('bar' => array());
-          $container_definition['services']['some_service']['tags'][] = array('baz' => array());
+          $container_definition['services']['some_service']['tags'][] = array('name' => 'bar');
+          $container_definition['services']['some_service']['tags'][] = array('name' => 'baz');
           $container_definition['parameters']['some_other_config'] = 'lama';
           return TRUE;
         })
@@ -111,7 +111,7 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase {
     $definition = $container_builder->getContainerDefinition();
     $this->assertEquals($definition, $altered_definition, 'Definition of the container when altered matches.');
   }
- 
+
   /**
    * @covers ::getContainerDefinition()
    * @covers ::moduleAlter()
@@ -187,7 +187,7 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase {
     $services['container'] = array(
       'class' => '\Drupal\service_container\DependencyInjection\Container',
       'tags' => array(
-        array('tagged-service'),
+        array('name' => 'tagged-service'),
       ),
     );
     $services['some_service'] = array(
@@ -197,8 +197,8 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase {
         array('setContainer', array('@service_container')),
       ),
       'tags' => array(
-        array('tagged-service'),
-        array('another-tag', array('tag-value' => 42, 'tag-value2' => 23)),
+        array('name' => 'tagged-service'),
+        array('name' => 'another-tag', 'tag-value' => 42, 'tag-value2' => 23),
       ),
       'priority' => 0,
     );
