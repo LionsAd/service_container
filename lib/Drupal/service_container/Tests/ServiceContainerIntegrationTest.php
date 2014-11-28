@@ -24,7 +24,7 @@ class ServiceContainerIntegrationTest extends \DrupalWebTestCase {
    * {@inheritdoc}
    */
   protected function setUp() {
-    parent::setUp(array('service_container'));
+    return parent::setUp(array('service_container'));
   }
 
   /**

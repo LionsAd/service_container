@@ -48,7 +48,7 @@ function service_container_ctools_plugin_type() {
  * Implements hook_ctools_plugin_directory().
  */
 function service_container_ctools_plugin_directory($owner, $plugin_type) {
-  if ($owner == 'service_provider') {
+  if ($owner == 'service_container') {
     return 'src/ServiceContainer/' . $plugin_type;
   }
 
