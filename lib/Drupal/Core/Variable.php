@@ -8,7 +8,13 @@
 namespace Drupal\Core;
 
 /**
- * Implements a injectable version of variable_set() / variable_get().
+ * Provides a injectable version of variable_set() / variable_get().
+ *
+ * Note: The main reason why this is not mapped to config is that config
+ * has a different thought process: configs + variables inside each config file.
+ *
+ * In order to port code from d7 to d8, you would need additional effort here
+ * anyway.
  */
 class Variable {
 
