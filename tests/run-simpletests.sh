@@ -7,9 +7,6 @@ set -e
 DIR=$(dirname $0)
 cd $DIR
 
-composer global require drush/drush:dev-master --prefer-source
-phpenv rehash
-
 # Install Drupal 7.x
 git clone --branch 7.x --depth 1 http://git.drupal.org/project/drupal.git
 cd drupal

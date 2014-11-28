@@ -7,4 +7,4 @@ set -e
 DIR=$(dirname $0)
 cd $DIR
 test -f "./vendor/bin/phpunit" || ./install.sh
-./vendor/bin/phpunit
+./vendor/bin/phpunit "$@"
