@@ -20,7 +20,7 @@ class ContainerAwarePluginManager extends ContainerAware implements PluginManage
    * Constructs a ContainerAwarePluginManager object.
    *
    * @param string $service_prefix
-   &   The service prefix used to get the plugin instances from the container.
+   *   The service prefix used to get the plugin instances from the container.
    */
   public function __construct($service_prefix) {
     $this->servicePrefix = $service_prefix;
