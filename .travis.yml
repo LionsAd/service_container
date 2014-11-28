@@ -12,6 +12,7 @@ before_script:
 
 script:
   - ./tests/run-tests.sh --coverage-clover build/logs/clover.xml
+  - ./tests/run-simpletests.sh
 
 after_script:
   - cd ./tests
