@@ -1,0 +1,9 @@
+# .coveralls.yml configuration
+
+repo_token: 4R2RtSu9AxT07xDU6xZyXJU47CD36UKch
+service_name: travis-ci
+
+# for php-coveralls
+src_dir: ../src
+coverage_clover: build/logs/clover.xml
+json_path: build/logs/coveralls-upload.json
