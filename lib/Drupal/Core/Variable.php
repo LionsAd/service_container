@@ -15,6 +15,8 @@ namespace Drupal\Core;
  *
  * In order to port code from d7 to d8, you would need additional effort here
  * anyway.
+ *
+ * @codeCoverageIgnore
  */
 class Variable {
 
