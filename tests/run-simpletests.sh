@@ -6,10 +6,6 @@ set -e
 
 DIR=$(dirname $0)
 cd $DIR
-
-composer global require drush/drush:dev-master --prefer-source
-phpenv rehash
-
 # Install Drupal 7.x
 git clone --branch 7.x --depth 1 http://git.drupal.org/project/drupal.git
 cd drupal
@@ -20,6 +16,8 @@ git clone --branch 7.x-1.x --depth 1 http://git.drupal.org/project/registry_auto
 
 # Point service_container into the drupal installation.
 ln -s $DIR sites/all/modules/service_container
+
+alias drush="php ~/.composer/vendor/bin/drush"
 
 # Install it and run the tests.
 drush --yes site-install minimal --db-url="sqlite://tmp/drupal_database"
