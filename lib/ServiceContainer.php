@@ -35,7 +35,7 @@ class ServiceContainer extends Drupal {
 
     if ($container_builder->isCached()) {
       static::$container = $container_builder->compile();
-      // @todo Emit some kind of event that the container is initialized now.
+      static::dispatchStaticEvent('containerReady', array(static::$container));
       return TRUE;
     }
 
@@ -46,8 +46,28 @@ class ServiceContainer extends Drupal {
 
     // Rebuild the container.
     static::$container = $container_builder->compile();
-    // @todo Emit some kind of event that the container is initialized now.
+    static::dispatchStaticEvent('containerReady', array(static::$container));
 
     return (bool) static::$container;
+  }
+
+  /**
+   * Dispatches an event to static classes.
+   *
+   * This is needed to inform other static classes when the container is ready.
+   *
+   * @param string $event
+   *   The member function to call.
+   * @param array $arguments
+   *   The arguments to pass.
+   */
+  protected static function dispatchStaticEvent($event, $arguments) {
+    $event_listeners = static::$container->getParameter('service_container.static_event_listeners');
+    foreach ($event_listeners as $class) {
+      $function = $class . '::' . $event;
+      if (is_callable($function)) {
+        call_user_func_array($function, $arguments);
+      }
+    }
   }
 }
