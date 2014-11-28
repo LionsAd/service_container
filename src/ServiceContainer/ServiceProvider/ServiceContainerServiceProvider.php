@@ -72,6 +72,10 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
       ),
     );
 
+    $services['variable'] = array(
+      'class' => 'Drupal\Core\Variable',
+    );
+
     // @todo Make it  possible to register all ctools plugins here.
 
     return array(
