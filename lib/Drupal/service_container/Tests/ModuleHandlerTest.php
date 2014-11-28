@@ -40,7 +40,7 @@ class ModuleHandlerTest extends \DrupalWebTestCase {
   /**
    * The basic functionality of retrieving enabled modules.
    */
-  function ptestModuleList() {
+  function testModuleList() {
     // Build a list of modules, sorted alphabetically.
     $profile_info = install_profile_info('testing', 'en');
     $module_list = $profile_info['dependencies'];
@@ -98,7 +98,7 @@ class ModuleHandlerTest extends \DrupalWebTestCase {
   /**
    * Test module_implements() caching.
    */
-  function ptestModuleImplements() {
+  function testModuleImplements() {
     // Make sure group include files are detected properly even when the file is
     // already loaded when the cache is rebuilt.
     // For that activate the module_test which provides the file to load.
@@ -113,7 +113,7 @@ class ModuleHandlerTest extends \DrupalWebTestCase {
   /**
    * Test that module_invoke() can load a hook defined in hook_hook_info().
    */
-  function ptestModuleInvoke() {
+  function testModuleInvoke() {
     $this->moduleInstaller()->install(array('module_test'), FALSE);
 
     $result = $this->moduleHandler()->invoke('module_test', 'test_hook');
@@ -123,7 +123,7 @@ class ModuleHandlerTest extends \DrupalWebTestCase {
   /**
    * Test that module_invoke_all() can load a hook defined in hook_hook_info().
    */
-  function ptestModuleInvokeAll() {
+  function testModuleInvokeAll() {
     $this->moduleInstaller()->install(array('module_test'), FALSE);
 
     $result = $this->moduleHandler()->invokeAll('test_hook');
@@ -142,7 +142,7 @@ class ModuleHandlerTest extends \DrupalWebTestCase {
    * @see module_test_system_info_alter()
    * @see https://drupal.org/files/issues/dep.gv__0.png
    */
-  function ptestDependencyResolution() {
+  function testDependencyResolution() {
     return;
     $this->moduleInstaller()->install(array('module_test'));
     $this->assertTrue($this->moduleHandler()->moduleExists('module_test'), 'Test module is enabled.');
@@ -216,7 +216,7 @@ class ModuleHandlerTest extends \DrupalWebTestCase {
   /**
    * Tests uninstalling a module that is a "dependency" of a profile.
    */
-  function ptestUninstallProfileDependency() {
+  function testUninstallProfileDependency() {
     return;
     $profile = 'minimal';
     $dependency = 'dblog';
@@ -245,7 +245,7 @@ class ModuleHandlerTest extends \DrupalWebTestCase {
   /**
    * Tests whether the correct module metadata is returned.
    */
-  function ptestModuleMetaData() {
+  function testModuleMetaData() {
     // Generate the list of available modules.
     $modules = system_rebuild_module_data();
     // Check that the mtime field exists for the system module.
@@ -259,7 +259,7 @@ class ModuleHandlerTest extends \DrupalWebTestCase {
   /**
    * Tests whether the correct theme metadata is returned.
    */
-  function ptestThemeMetaData() {
+  function testThemeMetaData() {
     // Generate the list of available themes.
     $themes = system_rebuild_theme_data();
     // Check that the mtime field exists for the bartik theme.
