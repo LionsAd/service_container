@@ -1,0 +1,59 @@
+<?php
+/**
+ * @file
+ * Main module file for the service_container module.
+ */
+
+// -----------------------------------------------------------------------
+// Core Hooks
+
+/**
+ * Implements hook_module_implements_alter().
+ */
+function service_container_module_implements_alter(&$implementations, $hook) {
+  // Moves our hook_init() implementation to occur first so that we
+  // can initialize the container.
+  if ($hook == 'init') {
+    $group = $implementations['service_container'];
+    unset($implementations['service_container']);
+    $implementations = array('service_container' => $group) + $implementations;
+  }
+}
+
+/**
+ * Implements hook_init().
+ */
+function service_container_init() {
+  // Initalize the container, now that Drupal is booted.
+  // Note: If this turns out to be not early enough, move to
+  //       hook_stream_wrappers_alter().
+  ServiceContainer::init();
+}
+
+// -----------------------------------------------------------------------
+// Contrib Hooks
+
+/**
+ * Implements hook_ctools_plugin_type().
+ */
+function service_container_ctools_plugin_type() {
+  $items['ServiceProvider'] = array(
+    'cache' => FALSE,
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_ctools_plugin_directory().
+ */
+function service_container_ctools_plugin_directory($owner, $plugin_type) {
+  if ($owner == 'service_provider') {
+    return 'src/ServiceContainer/' . $plugin_type;
+  }
+
+  return NULL;
+}
+
+// -----------------------------------------------------------------------
+// Public API
