@@ -9,8 +9,6 @@ php:
 before_script:
   - mkdir -p ./tests/build/logs
   - ./tests/install.sh
-  - composer global require drush/drush:dev-master --prefer-source
-  - phpenv rehash
 
 script:
   - ./tests/run-tests.sh --coverage-clover build/logs/clover.xml
