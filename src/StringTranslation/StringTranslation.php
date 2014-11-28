@@ -2,10 +2,10 @@
 
 /**
  * @file
- * Contains \Drupal\service_provider\StringTranslation\StringTranslation.
+ * Contains \Drupal\service_container\StringTranslation\StringTranslation.
  */
 
-namespace Drupal\service_provider\StringTranslation;
+namespace Drupal\service_container\StringTranslation;
 
 use Drupal\Core\StringTranslation\TranslationInterface;
 

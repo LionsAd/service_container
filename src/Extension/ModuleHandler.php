@@ -2,10 +2,10 @@
 
 /**
  * @file
- * Contains Drupal\service_provider\Extension\ModuleHandler.
+ * Contains Drupal\service_container\Extension\ModuleHandler.
  */
 
-namespace Drupal\service_provider\Extension;
+namespace Drupal\service_container\Extension;
 
 use Drupal\Core\Extension\Extension;
 use Drupal\Core\Extension\ModuleHandlerInterface;

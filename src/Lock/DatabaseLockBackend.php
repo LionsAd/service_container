@@ -2,10 +2,10 @@
 
 /**
  * @file
- * Contains \Drupal\service_provider\Lock\DatabaseLockBackend.
+ * Contains \Drupal\service_container\Lock\DatabaseLockBackend.
  */
 
-namespace Drupal\service_provider\Lock;
+namespace Drupal\service_container\Lock;
 
 use DatabaseConnection;
 use Drupal\Core\Lock\DatabaseLockBackend as BaseDatabaseLockBackend;

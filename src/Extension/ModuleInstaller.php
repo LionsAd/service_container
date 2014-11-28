@@ -2,10 +2,10 @@
 
 /**
  * @file
- * Contains \Drupal\service_provider\Extension\ModuleInstaller.
+ * Contains \Drupal\service_container\Extension\ModuleInstaller.
  */
 
-namespace Drupal\service_provider\Extension;
+namespace Drupal\service_container\Extension;
 
 use Drupal\Core\Extension\ModuleInstallerInterface;
 
