@@ -2,10 +2,10 @@
 
 /**
  * @file
- * Contains \Drupal\Core\Variable.
+ * Contains \Drupal\service_container\Variable.
  */
 
-namespace Drupal\Core;
+namespace Drupal\service_container;
 
 /**
  * Provides a injectable version of variable_set() / variable_get().
