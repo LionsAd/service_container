@@ -15,7 +15,7 @@ git clone --branch 7.x-1.x --depth 1 http://git.drupal.org/project/ctools.git si
 git clone --branch 7.x-1.x --depth 1 http://git.drupal.org/project/registry_autoload.git sites/all/modules/registry_autoload
 
 # Point service_container into the drupal installation.
-ln -s $DIR sites/all/modules/service_container
+cp -r $DIR sites/all/modules/service_container
 
 PATH=~/.composer/vendor/bin:$PATH
 
