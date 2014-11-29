@@ -18,7 +18,7 @@ matrix:
     - php: hhvm
 
 mysql:
-  database: service_container
+  database: drupal_travis_db
   username: root
   encoding: utf8
 
@@ -32,12 +32,12 @@ install:
 
 before_script:
   - mkdir -p ./tests/build/logs
-  # Install drupal and run web server: $module_dir $module_name $db_name $db_url
-  - ./tests/drupal-travis-integration/before-script.sh $(pwd) "service_container" "service_container" "mysql://root:@127.0.0.1/service_container"
+  # Install drupal and run web server: $module_name $db_name $db_url
+  - ./tests/drupal-travis-integration/before-script.sh "service_container" "drupal_travis_db" "mysql://root:@127.0.0.1/drupal_travis_db"
 
 script:
   - ./tests/run-tests.sh --coverage-clover build/logs/clover.xml
-  - ./tests/drupal-travis-integration/run-simpletests.sh "service_container" --uri="http://127.0.0.1:8080"
+  - ./tests/drupal-travis-integration/run-simpletests.sh --verbose --color --concurrency 4 --php $(which php) --url "http://127.0.0.1:8080" "service_container"
 
 after_script:
   - cd ./tests

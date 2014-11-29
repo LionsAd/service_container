@@ -4,19 +4,20 @@
 set -e
 set -x
 
-if [ $# -lt 4 ]
+if [ $# -lt 3 ]
 then
-  echo "Usage: $0 <module-dir> <module-name> <db-name> <db-url>" 1>&2
+  echo "Usage: $0 <module-name> <db-name> <db-url>" 1>&2
   exit 1
 fi
 
-export MODULE_DIR=$1
-export MODULE_NAME=$2
-export DB=$3
-export DB_URL=$4
+export MODULE_NAME=$1
+export DB=$2
+export DB_URL=$3
 
-# Change to /tmp
-cd /tmp
+# Find absolute path to module.
+cd "$TRAVIS_BUILD_DIR"
+MODULE_DIR=$(pwd)
+cd ..
 
 # Install drupal
 mysql -e "create database $DB"
