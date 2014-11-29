@@ -7,6 +7,9 @@ set -e
 # Store the module directory.
 export MODULE_DIR=$(cd $(dirname $0); cd ..; pwd)
 
+# Export the PATH to include the global composer namespace.
+export PATH=~/.composer/vendor/bin:$PATH
+
 # Goto current directory.
 DIR=$(dirname $0)
 cd $DIR
@@ -29,8 +32,6 @@ then
 	# Point service_container into the drupal installation.
 	ln -sf "$MODULE_DIR" sites/all/modules/service_container
 
-	export PATH=~/.composer/vendor/bin:$PATH
-
 	# Install it and run the tests.
 	drush --yes site-install minimal --db-url="sqlite://tmp/drupal_database"
 
@@ -38,4 +39,4 @@ then
 	drush --yes en service_container
 fi
 
-drush test-run "service_container" --debug
+drush test-run "service_container"
