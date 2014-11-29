@@ -2,7 +2,7 @@
 # @file
 # Simple script to run the given command for all enabled runners.
 
-set -x
+set -e -x
 
 CMD=$1
 
@@ -38,5 +38,11 @@ SCRIPT_DIR=$(dirname "$SELF_PATH")
 for RUNNER in $DRUPAL_TI_RUNNERS
 do
 	SCRIPT="$SCRIPT_DIR/runners/$RUNNER/$CMD.sh"
-	test -x "$SCRIPT" && "$SCRIPT"
+	if [ -x "$SCRIPT" ]
+	then
+		"$SCRIPT"
+	fi
 done
+
+# Ensure we don't exit with error status code.
+exit 0
