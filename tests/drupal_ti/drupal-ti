@@ -2,7 +2,7 @@
 # @file
 # Simple script to run the given command for all enabled runners.
 
-set -e -x
+set -x
 
 CMD=$1
 
