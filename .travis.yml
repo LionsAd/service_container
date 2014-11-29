@@ -27,42 +27,20 @@ before_install:
 
 install:
   - ./tests/install.sh
-
-  # install php packages required for running a web server from drush on php 5.3
-  - sudo apt-get install -y --force-yes php5-cgi php5-mysql
+  - ./tests/drupal-travis-integration/install.sh
 
   # add composer's global bin directory to the path
   # see: https://github.com/drush-ops/drush#install---composer
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
 
-  # install drush globally
-  - composer global require drush/drush:dev-master --prefer-source
-
 before_script:
   - mkdir -p ./tests/build/logs
-  - export MODULE_DIR=$(pwd)
-  # Change to /tmp
-  - cd /tmp
-  # Install drupal
-  - mysql -e 'create database service_container'
-  - php -d sendmail_path=$(which true) ~/.composer/vendor/bin/drush.php --yes core-quick-drupal --profile=testing --no-server --db-url="mysql://root:@127.0.0.1/service_container" --enable=simpletest drupal_service_container
-  - cd drupal_service_container/drupal
-  # Point service_container into the drupal installation.
-  - ln -sf "$MODULE_DIR" sites/all/modules/service_container
-
-  # Enable it to download dependencies.
-  - drush --yes en service_container
-
-  # start a web server on port 8080, run in the background; wait for initialization
-  - drush runserver "127.0.0.1:8080" &
-  - until netstat -an 2>/dev/null | grep '8080.*LISTEN'; do true; done
-
-  # Change directory back and cleanup.
-  - cd "$MODULE_DIR"
-  - unset MODULE_DIR
+  # Install drupal and run web server: $module_dir $module_name $db_name $db_url
+  - ./tests/drupal-travis-integration/before-script.sh $(pwd) "service_container" "service_container" "mysql://root:@127.0.0.1/service_container"
 
 script:
   - ./tests/run-tests.sh --coverage-clover build/logs/clover.xml
+  - cd /tmp/drupal_travis/drupal
   - ./tests/run-simpletests.sh --uri="http://127.0.0.1:8080"
 
 after_script:
