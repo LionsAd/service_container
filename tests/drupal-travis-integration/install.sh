@@ -4,6 +4,9 @@
 set -e
 set -x
 
+# Return if we should ignore this call.
+[ -n "$IGNORE_DRUPAL_TRAVIS_INTEGRATION" ] && exit 0
+
 # install php packages required for running a web server from drush on php 5.3
 PHP_VERSION=$(phpenv version-name)
 if [ "$PHP_VERSION" = "5.3" ]

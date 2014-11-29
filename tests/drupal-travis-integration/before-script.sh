@@ -4,6 +4,9 @@
 set -e
 set -x
 
+# Return if we should ignore this call.
+[ -n "$IGNORE_DRUPAL_TRAVIS_INTEGRATION" ] && exit 0
+
 if [ $# -lt 3 ]
 then
   echo "Usage: $0 <module-name> <db-name> <db-url>" 1>&2
@@ -19,10 +22,13 @@ cd "$TRAVIS_BUILD_DIR"
 MODULE_DIR=$(pwd)
 cd ..
 
-# Install drupal
+# Create database and Install drupal.
 mysql -e "create database $DB"
-php -d sendmail_path=$(which true) ~/.composer/vendor/bin/drush.php --yes core-quick-drupal --profile=testing --no-server --db-url="$DB_URL" --enable=simpletest drupal_travis
+php -d sendmail_path=$(which true) ~/.composer/vendor/bin/drush.php --yes core-quick-drupal --profile=testing --no-server --db-url="$DB_URL" drupal_travis
 cd drupal_travis/drupal
+
+# Enable simpletest manually - sendmail fails on HHVM.
+drush --yes en "simpletest"
 
 # Point service_container into the drupal installation.
 ln -sf "$MODULE_DIR" sites/all/modules/$MODULE_NAME
