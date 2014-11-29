@@ -1,3 +1,8 @@
+# .travis.yml - File for Travis CI
+#
+# Based for simpletest upon:
+#   https://github.com/sonnym/travis-ci-drupal-module-example
+
 language: php
 
 php:
@@ -22,10 +27,16 @@ before_install:
 
 install:
   - ./tests/install.sh
-  # install composer
-  - composer global require drush/drush:dev-master --prefer-source
+
   # install php packages required for running a web server from drush on php 5.3
   - sudo apt-get install -y --force-yes php5-cgi php5-mysql
+
+  # add composer's global bin directory to the path
+  # see: https://github.com/drush-ops/drush#install---composer
+  - export PATH="$HOME/.composer/vendor/bin:$PATH"
+
+  # install drush globally
+  - composer global require drush/drush:dev-master --prefer-source
 
 before_script:
   - mkdir -p ./tests/build/logs
@@ -33,7 +44,7 @@ before_script:
   - cd /tmp
   # Install drupal
   - mysql -e 'create database service_container'
-  - php -d sendmail_path=$(which true) ~/.composer/vendor/bin/drush.php --yes core-quick-drupal --profile=testing --no-server --db-url="mysql://root:@127.0.0.1/service_container" --enable=simpletest drupal_service_container
+  - php -d sendmail_path=$(which true) drush --yes core-quick-drupal --profile=testing --no-server --db-url="mysql://root:@127.0.0.1/service_container" --enable=simpletest drupal_service_container
   - cd drupal_service_container/drupal
   # start a web server on port 8080, run in the background; wait for initialization
   - drush runserver 127.0.0.1:8080 &
