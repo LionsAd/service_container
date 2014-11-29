@@ -10,7 +10,7 @@ The main benefit is being able to use unit testing.
 
 service_container uses PHP Unit and travis.yml, but the tests and a composer.json are isolated in the tests/ directory, so no vendor or composer multi map is needed by default.
 
-It was originally written for the render_cache module, but since then others have expressed interest in using it, so this will split it out.
+It was originally written for the render\_cache module, but since then others have expressed interest in using it, so it was split it out and made a dependency of render\_cache instead.
 
 You need:
 
