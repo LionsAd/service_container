@@ -1,0 +1,22 @@
+#!/bin/bash
+# @file
+# Simple script to run the given command for all enabled runners.
+
+set -e
+set -x
+
+CMD=$1
+
+if [ -z "$CMD" -o -z "$DRUPAL_TI_RUNNERS" ]
+then
+	echo "Usage: $0 <cmd>" 1>&2
+	echo "" 1>&2
+	echo "- cmd: A valid travis-ci command, e.g. before-script, script, after-script." 1>&2
+	exit 1
+fi
+SCRIPT_DIR=$(cd $(dirname $0); pwd)
+
+for RUNNER in $DRUPAL_TI_RUNNERS
+do
+	test -x "$SCRIPT_DIR/$RUNNER/$CMD.sh" && $SCRIPT_DIR/$RUNNER/$CMD.sh
+done
