@@ -44,7 +44,7 @@ before_script:
   - cd /tmp
   # Install drupal
   - mysql -e 'create database service_container'
-  - php -d sendmail_path=$(which true) drush --yes core-quick-drupal --profile=testing --no-server --db-url="mysql://root:@127.0.0.1/service_container" --enable=simpletest drupal_service_container
+  - php -d sendmail_path=$(which true) ~/.composer/vendor/bin/drush.php --yes core-quick-drupal --profile=testing --no-server --db-url="mysql://root:@127.0.0.1/service_container" --enable=simpletest drupal_service_container
   - cd drupal_service_container/drupal
   # start a web server on port 8080, run in the background; wait for initialization
   - drush runserver 127.0.0.1:8080 &
