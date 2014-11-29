@@ -1,8 +1,7 @@
 #!/bin/bash
 # Simple script to install drupal for travis-ci running.
 
-set -e
-set -x
+set -e -x
 
 # Find absolute path to module.
 cd "$TRAVIS_BUILD_DIR"

@@ -2,8 +2,7 @@
 # @file
 # Simple script to run the tests via travis-ci.
 
-set -e
-set -x
+set -e -x
 
 cd "$TRAVIS_BUILD_DIR/../drupal_travis/drupal/"
 { php scripts/run-tests.sh "$@" || echo "1 fails"; } | tee /tmp/simpletest-result.txt
