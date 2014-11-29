@@ -1,4 +1,4 @@
-# service_container
+# service\_container
 
 Service Container is an API module based on ctools to enable a Drupal 7 quick and easy lightweight service container with 100% unit test coverage.
 
@@ -8,20 +8,64 @@ This allows to use an extensible service container (like in Drupal 8) and write 
 
 The main benefit is being able to use unit testing.
 
-service_container uses PHP Unit and travis.yml, but the tests and a composer.json are isolated in the tests/ directory, so no vendor or composer multi map is needed by default.
+service\_container uses PHP Unit and travis.yml, but the tests and a composer.json are isolated in the tests/ directory, so no vendor or composer multi map is needed by default.
 
 It was originally written for the render\_cache module, but since then others have expressed interest in using it, so it was split it out and made a dependency of render\_cache instead.
 
 You need:
 
-- registry_autoload
+- registry\_autoload
 
 or any other PSR-4 autoloader.
 
+### Registering CTools plugins
+
+By default the service\_container supports ctools discovery, to register your plugins all you need to do is:
+
+````php
+    // Plugin Managers - filled out by alterDefinition() of service_container
+    // module.
+    // Key is: <owner>.<identifier>
+    $services['render_cache.controller'] = array();
+
+    // Syntax is: <owner> => array(<identifier> => <type>)
+    $parameters['service_container.plugin_managers']['ctools'] = array(
+      'render_cache.controller' => array(
+        'owner' => 'render_cache',
+        'type' => 'Controller',
+      ),
+    );
+````
+
+And you can then get a plugin via:
+
+````php
+    $rcc = \Drupal::service('render_cache.controller')->createInstance('block');
+````
+
+Because the plugin managers implement the whole discovery interface, you can get all definitions with ease.
+
+````php
+  $plugins = \Drupal::service('render_cache.controller')->getDefinitions();
+````
+
+Your plugin itself looks like:
+
+cat modules/render_cache_block/src/RenderCache/Controller/block.inc
+
+````php
+$plugin = array(
+  'class' => "\\Drupal\\render_cache_block\\RenderCache\\Controller\\BlockController",
+  'arguments' => array('@render_stack', '@render_cache.cache'),
+);
+````
+
+So you can use normal container parameter syntax.
+
 ### Testing
 
-- service_container is tested via PHPUnit for code correctness.
-- service_container is tested via simpletest for integration with Drupal.
+- service\_container is tested via PHPUnit for code correctness.
+- service\_container is tested via simpletest for integration with Drupal.
 
 ### Status
 
