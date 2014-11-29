@@ -21,5 +21,5 @@ or any other PSR-4 autoloader.
 ### Status
 
 [![Build Status](https://travis-ci.org/LionsAd/service_container.svg?branch=7.x-1.x)](https://travis-ci.org/LionsAd/service_container)
-[![Coverage Status](https://img.shields.io/coveralls/LionsAd/service_container.svg?branch=7.x-1.x)](https://coveralls.io/r/LionsAd/service_container?branch=7.x-1.x)
+[![Coverage Status](https://coveralls.io/repos/LionsAd/service_container/badge.png?branch=7.x-1.x)](https://coveralls.io/r/LionsAd/service_container?branch=7.x-1.x)
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/LionsAd/service_container?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
