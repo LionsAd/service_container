@@ -9,8 +9,8 @@ set -x
 
 if [ $# -lt 3 ]
 then
-  echo "Usage: $0 <module-name> <db-name> <db-url>" 1>&2
-  exit 1
+	echo "Usage: $0 <module-name> <db-name> <db-url>" 1>&2
+	exit 1
 fi
 
 export MODULE_NAME=$1
@@ -22,22 +22,19 @@ cd "$TRAVIS_BUILD_DIR"
 MODULE_DIR=$(pwd)
 cd ..
 
-# Determine php.ini per https://github.com/travis-ci/travis-ci/issues/2523.
+# HHVM env is broken: https://github.com/travis-ci/travis-ci/issues/2523.
 PHP_VERSION=`phpenv version-name`
 if [ "$PHP_VERSION" = "hhvm" ]
-then
-  PHPINI=/etc/hhvm/php.ini
-else
-  PHPINI="~/.phpenv/versions/$VERSION/etc/php.ini"
+	# Create sendmail command, which links to /bin/true for HHVM.
+        mkdir -p drupal_travis/bin
+        ln -s $(which true) drupal_travis/bin/sendmail
+        CWD=$(pwd)
+        export PATH="$CWD/drupal_travis/bin:$PATH"
 fi
-
-# Set sendmail so drush doesn't throw an error during site install.
-export TRUE_SCRIPT=$(which true)
-echo "sendmail_path='$TRUE_SCRIPT'" >> "$PHPINI"
 
 # Create database and install Drupal.
 mysql -e "create database $DB"
-drush --yes core-quick-drupal --profile=testing --no-server --db-url="$DB_URL" --enable="simpletest" drupal_travis
+php -d sendmail_path=$(which true) ~/.composer/vendor/bin/drush.php --yes core-quick-drupal --profile=testing --no-server --db-url="$DB_URL" --enable="simpletest" drupal_travis
 cd drupal_travis/drupal
 
 # Point service_container into the drupal installation.
