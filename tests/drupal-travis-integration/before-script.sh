@@ -25,6 +25,7 @@ cd ..
 # HHVM env is broken: https://github.com/travis-ci/travis-ci/issues/2523.
 PHP_VERSION=`phpenv version-name`
 if [ "$PHP_VERSION" = "hhvm" ]
+then
 	# Create sendmail command, which links to /bin/true for HHVM.
         mkdir -p drupal_travis/bin
         ln -s $(which true) drupal_travis/bin/sendmail
