@@ -2,7 +2,7 @@
 # @file
 # Simple file to run a test-run.
 
-SCRIPT_DIR=$(cd $(dirname $0); pwd)
+SCRIPT_DIR=$(cd $(dirname $0)/..; pwd)
 
 # Setup a symlink.
 mkdir -p /tmp/drupal_ti/bin
