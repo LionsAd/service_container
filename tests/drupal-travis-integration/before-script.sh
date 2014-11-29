@@ -22,8 +22,18 @@ cd "$TRAVIS_BUILD_DIR"
 MODULE_DIR=$(pwd)
 cd ..
 
+# Determine php.ini per https://github.com/travis-ci/travis-ci/issues/2523.
+PHP_VERSION=`phpenv version-name`
+if [ "$VERSION" -eq "hhvm" ]
+then
+  PHPINI=/etc/hhvm/php.ini
+else
+  PHPINI="~/.phpenv/versions/$VERSION/etc/php.ini"
+fi
+
 # Set sendmail so drush doesn't throw an error during site install.
-echo "sendmail_path='true'" >> $(php --ini | grep "Loaded Configuration" | awk '{print $4}')
+export TRUE_SCRIPT=$(which true)
+echo "sendmail_path='$TRUE_SCRIPT'" >> "$PHPINI"
 
 # Create database and install Drupal.
 mysql -e "create database $DB"
@@ -31,7 +41,7 @@ drush --yes core-quick-drupal --profile=testing --no-server --db-url="$DB_URL" -
 cd drupal_travis/drupal
 
 # Point service_container into the drupal installation.
-ln -sf "$MODULE_DIR" sites/all/modules/$MODULE_NAME
+ln -sf "$MODULE_DIR" "sites/all/modules/$MODULE_NAME"
 
 # Enable it to download dependencies.
 drush --yes en "$MODULE_NAME"
