@@ -38,5 +38,6 @@ SCRIPT_DIR=$(dirname "$SELF_PATH")
 
 for RUNNER in $DRUPAL_TI_RUNNERS
 do
-	test -x "$SCRIPT_DIR/$RUNNER/$CMD.sh" && $SCRIPT_DIR/$RUNNER/$CMD.sh
+	SCRIPT="$SCRIPT_DIR/runners/$RUNNER/$CMD.sh"
+	test -x "$SCRIPT" && "$SCRIPT"
 done
