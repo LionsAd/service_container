@@ -2,7 +2,7 @@
 # Simple script to install drupal for travis-ci running.
 
 set -e
-set -v
+set -x
 
 if [ $# -lt 4 ]
 then
