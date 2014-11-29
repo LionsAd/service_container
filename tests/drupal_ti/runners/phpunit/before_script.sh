@@ -2,7 +2,7 @@
 # @file
 # PHP Unit integration - Before Script step.
 
-set -e -x
+set -e $DRUPAL_TI_DEBUG
 
 if [ -n "$DRUPAL_TI_COVERAGE_FILE" ]
 then

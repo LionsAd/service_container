@@ -1,7 +1,7 @@
 #!/bin/bash
 # Simple script to install dependencies for travis-ci running.
 
-set -e -x
+set -e $DRUPAL_TI_DEBUG
 
 # install php packages required for running a web server from drush on php 5.3
 PHP_VERSION=$(phpenv version-name)

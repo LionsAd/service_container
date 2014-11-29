@@ -2,7 +2,7 @@
 # @file
 # PHP Unit integration - Install step.
 
-set -e -x
+set -e $DRUPAL_TI_DEBUG
 
 composer install --no-interaction --prefer-source --dev
 

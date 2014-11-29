@@ -43,6 +43,9 @@ env:
     # This needs to match your .coveralls.yml file.
     - DRUPAL_TI_COVERAGE_FILE="build/logs/clover.xml"
 
+    # Debug options
+    #- DRUPAL_TI_DEBUG="-x -v"
+
   matrix:
     - DRUPAL_TI_RUNNERS="phpunit"
     - DRUPAL_TI_RUNNERS="phpunit simpletest"
