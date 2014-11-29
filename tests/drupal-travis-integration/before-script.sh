@@ -22,13 +22,13 @@ cd "$TRAVIS_BUILD_DIR"
 MODULE_DIR=$(pwd)
 cd ..
 
-# Create database and Install drupal.
-mysql -e "create database $DB"
-php -d sendmail_path=$(which true) ~/.composer/vendor/bin/drush.php --yes core-quick-drupal --profile=testing --no-server --db-url="$DB_URL" drupal_travis
-cd drupal_travis/drupal
+# Set sendmail so drush doesn't throw an error during site install.
+echo "sendmail_path='true'" >> $(php --ini | grep "Loaded Configuration" | awk '{print $4}')
 
-# Enable simpletest manually - sendmail fails on HHVM.
-drush --yes en "simpletest"
+# Create database and install Drupal.
+mysql -e "create database $DB"
+drush --yes core-quick-drupal --profile=testing --no-server --db-url="$DB_URL" --enable="simpletest" drupal_travis
+cd drupal_travis/drupal
 
 # Point service_container into the drupal installation.
 ln -sf "$MODULE_DIR" sites/all/modules/$MODULE_NAME
