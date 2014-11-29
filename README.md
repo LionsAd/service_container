@@ -18,6 +18,11 @@ You need:
 
 or any other PSR-4 autoloader.
 
+### Testing
+
+- service_container is tested via PHPUnit for code correctness.
+- service_container is tested via simpletest for integration with Drupal.
+
 ### Status
 
 [![Build Status](https://travis-ci.org/LionsAd/service_container.svg?branch=7.x-1.x)](https://travis-ci.org/LionsAd/service_container)
