@@ -40,8 +40,7 @@ before_script:
 
 script:
   - ./tests/run-tests.sh --coverage-clover build/logs/clover.xml
-  - cd /tmp/drupal_travis/drupal
-  - ./tests/run-simpletests.sh --uri="http://127.0.0.1:8080"
+  - ./tests/drupal-travis-integration/run-simpletests.sh "service_container" --uri="http://127.0.0.1:8080"
 
 after_script:
   - cd ./tests
