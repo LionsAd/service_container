@@ -12,9 +12,5 @@ then
 	sudo apt-get install -y --force-yes php5-cgi php5-mysql
 fi
 
-# add composer's global bin directory to the path
-# see: https://github.com/drush-ops/drush#install---composer
-export PATH="$HOME/.composer/vendor/bin:$PATH"
-
 # install drush globally
 composer global require drush/drush:dev-master --prefer-source
