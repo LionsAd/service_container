@@ -105,6 +105,11 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
    * {@inheritdoc}
    */
   public function alterContainerDefinition(&$container_definition) {
+    // Set empty value when its not set.
+    if (empty($container_definition['tags']['ctools.plugin'])) {
+      $container_definition['tags']['ctools.plugin'] = array();
+    }
+
     // Register ctools plugins as private services in the container.
     foreach ($container_definition['tags']['ctools.plugin'] as $service => $tags) {
       foreach ($tags as $tag) {
