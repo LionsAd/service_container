@@ -6,7 +6,7 @@
 language: php
 
 php:
-  - 5.3
+#  - 5.3
   - 5.4
   - 5.5
   - 5.6
@@ -40,19 +40,30 @@ install:
 
 before_script:
   - mkdir -p ./tests/build/logs
+  - export MODULE_DIR=$(pwd)
   # Change to /tmp
   - cd /tmp
   # Install drupal
   - mysql -e 'create database service_container'
   - php -d sendmail_path=$(which true) ~/.composer/vendor/bin/drush.php --yes core-quick-drupal --profile=testing --no-server --db-url="mysql://root:@127.0.0.1/service_container" --enable=simpletest drupal_service_container
   - cd drupal_service_container/drupal
+  # Point service_container into the drupal installation.
+  - ln -sf "$MODULE_DIR" sites/all/modules/service_container
+
+  # Enable it to download dependencies.
+  - drush --yes en service_container
+
   # start a web server on port 8080, run in the background; wait for initialization
-  - drush runserver 127.0.0.1:8080 &
+  - drush runserver "127.0.0.1:8080" &
   - until netstat -an 2>/dev/null | grep '8080.*LISTEN'; do true; done
+
+  # Change directory back and cleanup.
+  - cd "$MODULE_DIR"
+  - unset MODULE_DIR
 
 script:
   - ./tests/run-tests.sh --coverage-clover build/logs/clover.xml
-  - ./tests/run-simpletests.sh
+  - ./tests/run-simpletests.sh --uri="http://127.0.0.1:8080"
 
 after_script:
   - cd ./tests
