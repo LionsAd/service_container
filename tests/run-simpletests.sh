@@ -19,6 +19,9 @@ if [ -z "$FOUND" ]
 then
 	echo "No Drupal installation found. Installing via git."
 
+        # Install in /tmp directory to prevent endless recursion.
+        cd /tmp/
+
 	# Install Drupal 7.x
 	git clone --branch 7.x --depth 1 http://git.drupal.org/project/drupal.git
 	cd drupal
