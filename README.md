@@ -25,10 +25,10 @@ By default the service\_container supports ctools discovery, to register your pl
 ````php
     // Plugin Managers - filled out by alterDefinition() of service_container
     // module.
-    // Key is: <owner>.<identifier>
+    // This needs to exist in an empty state.
     $services['render_cache.controller'] = array();
 
-    // Syntax is: <owner> => array(<identifier> => <type>)
+    // Syntax is: <service_name> => <plugin_manager_definition>
     $parameters['service_container.plugin_managers']['ctools'] = array(
       'render_cache.controller' => array(
         'owner' => 'render_cache',
