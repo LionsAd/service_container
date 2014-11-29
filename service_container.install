@@ -9,18 +9,11 @@
  */
 
 /**
- * Implements hook_install().
- */
-function service_container_install() {
-  // Create tables.
-  drupal_install_schema('service_container');
-}
-
-/**
  * Implements hook_schema().
  */
 function service_container_schema() {
   $schema = array();
+  return $schema;
 
   $schema['key_value'] = array(
     'description' => 'Generic key-value storage table. See the state system for an example.',
