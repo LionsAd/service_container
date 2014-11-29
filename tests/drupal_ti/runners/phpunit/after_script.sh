@@ -6,6 +6,5 @@ set -e $DRUPAL_TI_DEBUG
 
 if [ -n "$DRUPAL_TI_COVERAGE" ]
 then
-	pwd
-	coveralls -v -c ./coveralls.yml
+	./vendor/bin/coveralls -v
 fi

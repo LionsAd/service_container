@@ -8,5 +8,6 @@ composer install --no-interaction --prefer-source --dev
 
 if [ -n "$DRUPAL_TI_COVERAGE" ]
 then
-	composer global require "$DRUPAL_TI_COVERAGE"
+	# Note: This cannot be installed globally.
+	composer require --dev "$DRUPAL_TI_COVERAGE"
 fi
