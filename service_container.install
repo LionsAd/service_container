@@ -13,7 +13,6 @@
  */
 function service_container_schema() {
   $schema = array();
-  return $schema;
 
   $schema['key_value'] = array(
     'description' => 'Generic key-value storage table. See the state system for an example.',
