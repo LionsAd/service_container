@@ -6,16 +6,16 @@
 language: php
 
 php:
-#  - 5.3
+  - 5.3
   - 5.4
   - 5.5
   - 5.6
-  - hhvm
+#  - hhvm
 
 matrix:
   fast_finish: true
-  allow_failures:
-    - php: hhvm
+#  allow_failures:
+#    - php: hhvm
 
 env:
   # add composer's global bin directory to the path
