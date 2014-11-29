@@ -32,4 +32,7 @@ drush --yes en "$MODULE_NAME"
 
 # start a web server on port 8080, run in the background; wait for initialization
 drush runserver "127.0.0.1:8080" &
-until netstat -an 2>/dev/null | grep '8080.*LISTEN'; do true; done
+until netstat -an 2>/dev/null | grep -q '8080.*LISTEN'
+do
+	sleep 1
+done
