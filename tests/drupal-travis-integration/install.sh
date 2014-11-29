@@ -13,4 +13,4 @@ then
 fi
 
 # install drush globally
-composer global require drush/drush:dev-master --prefer-source
+composer global require drush/drush:6.*
