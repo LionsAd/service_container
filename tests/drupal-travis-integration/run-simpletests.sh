@@ -4,7 +4,7 @@
 
 set -e
 
-cd "$TRAVIS_BUILD_DIR/drupal_travis/drupal/"
+cd "$TRAVIS_BUILD_DIR/../drupal_travis/drupal/"
 php scripts/run-tests.sh "$@" | tee /tmp/simpletest-result.txt
 
 # Simpletest does not exit with code 0 on success, so we will need to analyze
