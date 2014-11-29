@@ -24,7 +24,7 @@ cd ..
 
 # Determine php.ini per https://github.com/travis-ci/travis-ci/issues/2523.
 PHP_VERSION=`phpenv version-name`
-if [ "$VERSION" -eq "hhvm" ]
+if [ "$PHP_VERSION" -eq "hhvm" ]
 then
   PHPINI=/etc/hhvm/php.ini
 else
