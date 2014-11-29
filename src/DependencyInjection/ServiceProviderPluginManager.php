@@ -25,7 +25,10 @@ class ServiceProviderPluginManager extends DefaultPluginManager {
    * @codeCoverageIgnore
    */
   public function __construct() {
-   $discovery = new CToolsPluginDiscovery('service_container', 'ServiceProvider');
+   $discovery = new CToolsPluginDiscovery(array(
+     'owner' => 'service_container',
+     'type' => 'ServiceProvider',
+   ));
    parent::__construct($discovery);
   }
 }

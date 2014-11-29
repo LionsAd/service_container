@@ -35,12 +35,12 @@ class CToolsPluginDiscovery implements DiscoveryInterface {
   /**
    * Constructs a CToolsPluginDiscovery object.
    *
-   * @param string $plugin_type
-   *   The ctools plugin type to load.
+   * @param array $plugin_manager_definition
+   *   The domain specific plugin manager definition.
    */
-  public function __construct($plugin_owner, $plugin_type) {
-    $this->pluginOwner = $plugin_owner;
-    $this->pluginType = $plugin_type;
+  public function __construct($plugin_manager_definition) {
+    $this->pluginOwner = $plugin_manager_definition['owner'];
+    $this->pluginType = $plugin_manager_definition['type'];
   }
 
   /**
