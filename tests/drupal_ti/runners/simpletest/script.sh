@@ -4,7 +4,7 @@
 
 set -e $DRUPAL_TI_DEBUG
 
-ARGS=( $DRUPAL_TI_SIMPLETEST_ARGS )
+export ARGS=( $DRUPAL_TI_SIMPLETEST_ARGS )
 
 cd "$TRAVIS_BUILD_DIR/../drupal_travis/drupal/"
 { php scripts/run-tests.sh "${ARGS[@]}" || echo "1 fails"; } | tee /tmp/simpletest-result.txt
