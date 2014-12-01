@@ -86,12 +86,25 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
   }
 
   /**
-   * Tests that Container::setParameter() works properly.
+   * Tests that Container::setParameter() in an unfrozen case works properly.
+   *
    * @covers ::setParameter()
    */
-  public function test_setParameter() {
+  public function test_setParameter_unfrozenContainer() {
+    $this->container = new Container($this->containerDefinition, FALSE);
     $this->container->setParameter('some_config', 'new_value');
     $this->assertEquals('new_value', $this->container->getParameter('some_config'), 'Container parameters can be set.');
+  }
+
+  /**
+   * Tests that Container::setParameter() in a frozen case works properly.
+   *
+   * @covers ::setParameter()
+   *
+   * @expectedException \BadMethodCallException
+   */
+  public function test_setParameter_frozenContainer() {
+    $this->container->setParameter('some_config', 'new_value');
   }
 
   /**
@@ -101,7 +114,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
    */
   public function test_get() {
     $container = $this->container->get('service_container');
-    $this->assertEquals($this->container, $container, 'Container can be retrieved from itself.');
+    $this->assertSame($this->container, $container, 'Container can be retrieved from itself.');
 
     // Retrieve services of the container.
     $other_service_class = $this->containerDefinition['services']['other.service']['class'];
@@ -125,13 +138,11 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
    * @covers ::set()
    */
   public function test_set() {
-    $container = $this->container->get('service_container');
-
-    $this->assertFalse($container->get('new_id', ContainerInterface::NULL_ON_INVALID_REFERENCE));
+    $this->assertFalse($this->container->get('new_id', ContainerInterface::NULL_ON_INVALID_REFERENCE));
     $mock_service = new MockService();
-    $container->set('new_id', $mock_service);
+    $this->container->set('new_id', $mock_service);
 
-    $this->assertSame($mock_service, $container->get('new_id'), 'A manual set service works as expected.');
+    $this->assertSame($mock_service, $this->container->get('new_id'), 'A manual set service works as expected.');
   }
 
   /**
@@ -140,15 +151,13 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
    * @covers ::set()
    */
   public function test_has() {
-    $container = $this->container->get('service_container');
-
-    $this->assertTrue($container->has('other.service'));
-    $this->assertFalse($container->has('another.service'));
+    $this->assertTrue($this->container->has('other.service'));
+    $this->assertFalse($this->container->has('another.service'));
 
     // Set the service manually, ensure that its also respected.
     $mock_service = new MockService();
-    $container->set('another.service', $mock_service);
-    $this->assertTrue($container->has('another.service'));
+    $this->container->set('another.service', $mock_service);
+    $this->assertTrue($this->container->has('another.service'));
   }
 
   /**

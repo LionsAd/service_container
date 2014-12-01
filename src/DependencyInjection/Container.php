@@ -8,6 +8,7 @@ namespace Drupal\service_container\DependencyInjection;
 
 use ReflectionClass;
 use RuntimeException;
+use Symfony\Component\DependencyInjection\ScopeInterface;
 
 /**
  * Container is a DI container that provides services to users of the class.
@@ -44,10 +45,20 @@ class Container implements ContainerInterface {
    */
   protected $loading = array();
 
-  public function __construct(array $container_definition) {
+  /**
+   * Constructs a new Container instance.
+   *
+   * @param array $container_definition
+   *   An array containing the 'services' and 'parameters'
+   * @param bool $frozen
+   *   (optional) Determines whether the container parameters can be changed,
+   *   defaults to TRUE;
+   */
+  public function __construct(array $container_definition, $frozen = TRUE) {
     $this->parameters = $container_definition['parameters'];
     $this->serviceDefinitions = $container_definition['services'];
     $this->services['service_container'] = $this;
+    $this->frozen = $frozen;
   }
 
   /**
@@ -118,6 +129,9 @@ class Container implements ContainerInterface {
    * {@inheritdoc}
    */
   public function setParameter($name, $value) {
+    if ($this->frozen) {
+      throw new \BadMethodCallException("Container parameters can't be changed on runtime.");
+    }
     $this->parameters[$name] = $value;
   }
 
