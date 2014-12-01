@@ -21,10 +21,19 @@ class LinkGeneratorTest extends \DrupalWebTestCase {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  protected function setUp() {
+    parent::setUp(array('service_container'));
+
+    \ServiceContainer::init();
+  }
+
+  /**
    * Adds some really basic integration test.
    */
   public function testL() {
-    $result = l('Title', 'test-path');
+    $result = \Drupal::service('link_generator')->l('Title', 'test-path');
     $url = url('test-path');
     $this->assertEqual("<a href=\"$url\">Title</a>", $result);
   }

@@ -21,10 +21,19 @@ class UrlGeneratorTest extends \DrupalWebTestCase {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  protected function setUp() {
+    parent::setUp(array('service_container'));
+
+    \ServiceContainer::init();
+  }
+
+  /**
    * Adds some really basic integration test.
    */
   public function testUrl() {
-    $result = url('test-path');
+    $result = \Drupal::service('url_generator')->url('test-path');
     $this->assertEqual(base_path() . 'test-path', $result);
   }
 
