@@ -62,6 +62,14 @@ $plugin = array(
 
 So you can use normal container parameter syntax.
 
+### Provides services:
+
+* module handler
+* service container
+* database
+* key value store
+* TODO
+
 ### Testing
 
 - service\_container is tested via PHPUnit for code correctness.
