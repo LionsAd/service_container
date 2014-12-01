@@ -11,6 +11,8 @@ use Drupal\Core\KeyValueStore\KeyValueExpirableFactoryInterface;
 
 /**
  * Defines the key/value store factory.
+ *
+ * @codeCoverageIgnore
  */
 class KeyValueExpirableFactory extends KeyValueFactory implements KeyValueExpirableFactoryInterface {
 

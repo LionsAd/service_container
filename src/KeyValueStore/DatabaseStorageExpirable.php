@@ -9,6 +9,8 @@ namespace Drupal\service_container\KeyValueStore;
 
 /**
  * Overrides the KV store from Drupal to call MergeQuery::key instead of ::keys.
+ *
+ * @codeCoverageIgnore
  */
 class DatabaseStorageExpirable extends \Drupal\Core\KeyValueStore\DatabaseStorageExpirable {
 

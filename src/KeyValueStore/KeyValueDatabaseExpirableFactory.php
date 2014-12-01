@@ -7,6 +7,9 @@
 
 namespace Drupal\service_container\KeyValueStore;
 
+/**
+ * @codeCoverageIgnore
+ */
 class KeyValueDatabaseExpirableFactory extends \Drupal\Core\KeyValueStore\KeyValueDatabaseExpirableFactory {
 
   /**
