@@ -8,17 +8,14 @@ namespace Drupal\service_container\DependencyInjection;
 
 use Drupal\Component\Plugin\Discovery\DiscoveryInterface;
 
+use Symfony\Component\DependencyInjection\ContainerInterface as BaseContainerInterface;
+
 /**
  * Simple DI Container Interface used to get services and discover definitions.
  *
  * @ingroup dic
  */
-interface ContainerInterface extends DiscoveryInterface {
-
-  // Taken from \Symfony\Compomnent\DependencyInjection/ContainerInterface
-  const EXCEPTION_ON_INVALID_REFERENCE = 1;
-  const NULL_ON_INVALID_REFERENCE = 2;
-  const IGNORE_ON_INVALID_REFERENCE = 3;
+interface ContainerInterface extends DiscoveryInterface, BaseContainerInterface {
 
   /**
    * Returns a service from the container.

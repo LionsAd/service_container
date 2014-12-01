@@ -62,6 +62,20 @@ class Container implements ContainerInterface {
   /**
    * {@inheritdoc}
    */
+  public function set($id, $service, $scope = self::SCOPE_CONTAINER) {
+    $this->services[$id] = $service;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function has($id) {
+    return isset($this->services[$id]) || $this->hasDefinition($id);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getDefinition($plugin_id, $exception_on_invalid = TRUE) {
     $definition = isset($this->serviceDefinitions[$plugin_id]) ? $this->serviceDefinitions[$plugin_id] : NULL;
 
@@ -99,6 +113,14 @@ class Container implements ContainerInterface {
   public function hasParameter($name) {
     return isset($this->parameters[$name]);
   }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setParameter($name, $value) {
+    $this->parameters[$name] = $value;
+  }
+
 
   /**
    * Gets and instantiates a service from the Container.
@@ -230,4 +252,50 @@ class Container implements ContainerInterface {
 
     return $arguments;
   }
+
+  /**
+   * {@inheritdoc}
+   *
+   * @codeCoverageIgnore
+   */
+  public function enterScope($name) {
+    throw new \BadMethodCallException(sprintf("'%s' is not implemented", __FUNCTION__));
+  }
+
+  /**
+   * {@inheritdoc}
+   *
+   * @codeCoverageIgnore
+   */
+  public function leaveScope($name) {
+    throw new \BadMethodCallException(sprintf("'%s' is not implemented", __FUNCTION__));
+  }
+
+  /**
+   * {@inheritdoc}
+   *
+   * @codeCoverageIgnore
+   */
+  public function addScope(ScopeInterface $scope) {
+    throw new \BadMethodCallException(sprintf("'%s' is not implemented", __FUNCTION__));
+  }
+
+  /**
+   * {@inheritdoc}
+   *
+   * @codeCoverageIgnore
+   */
+  public function hasScope($name) {
+    throw new \BadMethodCallException(sprintf("'%s' is not implemented", __FUNCTION__));
+  }
+
+  /**
+   * {@inheritdoc}
+   *
+   * @codeCoverageIgnore
+   */
+  public function isScopeActive($name) {
+    throw new \BadMethodCallException(sprintf("'%s' is not implemented", __FUNCTION__));
+  }
+
 }

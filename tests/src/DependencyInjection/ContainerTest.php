@@ -11,13 +11,19 @@ use Drupal\service_container\DependencyInjection\Container;
 use Drupal\service_container\DependencyInjection\ContainerInterface;
 
 use Mockery;
-use Mockery\MockInterface;
 
 /**
  * @coversDefaultClass \Drupal\service_container\DependencyInjection\Container
  * @group dic
  */
 class ContainerTest extends \PHPUnit_Framework_TestCase {
+
+  /**
+   * The tested container.
+   *
+   * @var \Drupal\service_container\DependencyInjection\Container
+   */
+  protected $container;
 
   public function setUp() {
     $this->containerDefinition = $this->getMockContainerDefinition();
@@ -80,6 +86,15 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
   }
 
   /**
+   * Tests that Container::setParameter() works properly.
+   * @covers ::setParameter()
+   */
+  public function test_setParameter() {
+    $this->container->setParameter('some_config', 'new_value');
+    $this->assertEquals('new_value', $this->container->getParameter('some_config'), 'Container parameters can be set.');
+  }
+
+  /**
    * Tests that Container::get() works properly.
    * @covers ::get()
    * @covers ::getService()
@@ -102,6 +117,38 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
     $this->assertEquals($some_parameter, $service->getSomeParameter(), '%some_config% was injected via constructor.');
     $this->assertEquals($this->container, $service->getContainer(), 'Container was injected via setter injection.');
     $this->assertEquals($some_other_parameter, $service->getSomeOtherParameter(), '%some_other_config% was injected via setter injection.');
+  }
+
+  /**
+   * Tests that Container::set() works properly.
+   *
+   * @covers ::set()
+   */
+  public function test_set() {
+    $container = $this->container->get('service_container');
+
+    $this->assertFalse($container->get('new_id', ContainerInterface::NULL_ON_INVALID_REFERENCE));
+    $mock_service = new MockService();
+    $container->set('new_id', $mock_service);
+
+    $this->assertSame($mock_service, $container->get('new_id'), 'A manual set service works as expected.');
+  }
+
+  /**
+   * Tests that Container::has() works properly.
+   *
+   * @covers ::set()
+   */
+  public function test_has() {
+    $container = $this->container->get('service_container');
+
+    $this->assertTrue($container->has('other.service'));
+    $this->assertFalse($container->has('another.service'));
+
+    // Set the service manually, ensure that its also respected.
+    $mock_service = new MockService();
+    $container->set('another.service', $mock_service);
+    $this->assertTrue($container->has('another.service'));
   }
 
   /**
