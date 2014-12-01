@@ -125,6 +125,7 @@ class CachedContainerBuilder extends ContainerBuilder {
    * Note: This is just thought for tests.
    */
   public function reset() {
+    $this->cachedDefinition = NULL;
     $this->cache->clear($this->getCacheId());
   }
 
