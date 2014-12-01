@@ -69,7 +69,7 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
       'arguments' => array('@service_container', '%factory.keyvalue.expirable%')
     );
     $services['keyvalue.expirable.database'] = array(
-      'class' => 'Drupal\Core\KeyValueStore\KeyValueDatabaseExpirableFactory',
+      'class' => 'Drupal\service_container\KeyValueStore\KeyValueDatabaseExpirableFactory',
       'arguments' => array('@serialization.phpserialize', '@database'),
       'tags' => array(
         array('name' => 'needs_destruction'),

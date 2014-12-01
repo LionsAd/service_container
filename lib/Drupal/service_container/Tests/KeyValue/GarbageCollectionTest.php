@@ -41,7 +41,7 @@ class GarbageCollectionTest extends \DrupalWebTestCase {
    */
   public function testGarbageCollection() {
     $collection = $this->randomName();
-    $store = new DatabaseStorageExpirable($collection, new PhpSerialize(), Database::getConnection());
+    $store = $this->container->get('keyvalue.expirable.database')->get($collection);
 
     // Insert some items and confirm that they're set.
     for ($i = 0; $i <= 3; $i++) {
