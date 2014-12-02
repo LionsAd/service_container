@@ -43,7 +43,7 @@ class LoggerChannel implements LoggerChannelInterface {
    * {@inheritdoc}
    */
   public function log($level, $message, array $context = array()) {
-    $context += array(
+    $context = $context + array(
       'channel' => $this->channel,
     );
     foreach ($this->sortLoggers() as $logger) {
