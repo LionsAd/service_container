@@ -96,6 +96,14 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
       ),
     );
 
+    $services['url_generator'] = array(
+      'class' => 'Drupal\service_container\UrlGenerator',
+    );
+
+    $services['link_generator'] = array(
+      'class' => 'Drupal\service_container\LinkGenerator',
+    );
+
     // @todo Make it  possible to register all ctools plugins here.
 
     return array(
