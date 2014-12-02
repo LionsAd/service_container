@@ -18,16 +18,6 @@ use Psr\Log\LogLevel;
 class WatchdogLogger implements LoggerInterface {
 
   /**
-   * Constructs a new WatchdogLogger.
-   *
-   * @param string $type
-   *   The watchdog category.
-   */
-  public function __construct($type) {
-    $this->type = $type;
-  }
-
-  /**
    * {@inheritdoc}
    */
   public function emergency($message, array $context = array()) {
