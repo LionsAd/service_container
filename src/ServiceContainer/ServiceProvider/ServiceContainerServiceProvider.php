@@ -112,7 +112,6 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
     // Logging integration.
     $services['logger.factory'] = array(
       'class' => 'Drupal\service_container\Logger\LoggerChannelFactory',
-      'parent' => 'container.trait',
       'calls' => array(
         array('addLogger', array('@logger.dblog')),
       ),
