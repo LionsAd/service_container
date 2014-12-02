@@ -7,6 +7,8 @@
 
 namespace Drupal\service_container\Tests;
 
+use Drupal\Core\Database\Connection;
+
 class LoggerIntegrationTest extends \DrupalWebTestCase {
 
   /**
@@ -36,10 +38,25 @@ class LoggerIntegrationTest extends \DrupalWebTestCase {
 
     /** @var \Drupal\Core\Database\Connection $connection */
     $connection = $this->container->get('database');
+
+    // Use both the factory and the logger channel directly.
     $connection->truncate('watchdog')->execute();
+    $logger_factory->get('system')->info('Hello world @key', array('@key' => 'value'));
+    $this->doTestEntry($connection);
 
-    $logger_factory->get('content')->info('Hello world @key', array('@key' => 'value'));
+    $connection->truncate('watchdog')->execute();
+    $logger_channel = $this->container->get('logger.channel.default');
+    $logger_channel->info('Hello world @key', array('@key' => 'value'));
+    $this->doTestEntry($connection);
+  }
 
+  /**
+   * Checks whether the expected logging entry got written.
+   *
+   * @param \Drupal\Core\Database\Connection $connection
+   *   The database collection.
+   */
+  protected function doTestEntry(Connection $connection) {
     $result = $connection->select('watchdog')
       ->fields('watchdog')
       ->execute()
@@ -47,7 +64,7 @@ class LoggerIntegrationTest extends \DrupalWebTestCase {
 
     $this->assertEqual(1, count($result));
     $this->assertEqual(WATCHDOG_INFO, $result[0]->severity);
-    $this->assertEqual('content', $result[0]->type);
+    $this->assertEqual('system', $result[0]->type);
     $this->assertEqual('Hello world @key', $result[0]->message);
     $this->assertEqual(array('@key' => 'value'), unserialize($result[0]->variables));
   }
