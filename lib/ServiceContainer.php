@@ -27,7 +27,7 @@ class ServiceContainer extends Drupal {
       return TRUE;
     }
 
-    $container_builder = self::getContainerBuilder();
+    $container_builder = static::getContainerBuilder();
 
     if ($container_builder->isCached()) {
       static::$container = $container_builder->compile();
