@@ -32,6 +32,14 @@ class LoggerChannelTest extends \PHPUnit_Framework_TestCase {
   }
 
   /**
+   * @covers ::__construct()
+   */
+  public function test_construct() {
+    $this->assertInstanceOf('\Drupal\service_container\Logger\LoggerChannel', $this->loggerChannel);
+    $this->assertAttributeEquals('test', 'channel', $this->loggerChannel);
+  }
+
+  /**
    * @covers ::log()
    * @covers ::addLogger()
    *
