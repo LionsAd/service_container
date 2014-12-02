@@ -148,7 +148,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
   /**
    * Tests that Container::has() works properly.
    *
-   * @covers ::set()
+   * @covers ::has()
    */
   public function test_has() {
     $this->assertTrue($this->container->has('other.service'));
