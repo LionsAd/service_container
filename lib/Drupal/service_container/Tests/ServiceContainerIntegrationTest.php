@@ -7,7 +7,7 @@
 
 namespace Drupal\service_container\Tests;
 
-class ServiceContainerIntegrationTest extends \DrupalWebTestCase {
+class ServiceContainerIntegrationTest extends ServiceContainerIntegrationTestBase {
 
   /**
    * {@inheritdoc}
@@ -21,18 +21,9 @@ class ServiceContainerIntegrationTest extends \DrupalWebTestCase {
   }
 
   /**
-   * {@inheritdoc}
-   */
-  protected function setUp() {
-    parent::setUp(array('service_container'));
-  }
-
-  /**
    * Tests some basic
    */
   public function testInit() {
-    \ServiceContainer::init();
-
     $this->assertTrue(\Drupal::hasService('service_container'));
     $this->assertTrue(\Drupal::hasService('module_handler'));
     $this->assertTrue(\Drupal::hasService('module_installer'));
