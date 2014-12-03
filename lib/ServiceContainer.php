@@ -27,11 +27,7 @@ class ServiceContainer extends Drupal {
       return TRUE;
     }
 
-    $service_provider_manager = new ServiceProviderPluginManager();
-    // This is an internal API, but we need the cache object.
-    $cache = _cache_get_object('cache');
-
-    $container_builder = new CachedContainerBuilder($service_provider_manager, $cache);
+    $container_builder = static::getContainerBuilder();
 
     if ($container_builder->isCached()) {
       static::$container = $container_builder->compile();
@@ -69,5 +65,27 @@ class ServiceContainer extends Drupal {
         call_user_func_array($function, $arguments);
       }
     }
+  }
+
+  /**
+   * Reset the internal cache.
+   *
+   * Note: This is just thought for tests.
+   */
+  public static function reset() {
+    static::getContainerBuilder()->reset();
+    static::$container = NULL;
+  }
+
+  /**
+   * @return \Drupal\service_container\DependencyInjection\CachedContainerBuilder
+   */
+  protected static function getContainerBuilder() {
+    $service_provider_manager = new ServiceProviderPluginManager();
+    // This is an internal API, but we need the cache object.
+    $cache = _cache_get_object('cache');
+
+    $container_builder = new CachedContainerBuilder($service_provider_manager, $cache);
+    return $container_builder;
   }
 }

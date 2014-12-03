@@ -21,7 +21,7 @@ use Mockery;
 class CachedContainerBuilderTest extends \PHPUnit_Framework_TestCase {
  
   /**
-   * @var \DrupalCacheInterface
+   * @var \DrupalCacheInterface|\Mockery\MockInterface
    */
   protected $cache;
 
@@ -34,8 +34,6 @@ class CachedContainerBuilderTest extends \PHPUnit_Framework_TestCase {
    * {@inheritdoc}
    */
   public function setUp() {
-    $fake_definition = $this->getFakeContainerDefinition();
-
     // Setup the serviceProviderManager that returns no services.
     $service_provider_manager = Mockery::mock('\Drupal\Component\Plugin\PluginManagerInterface', array(
       'getDefinitions' => array(),
@@ -47,19 +45,6 @@ class CachedContainerBuilderTest extends \PHPUnit_Framework_TestCase {
 
     $this->serviceProviderManager = $service_provider_manager;
 
-    // Setup the 'cache' bin.
-    $cache = Mockery::mock('\DrupalCacheInterface');
-    $cache->shouldReceive('get')
-      ->with('service_container:container_definition')
-      ->once()
-      ->andReturn((object) array('data' => $fake_definition));
-    $cache->shouldReceive('get')
-      ->with('service_container:miss_container_definition')
-      ->once()
-      ->andReturn(FALSE, TRUE);
-    $cache->shouldReceive('set');
-
-    $this->cache  = $cache;
   }
 
   /**
@@ -121,10 +106,39 @@ class CachedContainerBuilderTest extends \PHPUnit_Framework_TestCase {
     $this->assertTrue($uncached_container_builder->isCached(), 'CachedContainerBuilder is now cached.');
   }
 
-  protected function getCachedContainerBuilderMock($cid) {
+  /**
+   * @covers ::reset()
+   */
+  public function test_reset() {
+    $cache = Mockery::mock('\DrupalCacheInterface');
+    $cache->shouldReceive('get')
+      ->with('service_container:container_definition')
+      ->twice()
+      ->andReturn((object) array('data' => $this->getFakeContainerDefinition()));
+
+    $cache->shouldReceive('clear')
+      ->with('service_container:container_definition')
+      ->once();
+
+    $cached_container_builder = $this->getCachedContainerBuilderMock('service_container:container_definition', $cache);
+    $cached_container_builder->getContainerDefinition();
+    $cached_container_builder->getContainerDefinition();
+
+    $cached_container_builder->reset();
+    $cached_container_builder->getContainerDefinition();
+  }
+
+  protected function getCachedContainerBuilderMock($cid, $cache = NULL) {
     $fake_definition = $this->getFakeContainerDefinition();
 
-    $container_builder = Mockery::mock('\Drupal\service_container\DependencyInjection\CachedContainerBuilder[getCacheId,moduleAlter]', array($this->serviceProviderManager, $this->cache));
+    if (!isset($cache)) {
+      if (!isset($this->cache)) {
+        $this->cache = $this->setupCache($fake_definition);
+      }
+      $cache = $this->cache;
+    }
+
+    $container_builder = Mockery::mock('\Drupal\service_container\DependencyInjection\CachedContainerBuilder[getCacheId,moduleAlter]', array($this->serviceProviderManager, $cache));
     $container_builder->shouldAllowMockingProtectedMethods();
 
     $container_builder->shouldReceive('getCacheId')
@@ -176,5 +190,20 @@ class CachedContainerBuilderTest extends \PHPUnit_Framework_TestCase {
       'parameters' => $parameters,
       'services' => $services,
     );
+  }
+
+  protected function setupCache($fake_definition) {
+    // Setup the 'cache' bin.
+    $cache = Mockery::mock('\DrupalCacheInterface');
+    $cache->shouldReceive('get')
+      ->with('service_container:container_definition')
+      ->once()
+      ->andReturn((object) array('data' => $fake_definition));
+    $cache->shouldReceive('get')
+      ->with('service_container:miss_container_definition')
+      ->once()
+      ->andReturn(FALSE, TRUE);
+    $cache->shouldReceive('set');
+    return $cache;
   }
 }

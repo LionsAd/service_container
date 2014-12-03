@@ -8,9 +8,9 @@
 namespace Drupal\Core\KeyValueStore;
 
 use Drupal\Component\Serialization\SerializationInterface;
+use Drupal\Core\Database\Query\Merge;
 use Drupal\Core\DestructableInterface;
 use Drupal\Core\Database\Connection;
-use Drupal\Core\Database\Query\Merge;
 
 /**
  * Defines a default key/value store implementation for expiring items.

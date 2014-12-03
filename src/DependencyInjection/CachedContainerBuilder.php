@@ -118,4 +118,15 @@ class CachedContainerBuilder extends ContainerBuilder {
     $this->cache->set($this->getCacheId(), $definition);
     $this->cachedDefinition = $definition;
   }
+
+  /**
+   * Reset the internal cache.
+   *
+   * Note: This is just thought for tests.
+   */
+  public function reset() {
+    $this->cachedDefinition = NULL;
+    $this->cache->clear($this->getCacheId());
+  }
+
 }

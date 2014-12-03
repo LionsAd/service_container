@@ -62,6 +62,17 @@ $plugin = array(
 
 So you can use normal container parameter syntax.
 
+### Provides the following services:
+
+* module handler ('module_handler') and module installer ('module_installer')
+* service container ('service_container')
+* database ('database')
+* key value store ('keyvalue', 'keyvalue.database')
+* a wrapper for variable_get()  / variable_set() ('variable')
+* A lock ('lock')
+* A wrapper for url() / l() ('url_generator', 'link_generator')
+* TODO
+
 ### Testing
 
 - service\_container is tested via PHPUnit for code correctness.
