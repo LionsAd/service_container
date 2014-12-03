@@ -160,9 +160,14 @@ class Container implements ContainerInterface {
       else {
         // @todo Allow dynamic class definitions via parameters.
         $class = $definition['class'];
-        $r = new ReflectionClass($class);
+        if (version_compare(phpversion(), '5.6.0', '>=')) {
+          $service = new $class(...$arguments);
+        }
+        else {
+          $r = new ReflectionClass($class);
 
-        $service = ($r->getConstructor() === NULL) ? $r->newInstance() : $r->newInstanceArgs($arguments);
+          $service = ($r->getConstructor() === NULL) ? $r->newInstance() : $r->newInstanceArgs($arguments);
+        }
       }
     }
     catch (\Exception $e) {
