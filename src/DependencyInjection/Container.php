@@ -157,7 +157,7 @@ class Container implements ContainerInterface {
    *   The fully instantiated service object or FALSE if not found.
    */
   protected function getService($name, $invalidBehavior = ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE) {
-    if (isset($this->services[$name])) {
+    if (isset($this->services[$name]) || ($invalidBehavior === ContainerInterface::NULL_ON_INVALID_REFERENCE && array_key_exists($name, $this->services))) {
       return $this->services[$name];
     }
 

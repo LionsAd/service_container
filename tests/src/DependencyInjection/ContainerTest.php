@@ -25,6 +25,13 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
    */
   protected $container;
 
+  /**
+   * The container definition used for the test.
+   *
+   * @var []
+   */
+  protected $containerDefinition;
+
   public function setUp() {
     $this->containerDefinition = $this->getMockContainerDefinition();
     $this->container = new Container($this->containerDefinition);
@@ -192,6 +199,24 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
   }
 
   /**
+   * Tests Container::get() with an exception due to missing parameter on the second call.
+   *
+   * @covers ::get()
+   * @covers ::getService()
+   * @covers ::expandArguments()
+   *
+   * @expectedException \RuntimeException
+   */
+  public function test_get_notFound_parameterWithExceptionOnSecondCall() {
+    $service = $this->container->get('service_parameter_not_exists', ContainerInterface::NULL_ON_INVALID_REFERENCE);
+    $this->assertNull($service->getSomeParameter(), 'Some parameter is NULL.');
+
+    // Reset the service.
+    $this->container->set('service_parameter_not_exists', NULL);
+    $this->container->get('service_parameter_not_exists');
+  }
+
+  /**
    * Tests that Container::get() for non-existant parameters works properly.
    * @expectedException \RuntimeException
    * @covers ::get()
@@ -232,6 +257,36 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
    */
   public function test_get_notFound() {
     $this->assertNull($this->container->get('service_not_exists', ContainerInterface::NULL_ON_INVALID_REFERENCE), 'Not found service does not throw exception.');
+  }
+
+  /**
+   * Tests multiple Container::get() calls for non-existing dependencies work.
+   *
+   * @covers ::get()
+   * @covers ::getService()
+   */
+  public function test_get_notFoundMultiple() {
+    $container = \Mockery::mock('Drupal\service_container\DependencyInjection\Container[getDefinition]', array($this->containerDefinition));
+    $container->shouldReceive('getDefinition')
+      ->once()
+      ->with('service_not_exists', FALSE)
+      ->andReturn(NULL);
+
+    $this->assertNull($container->get('service_not_exists', ContainerInterface::NULL_ON_INVALID_REFERENCE, 'Not found service does not throw exception.'));
+    $this->assertNull($container->get('service_not_exists', ContainerInterface::NULL_ON_INVALID_REFERENCE, 'Not found service does not throw exception on second call.'));
+  }
+
+  /**
+   * Tests multiple Container::get() calls with exception on the second time.
+   *
+   * @covers ::get()
+   * @covers ::getService()
+   *
+   * @expectedException \RuntimeException
+   */
+  public function test_get_notFoundMulitpleWithExceptionOnSecondCall() {
+    $this->assertNull($this->container->get('service_not_exists', ContainerInterface::NULL_ON_INVALID_REFERENCE, 'Not found service does nto throw exception.'));
+    $this->container->get('service_not_exists');
   }
 
   /**
