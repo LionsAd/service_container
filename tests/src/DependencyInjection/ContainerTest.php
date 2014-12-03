@@ -138,7 +138,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
    * @covers ::set()
    */
   public function test_set() {
-    $this->assertFalse($this->container->get('new_id', ContainerInterface::NULL_ON_INVALID_REFERENCE));
+    $this->assertNull($this->container->get('new_id', ContainerInterface::NULL_ON_INVALID_REFERENCE));
     $mock_service = new MockService();
     $this->container->set('new_id', $mock_service);
 
@@ -188,7 +188,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
    */
   public function test_get_notFound_parameter() {
     $service = $this->container->get('service_parameter_not_exists', ContainerInterface::NULL_ON_INVALID_REFERENCE);
-    $this->assertFalse($service->getSomeParameter(), 'Some parameter is FALSE.');
+    $this->assertNull($service->getSomeParameter(), 'Some parameter is NULL.');
   }
 
   /**
@@ -203,14 +203,14 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
   }
 
   /**
-   * Tests that Container::get() for non-existant dependencies works properly.
+   * Tests that Container::get() for non-existent dependencies works properly.
    * @covers ::get()
    * @covers ::getService()
    * @covers ::expandArguments()
    */
   public function test_get_notFound_dependency() {
     $service = $this->container->get('service_dependency_not_exists', ContainerInterface::NULL_ON_INVALID_REFERENCE);
-    $this->assertFalse($service->getSomeOtherService(), 'Some other service is FALSE.');
+    $this->assertNull($service->getSomeOtherService(), 'Some other service is NULL.');
   }
 
   /**
@@ -231,8 +231,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
    * @covers ::getService()
    */
   public function test_get_notFound() {
-    // @todo This should be assertNull, but internally implemented as FALSE for not found.
-    $this->assertFalse($this->container->get('service_not_exists', ContainerInterface::NULL_ON_INVALID_REFERENCE), 'Not found service does not throw exception.');
+    $this->assertNull($this->container->get('service_not_exists', ContainerInterface::NULL_ON_INVALID_REFERENCE), 'Not found service does not throw exception.');
   }
 
   /**

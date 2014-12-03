@@ -168,8 +168,7 @@ class Container implements ContainerInterface {
     $definition = $this->getDefinition($name, $invalidBehavior === ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE);
 
     if (!$definition) {
-      $this->services[$name] = FALSE;
-      return FALSE;
+      return $this->services[$name] = NULL;
     }
 
     $this->loading[$name] = TRUE;
@@ -241,7 +240,7 @@ class Container implements ContainerInterface {
    * @return array
    *   The expanded arguments.
    *
-   * @throws Exception if a parameter/service could not be resolved.
+   * @throws \RuntimeException if a parameter/service could not be resolved.
    */
   protected function expandArguments($arguments, $invalidBehavior = ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE) {
     foreach ($arguments as $key => $argument) {
@@ -255,7 +254,7 @@ class Container implements ContainerInterface {
           if ($invalidBehavior === ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE) {
             throw new RuntimeException("Could not find parameter: $name");
           }
-	  $arguments[$key] = FALSE;
+          $arguments[$key] = NULL;
           continue;
         }
         $arguments[$key] = $this->parameters[$name];
@@ -266,7 +265,7 @@ class Container implements ContainerInterface {
           if ($invalidBehavior === ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE) {
             throw new RuntimeException("Could not find service: $name");
           }
-	  $arguments[$key] = FALSE;
+          $arguments[$key] = NULL;
           continue;
         }
         $arguments[$key] = $this->getService($name, $invalidBehavior);
