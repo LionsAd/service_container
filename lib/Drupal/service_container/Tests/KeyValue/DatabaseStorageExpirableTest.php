@@ -39,7 +39,8 @@ class DatabaseStorageExpirableTest extends StorageTestBase {
     $parameters = array();
     $parameters['factory.keyvalue.expirable'][KeyValueExpirableFactory::DEFAULT_SETTING] = 'keyvalue.expirable.database';
 
-    variable_set('service_container_test_parameters', $parameters);
+    $definition['parameters'] = $parameters;
+    variable_set('service_container_test_definition', $definition);
 
     \ServiceContainer::init();
   }

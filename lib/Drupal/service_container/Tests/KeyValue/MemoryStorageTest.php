@@ -40,8 +40,10 @@ class MemoryStorageTest extends StorageTestBase {
     $parameters = array();
     $parameters['factory.keyvalue'][KeyValueFactory::DEFAULT_SETTING] = 'keyvalue.memory';
 
-    variable_set('service_container_test_services', $services);
-    variable_set('service_container_test_parameters', $parameters);
+    $definition['services'] = $services;
+    $definition['parameters'] = $parameters;
+
+    variable_set('service_container_test_definition', $definition);
 
     \ServiceContainer::init();
   }

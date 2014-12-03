@@ -20,17 +20,14 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
    * {@inheritdoc}
    */
   public function getContainerDefinition() {
-    return variable_get('service_container_test_services', array());
+    return variable_get('service_container_test_definition', array());
   }
 
   /**
    * {@inheritdoc}
    */
   public function alterContainerDefinition(&$container_definition) {
-    $container_definition = NestedArray::mergeDeep($container_definition, variable_get('service_container_test_parameters', array()));
     return;
-    $parameter[KeyValueExpirableFactory::DEFAULT_SETTING] = 'keyvalue.expirable.database';
-    $container_definition['parameters']['factory.keyvalue.expirable'] = $parameter;
   }
 
 }
