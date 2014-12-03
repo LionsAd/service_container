@@ -1,7 +1,7 @@
 name = "Service container test"
 core = 7.x
 
-dependencies[] = "service_container"
+dependencies[] = service_container
 dependencies[] = registry_autoload
 
 registry_autoload[] = PSR-0
