@@ -17,6 +17,13 @@ abstract class ServiceContainerIntegrationTestBase extends \DrupalWebTestCase {
   protected $profile = 'testing';
 
   /**
+   * The dependency injection container usable in the test.
+   *
+   * @var \Drupal\service_container\DependencyInjection\ContainerInterface
+   */
+  protected $container;
+
+  /**
    * {@inheritdoc}
    */
   protected function setUp() {
