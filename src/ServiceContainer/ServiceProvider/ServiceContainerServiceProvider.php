@@ -76,6 +76,11 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
       ),
     );
 
+    $services['state'] = array(
+      'class' => 'Drupal\Core\State\State',
+      'arguments' => array('@keyvalue'),
+    );
+
     $services['variable'] = array(
       'class' => 'Drupal\service_container\Variable',
     );
