@@ -65,7 +65,7 @@ class Account implements AccountInterface {
    * {@inheritdoc}
    */
   public function getSessionId() {
-     $sid = session_id();
+    $sid = session_id();
     return $sid;
   }
 
