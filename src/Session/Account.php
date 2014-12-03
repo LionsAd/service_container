@@ -65,14 +65,14 @@ class Account implements AccountInterface {
    * {@inheritdoc}
    */
   public function getSessionId() {
-    throw new \Exception(sprintf('%s is not implemented', __FUNCTION__));
+    throw new \BadMethodCallException(sprintf('%s is not implemented', __FUNCTION__));
   }
 
   /**
    * {@inheritdoc}
    */
   public function getSecureSessionId() {
-    throw new \Exception(sprintf('%s is not implemented', __FUNCTION__));
+    throw new \BadMethodCallException(sprintf('%s is not implemented', __FUNCTION__));
   }
 
   /**
@@ -100,14 +100,14 @@ class Account implements AccountInterface {
    * {@inheritdoc}
    */
   public function getPreferredLangcode($fallback_to_default = TRUE) {
-    throw new \Exception(sprintf('%s is not implemented', __FUNCTION__));
+    throw new \BadMethodCallException(sprintf('%s is not implemented', __FUNCTION__));
   }
 
   /**
    * {@inheritdoc}
    */
   public function getPreferredAdminLangcode($fallback_to_default = TRUE) {
-    throw new \Exception(sprintf('%s is not implemented', __FUNCTION__));
+    throw new \BadMethodCallException(sprintf('%s is not implemented', __FUNCTION__));
   }
 
   /**
