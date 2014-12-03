@@ -7,7 +7,7 @@
 
 namespace Drupal\service_container\Tests;
 
-class LinkGeneratorTest extends \DrupalWebTestCase {
+class LinkGeneratorTest extends ServiceContainerIntegrationTestBase {
 
   /**
    * {@inheritdoc}
@@ -18,15 +18,6 @@ class LinkGeneratorTest extends \DrupalWebTestCase {
       'description' => '',
       'group' => 'service_container',
     );
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function setUp() {
-    parent::setUp(array('service_container'));
-
-    \ServiceContainer::init();
   }
 
   /**

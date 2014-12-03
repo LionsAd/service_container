@@ -7,10 +7,12 @@
 
 namespace Drupal\service_container\Tests\KeyValue;
 
+use Drupal\service_container\Tests\ServiceContainerIntegrationTestBase;
+
 /**
  * Base class for testing key-value storages.
  */
-class StorageTestBase extends \DrupalWebTestCase {
+class StorageTestBase extends ServiceContainerIntegrationTestBase {
 
   /**
    * The profile to install as a basis for testing.
@@ -42,7 +44,7 @@ class StorageTestBase extends \DrupalWebTestCase {
 
   protected function setUp() {
     $args = func_get_args();
-    parent::setUp(array_merge(array('service_container'), $args));
+    parent::setUp($args);
 
     // Define two data collections,
     $this->collections = array(0 => 'zero', 1 => 'one');
@@ -54,9 +56,6 @@ class StorageTestBase extends \DrupalWebTestCase {
         'key2' => $this->randomString(),
       );
     }
-
-    \ServiceContainer::init();
-    $this->container = \Drupal::getContainer();
   }
 
   protected function cleanUp() {

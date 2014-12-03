@@ -10,14 +10,7 @@ namespace Drupal\service_container\Tests;
 /**
  * Tests the module_handler implementation of the service_container.
  */
-class ModuleHandlerTest extends \DrupalWebTestCase {
-
-  /**
-   * The profile to install as a basis for testing.
-   *
-   * @var string
-   */
-  protected $profile = 'testing';
+class ModuleHandlerTest extends ServiceContainerIntegrationTestBase {
 
   /**
    * {@inheritdoc}
@@ -28,13 +21,6 @@ class ModuleHandlerTest extends \DrupalWebTestCase {
       'description' => 'Tests the module handler.',
       'group' => 'service_container',
     );
-  }
-
-  protected function setUp() {
-    parent::setUp(array('service_container'));
-
-    \ServiceContainer::init();
-    $this->container = \Drupal::getContainer();
   }
 
   /**

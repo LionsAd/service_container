@@ -109,6 +109,11 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
       'class' => 'Drupal\service_container\LinkGenerator',
     );
 
+    $services['current_user'] = array(
+      'class' => 'Drupal\service_container\Session\Account',
+      'arguments' => array('@variable'),
+    );
+
     // Logging integration.
     $services['logger.factory'] = array(
       'class' => 'Drupal\service_container\Logger\LoggerChannelFactory',

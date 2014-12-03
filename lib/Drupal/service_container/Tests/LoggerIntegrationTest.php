@@ -9,7 +9,7 @@ namespace Drupal\service_container\Tests;
 
 use Drupal\Core\Database\Connection;
 
-class LoggerIntegrationTest extends \DrupalWebTestCase {
+class LoggerIntegrationTest extends ServiceContainerIntegrationTestBase {
 
   /**
    * {@inheritdoc}
@@ -26,10 +26,7 @@ class LoggerIntegrationTest extends \DrupalWebTestCase {
    * {@inheritdoc}
    */
   protected function setUp() {
-    parent::setUp(array('service_container', 'dblog'));
-
-    \ServiceContainer::init();
-    $this->container = \Drupal::getContainer();
+    parent::setUp(array('dblog'));
   }
 
   public function testLog() {

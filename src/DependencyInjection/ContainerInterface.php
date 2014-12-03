@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * Contains \Drupal\service_container\DependencyInjection\ContaineInterface
+ * Contains \Drupal\service_container\DependencyInjection\ContainerInterface.
  */
 
 namespace Drupal\service_container\DependencyInjection;
