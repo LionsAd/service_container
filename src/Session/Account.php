@@ -65,24 +65,14 @@ class Account implements AccountInterface {
    * {@inheritdoc}
    */
   public function getSessionId() {
-    $sid = session_id();
-    return $sid;
+    throw new \Exception(sprintf('%s is not implemented', __FUNCTION__));
   }
 
   /**
    * {@inheritdoc}
    */
   public function getSecureSessionId() {
-    // @todo Verify this!
-    // @see _drupal_session_write()
-    $sid = session_id();
-    if ($this->variable->get('https', FALSE)) {
-      $insecure_session_name = substr(session_name(), 1);
-      if (isset($_COOKIE[$insecure_session_name])) {
-        $sid = $_COOKIE[$insecure_session_name];
-      }
-    }
-    return $sid;
+    throw new \Exception(sprintf('%s is not implemented', __FUNCTION__));
   }
 
   /**
