@@ -8,6 +8,7 @@ namespace Drupal\service_container\DependencyInjection;
 
 use ReflectionClass;
 use RuntimeException;
+use Symfony\Component\DependencyInjection\ScopeInterface;
 
 /**
  * Container is a DI container that provides services to users of the class.
@@ -44,10 +45,29 @@ class Container implements ContainerInterface {
    */
   protected $loading = array();
 
-  public function __construct(array $container_definition) {
+  /**
+   * Can the container parameters still be changed.
+   *
+   * For testing purposes the container needs to be changed.
+   *
+   * @var bool
+   */
+  protected $frozen = TRUE;
+
+  /**
+   * Constructs a new Container instance.
+   *
+   * @param array $container_definition
+   *   An array containing the 'services' and 'parameters'
+   * @param bool $frozen
+   *   (optional) Determines whether the container parameters can be changed,
+   *   defaults to TRUE;
+   */
+  public function __construct(array $container_definition, $frozen = TRUE) {
     $this->parameters = $container_definition['parameters'];
     $this->serviceDefinitions = $container_definition['services'];
     $this->services['service_container'] = $this;
+    $this->frozen = $frozen;
   }
 
   /**
@@ -57,6 +77,20 @@ class Container implements ContainerInterface {
     // This is wrapped in a protected method to allow to mark services private
     // in the future.
     return $this->getService($name, $invalidBehavior);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function set($id, $service, $scope = self::SCOPE_CONTAINER) {
+    $this->services[$id] = $service;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function has($id) {
+    return isset($this->services[$id]) || $this->hasDefinition($id);
   }
 
   /**
@@ -101,6 +135,17 @@ class Container implements ContainerInterface {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function setParameter($name, $value) {
+    if ($this->frozen) {
+      throw new \BadMethodCallException("Container parameters can't be changed on runtime.");
+    }
+    $this->parameters[$name] = $value;
+  }
+
+
+  /**
    * Gets and instantiates a service from the Container.
    *
    * @param string $name
@@ -112,7 +157,7 @@ class Container implements ContainerInterface {
    *   The fully instantiated service object or FALSE if not found.
    */
   protected function getService($name, $invalidBehavior = ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE) {
-    if (isset($this->services[$name])) {
+    if (isset($this->services[$name]) || ($invalidBehavior === ContainerInterface::NULL_ON_INVALID_REFERENCE && array_key_exists($name, $this->services))) {
       return $this->services[$name];
     }
 
@@ -123,8 +168,7 @@ class Container implements ContainerInterface {
     $definition = $this->getDefinition($name, $invalidBehavior === ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE);
 
     if (!$definition) {
-      $this->services[$name] = FALSE;
-      return FALSE;
+      return $this->services[$name] = NULL;
     }
 
     $this->loading[$name] = TRUE;
@@ -196,7 +240,7 @@ class Container implements ContainerInterface {
    * @return array
    *   The expanded arguments.
    *
-   * @throws Exception if a parameter/service could not be resolved.
+   * @throws \RuntimeException if a parameter/service could not be resolved.
    */
   protected function expandArguments($arguments, $invalidBehavior = ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE) {
     foreach ($arguments as $key => $argument) {
@@ -210,7 +254,7 @@ class Container implements ContainerInterface {
           if ($invalidBehavior === ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE) {
             throw new RuntimeException("Could not find parameter: $name");
           }
-	  $arguments[$key] = FALSE;
+          $arguments[$key] = NULL;
           continue;
         }
         $arguments[$key] = $this->parameters[$name];
@@ -221,7 +265,7 @@ class Container implements ContainerInterface {
           if ($invalidBehavior === ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE) {
             throw new RuntimeException("Could not find service: $name");
           }
-	  $arguments[$key] = FALSE;
+          $arguments[$key] = NULL;
           continue;
         }
         $arguments[$key] = $this->getService($name, $invalidBehavior);
@@ -230,4 +274,50 @@ class Container implements ContainerInterface {
 
     return $arguments;
   }
+
+  /**
+   * {@inheritdoc}
+   *
+   * @codeCoverageIgnore
+   */
+  public function enterScope($name) {
+    throw new \BadMethodCallException(sprintf("'%s' is not implemented", __FUNCTION__));
+  }
+
+  /**
+   * {@inheritdoc}
+   *
+   * @codeCoverageIgnore
+   */
+  public function leaveScope($name) {
+    throw new \BadMethodCallException(sprintf("'%s' is not implemented", __FUNCTION__));
+  }
+
+  /**
+   * {@inheritdoc}
+   *
+   * @codeCoverageIgnore
+   */
+  public function addScope(ScopeInterface $scope) {
+    throw new \BadMethodCallException(sprintf("'%s' is not implemented", __FUNCTION__));
+  }
+
+  /**
+   * {@inheritdoc}
+   *
+   * @codeCoverageIgnore
+   */
+  public function hasScope($name) {
+    throw new \BadMethodCallException(sprintf("'%s' is not implemented", __FUNCTION__));
+  }
+
+  /**
+   * {@inheritdoc}
+   *
+   * @codeCoverageIgnore
+   */
+  public function isScopeActive($name) {
+    throw new \BadMethodCallException(sprintf("'%s' is not implemented", __FUNCTION__));
+  }
+
 }

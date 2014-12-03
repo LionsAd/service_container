@@ -11,13 +11,26 @@ use Drupal\service_container\DependencyInjection\Container;
 use Drupal\service_container\DependencyInjection\ContainerInterface;
 
 use Mockery;
-use Mockery\MockInterface;
 
 /**
  * @coversDefaultClass \Drupal\service_container\DependencyInjection\Container
  * @group dic
  */
 class ContainerTest extends \PHPUnit_Framework_TestCase {
+
+  /**
+   * The tested container.
+   *
+   * @var \Drupal\service_container\DependencyInjection\Container
+   */
+  protected $container;
+
+  /**
+   * The container definition used for the test.
+   *
+   * @var []
+   */
+  protected $containerDefinition;
 
   public function setUp() {
     $this->containerDefinition = $this->getMockContainerDefinition();
@@ -80,13 +93,35 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
   }
 
   /**
+   * Tests that Container::setParameter() in an unfrozen case works properly.
+   *
+   * @covers ::setParameter()
+   */
+  public function test_setParameter_unfrozenContainer() {
+    $this->container = new Container($this->containerDefinition, FALSE);
+    $this->container->setParameter('some_config', 'new_value');
+    $this->assertEquals('new_value', $this->container->getParameter('some_config'), 'Container parameters can be set.');
+  }
+
+  /**
+   * Tests that Container::setParameter() in a frozen case works properly.
+   *
+   * @covers ::setParameter()
+   *
+   * @expectedException \BadMethodCallException
+   */
+  public function test_setParameter_frozenContainer() {
+    $this->container->setParameter('some_config', 'new_value');
+  }
+
+  /**
    * Tests that Container::get() works properly.
    * @covers ::get()
    * @covers ::getService()
    */
   public function test_get() {
     $container = $this->container->get('service_container');
-    $this->assertEquals($this->container, $container, 'Container can be retrieved from itself.');
+    $this->assertSame($this->container, $container, 'Container can be retrieved from itself.');
 
     // Retrieve services of the container.
     $other_service_class = $this->containerDefinition['services']['other.service']['class'];
@@ -102,6 +137,34 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
     $this->assertEquals($some_parameter, $service->getSomeParameter(), '%some_config% was injected via constructor.');
     $this->assertEquals($this->container, $service->getContainer(), 'Container was injected via setter injection.');
     $this->assertEquals($some_other_parameter, $service->getSomeOtherParameter(), '%some_other_config% was injected via setter injection.');
+  }
+
+  /**
+   * Tests that Container::set() works properly.
+   *
+   * @covers ::set()
+   */
+  public function test_set() {
+    $this->assertNull($this->container->get('new_id', ContainerInterface::NULL_ON_INVALID_REFERENCE));
+    $mock_service = new MockService();
+    $this->container->set('new_id', $mock_service);
+
+    $this->assertSame($mock_service, $this->container->get('new_id'), 'A manual set service works as expected.');
+  }
+
+  /**
+   * Tests that Container::has() works properly.
+   *
+   * @covers ::has()
+   */
+  public function test_has() {
+    $this->assertTrue($this->container->has('other.service'));
+    $this->assertFalse($this->container->has('another.service'));
+
+    // Set the service manually, ensure that its also respected.
+    $mock_service = new MockService();
+    $this->container->set('another.service', $mock_service);
+    $this->assertTrue($this->container->has('another.service'));
   }
 
   /**
@@ -132,7 +195,25 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
    */
   public function test_get_notFound_parameter() {
     $service = $this->container->get('service_parameter_not_exists', ContainerInterface::NULL_ON_INVALID_REFERENCE);
-    $this->assertFalse($service->getSomeParameter(), 'Some parameter is FALSE.');
+    $this->assertNull($service->getSomeParameter(), 'Some parameter is NULL.');
+  }
+
+  /**
+   * Tests Container::get() with an exception due to missing parameter on the second call.
+   *
+   * @covers ::get()
+   * @covers ::getService()
+   * @covers ::expandArguments()
+   *
+   * @expectedException \RuntimeException
+   */
+  public function test_get_notFound_parameterWithExceptionOnSecondCall() {
+    $service = $this->container->get('service_parameter_not_exists', ContainerInterface::NULL_ON_INVALID_REFERENCE);
+    $this->assertNull($service->getSomeParameter(), 'Some parameter is NULL.');
+
+    // Reset the service.
+    $this->container->set('service_parameter_not_exists', NULL);
+    $this->container->get('service_parameter_not_exists');
   }
 
   /**
@@ -147,14 +228,14 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
   }
 
   /**
-   * Tests that Container::get() for non-existant dependencies works properly.
+   * Tests that Container::get() for non-existent dependencies works properly.
    * @covers ::get()
    * @covers ::getService()
    * @covers ::expandArguments()
    */
   public function test_get_notFound_dependency() {
     $service = $this->container->get('service_dependency_not_exists', ContainerInterface::NULL_ON_INVALID_REFERENCE);
-    $this->assertFalse($service->getSomeOtherService(), 'Some other service is FALSE.');
+    $this->assertNull($service->getSomeOtherService(), 'Some other service is NULL.');
   }
 
   /**
@@ -175,8 +256,37 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
    * @covers ::getService()
    */
   public function test_get_notFound() {
-    // @todo This should be assertNull, but internally implemented as FALSE for not found.
-    $this->assertFalse($this->container->get('service_not_exists', ContainerInterface::NULL_ON_INVALID_REFERENCE), 'Not found service does not throw exception.');
+    $this->assertNull($this->container->get('service_not_exists', ContainerInterface::NULL_ON_INVALID_REFERENCE), 'Not found service does not throw exception.');
+  }
+
+  /**
+   * Tests multiple Container::get() calls for non-existing dependencies work.
+   *
+   * @covers ::get()
+   * @covers ::getService()
+   */
+  public function test_get_notFoundMultiple() {
+    $container = \Mockery::mock('Drupal\service_container\DependencyInjection\Container[getDefinition]', array($this->containerDefinition));
+    $container->shouldReceive('getDefinition')
+      ->once()
+      ->with('service_not_exists', FALSE)
+      ->andReturn(NULL);
+
+    $this->assertNull($container->get('service_not_exists', ContainerInterface::NULL_ON_INVALID_REFERENCE, 'Not found service does not throw exception.'));
+    $this->assertNull($container->get('service_not_exists', ContainerInterface::NULL_ON_INVALID_REFERENCE, 'Not found service does not throw exception on second call.'));
+  }
+
+  /**
+   * Tests multiple Container::get() calls with exception on the second time.
+   *
+   * @covers ::get()
+   * @covers ::getService()
+   *
+   * @expectedException \RuntimeException
+   */
+  public function test_get_notFoundMulitpleWithExceptionOnSecondCall() {
+    $this->assertNull($this->container->get('service_not_exists', ContainerInterface::NULL_ON_INVALID_REFERENCE, 'Not found service does nto throw exception.'));
+    $this->container->get('service_not_exists');
   }
 
   /**
