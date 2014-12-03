@@ -46,6 +46,15 @@ class Container implements ContainerInterface {
   protected $loading = array();
 
   /**
+   * Can the container parameters still be changed.
+   *
+   * For testing purposes the container needs to be changed.
+   *
+   * @var bool
+   */
+  protected $frozen = TRUE;
+
+  /**
    * Constructs a new Container instance.
    *
    * @param array $container_definition
