@@ -25,13 +25,15 @@ class CurrentUserIntegrationTest extends ServiceContainerIntegrationTestBase {
   public function testCurrentUser() {
     /** @var \Drupal\service_container\Session\Account $account */
 
-    $account = $this->container->get('current_user');
-    $this->assertTrue($account instanceof Account);
+    $created_account = $this->container->get('current_user');
+    $this->assertTrue($created_account instanceof Account);
 
     $admin_user = $this->drupalCreateUser(array('access content'));
     $this->drupalLogin($admin_user);
     drupal_save_session(FALSE);
     $GLOBALS['user'] = $admin_user;
+    $account = $this->container->get('current_user');
+    $this->assertEqual(spl_object_hash($created_account), spl_object_hash($account), 'Ensure that the object in the container stays the same.');
 
     $this->assertEqual(array_keys($admin_user->roles), $account->getRoles());
     $this->assertEqual(1, count($account->getRoles(TRUE)));
@@ -39,4 +41,3 @@ class CurrentUserIntegrationTest extends ServiceContainerIntegrationTestBase {
   }
 
 }
-

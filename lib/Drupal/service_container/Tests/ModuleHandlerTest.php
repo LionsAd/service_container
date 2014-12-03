@@ -13,13 +13,6 @@ namespace Drupal\service_container\Tests;
 class ModuleHandlerTest extends ServiceContainerIntegrationTestBase {
 
   /**
-   * The profile to install as a basis for testing.
-   *
-   * @var string
-   */
-  protected $profile = 'testing';
-
-  /**
    * {@inheritdoc}
    */
   public static function getInfo() {
