@@ -7,7 +7,7 @@
 
 namespace Drupal\service_container\Tests;
 
-class StateIntegrationTest extends \DrupalWebTestCase {
+class StateIntegrationTest extends ServiceContainerIntegrationTestBase {
 
   /**
    * {@inheritdoc}
@@ -18,15 +18,6 @@ class StateIntegrationTest extends \DrupalWebTestCase {
       'description' => 'Tests the state system',
       'group' => 'service_container',
     );
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function setUp() {
-    parent::setUp(array('service_container'));
-
-    \ServiceContainer::init();
   }
 
   public function testState() {

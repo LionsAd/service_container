@@ -7,16 +7,14 @@
 
 namespace Drupal\service_container\Tests\KeyValue;
 
-use Drupal\Component\Serialization\PhpSerialize;
-use Drupal\Core\Database\Database;
-use Drupal\Core\KeyValueStore\DatabaseStorageExpirable;
+use Drupal\service_container\Tests\ServiceContainerIntegrationTestBase;
 
 /**
  * Tests garbage collection for the the expirable key-value database storage.
  *
  * @group KeyValueStore
  */
-class GarbageCollectionTest extends \DrupalWebTestCase {
+class GarbageCollectionTest extends ServiceContainerIntegrationTestBase {
 
   /**
    * {@inheritdoc}
@@ -27,13 +25,6 @@ class GarbageCollectionTest extends \DrupalWebTestCase {
       'description' => 'Tests garbage collection for the the expirable key-value database storage.',
       'group' => 'service_container',
     );
-  }
-
-  protected function setUp() {
-    parent::setUp(array('service_container'));
-
-    \ServiceContainer::init();
-    $this->container = \Drupal::getContainer();
   }
 
   /**

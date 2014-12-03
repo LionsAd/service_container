@@ -7,7 +7,6 @@
 
 namespace Drupal\service_container\Tests\KeyValue;
 
-use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\KeyValueStore\KeyValueFactory;
 
 /**
