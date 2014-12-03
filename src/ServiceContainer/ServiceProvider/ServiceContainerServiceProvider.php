@@ -109,6 +109,42 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
       'class' => 'Drupal\service_container\LinkGenerator',
     );
 
+    // Logging integration.
+    $services['logger.factory'] = array(
+      'class' => 'Drupal\service_container\Logger\LoggerChannelFactory',
+      'calls' => array(
+        array('addLogger', array('@logger.dblog')),
+      ),
+    );
+
+    $services['logger.dblog'] = array(
+      'class' => 'Drupal\service_container\Logger\WatchdogLogger',
+      'tags' => array(
+        array('name' => 'logger'),
+      ),
+    );
+
+    $services['logger.channel.default'] = array(
+      'class' => 'Drupal\service_container\Logger\LoggerChannel',
+      'factory_service' => 'logger.factory',
+      'factory_method' => 'get',
+      'arguments' => array('system'),
+    );
+
+    $services['logger.channel.php'] = array(
+      'class' => 'Drupal\service_container\Logger\LoggerChannel',
+      'factory_service' => 'logger.factory',
+      'factory_method' => 'get',
+      'arguments' => array('php'),
+    );
+
+    $services['logger.channel.cron'] = array(
+      'class' => 'Drupal\service_container\Logger\LoggerChannel',
+      'factory_service' => 'logger.factory',
+      'factory_method' => 'get',
+      'arguments' => array('cron'),
+    );
+
     // @todo Make it  possible to register all ctools plugins here.
 
     return array(

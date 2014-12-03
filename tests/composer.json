@@ -9,7 +9,8 @@
       "Drupal\\Core\\": "../lib/",
       "ServiceContainer": "../lib/",
       "Drupal": "../lib/",
-      "Symfony\\Component\\DependencyInjection": "../lib/"
+      "Symfony\\Component\\DependencyInjection": "../lib/",
+      "Psr": "../lib/"
     },
     "psr-4": {
       "Drupal\\service_container\\": "../src/",
