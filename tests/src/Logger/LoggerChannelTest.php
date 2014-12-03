@@ -152,5 +152,23 @@ class LoggerChannelTest extends \PHPUnit_Framework_TestCase {
     return $data;
   }
 
+  /**
+   * @covers ::setRequestStack()
+   */
+  public function test_setRequestStack() {
+    $request_stack = \Mockery::mock('alias:Symfony\Component\HttpFoundation\RequestStack');
+    $this->loggerChannel->setRequestStack($request_stack);
+    $this->assertAttributeEquals($request_stack, 'requestStack', $this->loggerChannel);
+  }
+
+  /**
+   * @covers ::setCurrentUser()
+   */
+  public function test_setCurrentUser() {
+    $current_user = \Mockery::mock('alias:Drupal\Core\Session\AccountInterface');
+    $this->loggerChannel->setCurrentUser($current_user);
+    $this->assertAttributeEquals($current_user, 'currentUser', $this->loggerChannel);
+  }
+
 }
 

@@ -28,16 +28,4 @@ class LoggerChannel extends \Drupal\Core\Logger\LoggerChannel implements LoggerC
     }
   }
 
-  /**
-   * {@inheritdoc}
-   */
-  public function setRequestStack(RequestStack $requestStack = NULL) {
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setCurrentUser(AccountInterface $current_user = NULL) {
-  }
-
 }
