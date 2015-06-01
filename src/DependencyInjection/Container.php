@@ -144,6 +144,7 @@ class Container implements ContainerInterface {
           case 3:
             $service = new $class($arguments[0], $arguments[1], $arguments[2]);
             break;
+          // @codeCoverageIgnoreStart
           case 4:
             $service = new $class($arguments[0], $arguments[1], $arguments[2], $arguments[3]);
             break;
@@ -170,6 +171,7 @@ class Container implements ContainerInterface {
             $service = $r->newInstanceArgs($arguments);
             break;
         }
+        // @codeCoverageIgnoreEnd
       }
     }
     catch (\Exception $e) {

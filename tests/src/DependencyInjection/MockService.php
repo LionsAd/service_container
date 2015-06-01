@@ -47,6 +47,9 @@ class MockService {
    *   (optional) An injected parameter.
    */
   public function __construct($some_other_service = NULL, $some_parameter = NULL) {
+    if (is_array($some_other_service)) {
+      $some_other_service = $some_other_service[0];
+    }
     $this->someOtherService = $some_other_service;
     $this->someParameter = $some_parameter;
   }
