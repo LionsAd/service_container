@@ -397,7 +397,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
     );
     $services['service_using_private'] = array(
       'class' => '\Drupal\Tests\service_container\DependencyInjection\MockService',
-      'arguments' => array((object) [ 'type' => 'service', 'value' => $private_service ], '%some_config%'),
+      'arguments' => array((object) array( 'type' => 'service', 'value' => $private_service ), '%some_config%'),
     );
     $services['service_using_array'] = array(
       'class' => '\Drupal\Tests\service_container\DependencyInjection\MockService',
