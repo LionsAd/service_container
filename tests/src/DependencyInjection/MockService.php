@@ -122,7 +122,7 @@ class MockService {
    * @return object
    *   The instantiated service object.
    */
-  public function getFactoryMethod($class, $arguments = array()) {
+  public static function getFactoryMethod($class, $arguments = array()) {
     $r = new ReflectionClass($class);
     $service = ($r->getConstructor() === NULL) ? $r->newInstance() : $r->newInstanceArgs($arguments);
 
