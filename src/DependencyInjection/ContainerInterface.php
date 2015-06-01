@@ -8,14 +8,14 @@ namespace Drupal\service_container\DependencyInjection;
 
 use Drupal\Component\Plugin\Discovery\DiscoveryInterface;
 
-use Symfony\Component\DependencyInjection\ContainerInterface as BaseContainerInterface;
+use Symfony\Component\DependencyInjection\IntrospectableContainerInterface;
 
 /**
  * Simple DI Container Interface used to get services and discover definitions.
  *
  * @ingroup dic
  */
-interface ContainerInterface extends DiscoveryInterface, BaseContainerInterface {
+interface ContainerInterface extends DiscoveryInterface, IntrospectableContainerInterface {
 
   /**
    * Returns a service from the container.

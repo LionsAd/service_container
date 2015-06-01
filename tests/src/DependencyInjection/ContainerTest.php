@@ -117,7 +117,6 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
   /**
    * Tests that Container::get() works properly.
    * @covers ::get()
-   * @covers ::getService()
    */
   public function test_get() {
     $container = $this->container->get('service_container');
@@ -137,6 +136,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
     $this->assertEquals($some_parameter, $service->getSomeParameter(), '%some_config% was injected via constructor.');
     $this->assertEquals($this->container, $service->getContainer(), 'Container was injected via setter injection.');
     $this->assertEquals($some_other_parameter, $service->getSomeOtherParameter(), '%some_other_config% was injected via setter injection.');
+    $this->assertEquals($service->_someProperty, 'foo', 'Service has added properties.');
   }
 
   /**
@@ -171,7 +171,6 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
    * Tests that Container::get() for circular dependencies works properly.
    * @expectedException \RuntimeException
    * @covers ::get()
-   * @covers ::getService()
    */
   public function test_get_circular() {
     $this->container->get('circular_dependency');
@@ -181,7 +180,6 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
    * Tests that Container::get() for non-existant dependencies works properly.
    * @expectedException \RuntimeException
    * @covers ::get()
-   * @covers ::getService()
    */
   public function test_get_exception() {
     $this->container->get('service_not_exists');
@@ -190,7 +188,6 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
   /**
    * Tests that Container::get() for non-existant parameters works properly.
    * @covers ::get()
-   * @covers ::getService()
    * @covers ::expandArguments()
    */
   public function test_get_notFound_parameter() {
@@ -202,7 +199,6 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
    * Tests Container::get() with an exception due to missing parameter on the second call.
    *
    * @covers ::get()
-   * @covers ::getService()
    * @covers ::expandArguments()
    *
    * @expectedException \RuntimeException
@@ -220,7 +216,6 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
    * Tests that Container::get() for non-existant parameters works properly.
    * @expectedException \RuntimeException
    * @covers ::get()
-   * @covers ::getService()
    * @covers ::expandArguments()
    */
   public function test_get_notFound_parameter_exception() {
@@ -230,7 +225,6 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
   /**
    * Tests that Container::get() for non-existent dependencies works properly.
    * @covers ::get()
-   * @covers ::getService()
    * @covers ::expandArguments()
    */
   public function test_get_notFound_dependency() {
@@ -242,7 +236,6 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
    * Tests that Container::get() for non-existant dependencies works properly.
    * @expectedException \RuntimeException
    * @covers ::get()
-   * @covers ::getService()
    * @covers ::expandArguments()
    */
   public function test_get_notFound_dependency_exception() {
@@ -253,7 +246,6 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
   /**
    * Tests that Container::get() for non-existant dependencies works properly.
    * @covers ::get()
-   * @covers ::getService()
    */
   public function test_get_notFound() {
     $this->assertNull($this->container->get('service_not_exists', ContainerInterface::NULL_ON_INVALID_REFERENCE), 'Not found service does not throw exception.');
@@ -263,7 +255,6 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
    * Tests multiple Container::get() calls for non-existing dependencies work.
    *
    * @covers ::get()
-   * @covers ::getService()
    */
   public function test_get_notFoundMultiple() {
     $container = \Mockery::mock('Drupal\service_container\DependencyInjection\Container[getDefinition]', array($this->containerDefinition));
@@ -280,7 +271,6 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
    * Tests multiple Container::get() calls with exception on the second time.
    *
    * @covers ::get()
-   * @covers ::getService()
    *
    * @expectedException \RuntimeException
    */
@@ -292,7 +282,6 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
   /**
    * Tests that Container::get() for factories via services works properly.
    * @covers ::get()
-   * @covers ::getService()
    */
   public function test_get_factoryService() {
     $factory_service = $this->container->get('factory_service');
@@ -303,7 +292,6 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
   /**
    * Tests that Container::get() for factories via factory_class works.
    * @covers ::get()
-   * @covers ::getService()
    */
   public function test_get_factoryClass() {
     $service = $this->container->get('service.provider');
@@ -315,14 +303,57 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
   }
 
   /**
-   * Tests that Container::get() for circular dependencies works properly.
+   * Tests that Container::get() for wrong factories works correctly.
    * @expectedException \RuntimeException
    * @covers ::get()
-   * @covers ::getService()
    */
   public function test_get_factoryWrong() {
     $this->container->get('wrong_factory');
   }
+
+  /**
+   * Tests that private services work correctly.
+   * @covers ::get()
+   * @covers ::expandArguments()
+   */
+  public function test_expandArguments_privateService() {
+    $service = $this->container->get('service_using_private');
+    $private_service = $service->getSomeOtherService();
+    $this->assertEquals($private_service->getSomeParameter(), 'really_private_lama', 'Private was found successfully');
+  }
+
+  /**
+   * Tests that services with an array of arguments work correctly.
+   * @covers ::get()
+   * @covers ::expandArguments()
+   */
+  public function test_expandArguments_array() {
+    $service = $this->container->get('service_using_array');
+    $other_service = $this->container->get('other.service');
+    $this->assertEquals($other_service, $service->getSomeOtherService(), '@other.service was injected via constructor.');
+  }
+
+  /**
+   * Tests that services that are optional work correctly.
+   * @covers ::get()
+   * @covers ::expandArguments()
+   */
+  public function test_expandArguments_optional() {
+    $service = $this->container->get('service_with_optional_dependency');
+    $this->assertNull($service->getSomeOtherService(), 'other service was NULL was expected.');
+  }
+
+
+  /**
+   * Tests that Container::initialized works correctly.
+   * @covers ::initialized()
+   */
+  public function test_initialized() {
+    $this->assertFalse($this->container->initialized('late.service'), 'Late service is not initialized.');
+    $this->container->get('late.service');
+    $this->assertTrue($this->container->initialized('late.service'), 'Late service is initialized after it was gotten.');
+  }
+
 
   /**
    * Returns a mock container definition.
@@ -333,6 +364,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
   protected function getMockContainerDefinition() {
     $fake_service = Mockery::mock('alias:Drupal\Tests\service_container\DependencyInjection\FakeService');
     $parameters = array();
+    $parameters['some_private_config'] = 'really_private_lama';
     $parameters['some_config'] = 'foo';
     $parameters['some_other_config'] = 'lama';
     $parameters['factory_service_class'] = get_class($fake_service);
@@ -345,15 +377,37 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
       // @todo Support parameter expansion for classes.
       'class' => get_class($fake_service),
     );
+    $services['late.service'] = array(
+      'class' => get_class($fake_service),
+    );
     $services['service.provider'] = array(
       'class' => '\Drupal\Tests\service_container\DependencyInjection\MockService',
       'arguments' => array('@other.service', '%some_config%'),
+      'properties' => array('_someProperty' => 'foo'),
       'calls' => array(
         array('setContainer', array('@service_container')),
         array('setOtherConfigParameter', array('%some_other_config%')),
        ),
       'priority' => 0,
     );
+    $private_service = array(
+      'class' => '\Drupal\Tests\service_container\DependencyInjection\MockService',
+      'arguments' => array('@other.service', '%some_private_config%'),
+      'public' => FALSE,
+    );
+    $services['service_using_private'] = array(
+      'class' => '\Drupal\Tests\service_container\DependencyInjection\MockService',
+      'arguments' => array((object) array( 'type' => 'service', 'value' => $private_service ), '%some_config%'),
+    );
+    $services['service_using_array'] = array(
+      'class' => '\Drupal\Tests\service_container\DependencyInjection\MockService',
+      'arguments' => array(array('@other.service'), '%some_private_config%')
+    );
+    $services['service_with_optional_dependency'] = array(
+      'class' => '\Drupal\Tests\service_container\DependencyInjection\MockService',
+      'arguments' => array('@?service.does_not_exist', '%some_private_config%')
+    );
+
     $services['factory_service'] = array(
       'class' => '\Drupal\service_container\ServiceContainer\ControllerInterface',
       'factory_method' => 'getFactoryMethod',
