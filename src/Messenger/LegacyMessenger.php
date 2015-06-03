@@ -9,7 +9,7 @@ namespace Drupal\service_container\Messenger;
 use Drupal\Core\Messenger\MessengerInterface;
 
 /**
- * TODO
+ * Class that manage the messages in Drupal.
  *
  * @codeCoverageIgnore
  */
@@ -23,15 +23,15 @@ class LegacyMessenger implements MessengerInterface {
   }
 
   public function getMessagesByType($type) {
-    $messages = drupal_get_messages();
+    $messages = $this->getMessages();
     return isset($messages[$type]) ? $messages[$type] : $messages;
   }
 
   public function deleteMessages() {
-    // TODO
+    throw new \BadMethodCallException('LegacyMessenger::deleteMessages is not implemented.');
   }
 
   public function deleteMessagesByType($type) {
-    // TODO
+    throw new \BadMethodCallException('LegacyMessenger::deleteMessagesByType is not implemented.');
   }
 }
