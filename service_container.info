@@ -2,7 +2,7 @@ name = Service Container
 description = A light-weight service container based on CTools plugins.
 package = Novelty
 core = 7.x
-php = 5.5
+php = 5.4
 
 ; Dependencies
 dependencies[] = ctools
