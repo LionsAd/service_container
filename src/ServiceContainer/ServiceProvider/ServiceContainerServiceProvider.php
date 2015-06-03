@@ -106,6 +106,10 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
       ),
     );
 
+    $services['messenger'] = array(
+      'class' => 'Drupal\service_container\Messenger\LegacyMessenger',
+    );
+
     $services['url_generator'] = array(
       'class' => 'Drupal\service_container\UrlGenerator',
     );
