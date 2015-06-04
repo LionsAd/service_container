@@ -24,14 +24,14 @@ class LegacyMessenger implements MessengerInterface {
    * {@inheritdoc}
    */
   public function getMessages() {
-    return drupal_get_messages();
+    return drupal_get_messages(NULL, FALSE);
   }
 
   /**
    * {@inheritdoc}
    */
   public function getMessagesByType($type) {
-    $messages = $this->getMessages();
+    $messages = drupal_get_messages($type, FALSE);
     return isset($messages[$type]) ? $messages[$type] : $messages;
   }
 
