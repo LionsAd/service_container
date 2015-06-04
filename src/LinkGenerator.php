@@ -7,6 +7,8 @@
 
 namespace Drupal\service_container;
 
+use Drupal\service_container\Legacy\Drupal7;
+
 /**
  * Generates a link out from a given path, title and options.
  *
@@ -15,6 +17,23 @@ namespace Drupal\service_container;
  * @codeCoverageIgnore
  */
 class LinkGenerator {
+
+  /**
+   * The Drupal7 service.
+   *
+   * @var \Drupal\service_container\Legacy\Drupal7
+   */
+  protected $drupal7;
+
+  /**
+   * Constructs a new LinkGenerator instance.
+   *
+   * @param \Drupal\service_container\Legacy\Drupal7 $drupal7
+   *   The Drupal7 service.
+   */
+  public function __construct(Drupal7 $drupal7) {
+    $this->drupal7 = $drupal7;
+  }
 
   /**
    * Formats an internal or external URL link as an HTML anchor tag.
@@ -64,7 +83,7 @@ class LinkGenerator {
    * @see url()
    */
   public function l($text, $path, array $options = array()) {
-    return l($text, $path, $options);
+    return $this->drupal7->l($text, $path, $options);
   }
 
 }

@@ -41,11 +41,12 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
 
     $services['module_handler'] = array(
       'class' => '\Drupal\service_container\Extension\ModuleHandler',
-      'arguments' => array(DRUPAL_ROOT),
+      'arguments' => array('@drupal7', DRUPAL_ROOT),
     );
 
     $services['module_installer'] = array(
       'class' => '\Drupal\service_container\Extension\ModuleInstaller',
+      'arguments' => array('@drupal7'),
     );
 
     $services['database'] = array(
@@ -96,6 +97,7 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
 
     $services['variable'] = array(
       'class' => 'Drupal\service_container\Variable',
+      'arguments' => array('@drupal7'),
     );
 
     $services['lock'] = array(
@@ -121,15 +123,17 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
 
     $services['url_generator'] = array(
       'class' => 'Drupal\service_container\UrlGenerator',
+      'arguments' => array('@drupal7'),
     );
 
     $services['link_generator'] = array(
       'class' => 'Drupal\service_container\LinkGenerator',
+      'arguments' => array('@drupal7'),
     );
 
     $services['current_user'] = array(
       'class' => 'Drupal\service_container\Session\Account',
-      'arguments' => array('@variable'),
+      'arguments' => array('@drupal7', '@variable'),
     );
 
     // Logging integration.
