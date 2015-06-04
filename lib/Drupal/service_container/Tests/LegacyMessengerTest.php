@@ -32,13 +32,13 @@ class LegacyMessengerTest extends ServiceContainerIntegrationTestBase {
     drupal_set_message($random_message, $messenger_service::WARNING);
     $messages = $messenger_service->getMessages();
     $warning_messages = $messages[$messenger_service::WARNING];
-    $this->assertTrue(in_array($random_message, $warning_messages));
+    $this->assertContains($random_message, $warning_messages);
 
     $random_message = $this->randomString();
     $messenger_service->addMessage($random_message, $messenger_service::STATUS);
     $messages = drupal_get_messages();
     $status_messages = $messages[$messenger_service::STATUS];
-    $this->assertTrue(in_array($random_message, $status_messages));
+    $this->assertContains($random_message, $status_messages);
   }
 
 }

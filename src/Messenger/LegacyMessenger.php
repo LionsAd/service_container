@@ -39,13 +39,13 @@ class LegacyMessenger implements MessengerInterface {
    * {@inheritdoc}
    */
   public function deleteMessages() {
-    throw new \BadMethodCallException('LegacyMessenger::deleteMessages is not implemented.');
+    return drupal_get_messages(NULL, TRUE);
   }
 
   /**
    * {@inheritdoc}
    */
   public function deleteMessagesByType($type) {
-    throw new \BadMethodCallException('LegacyMessenger::deleteMessagesByType is not implemented.');
+    return drupal_get_messages($type, TRUE);
   }
 }
