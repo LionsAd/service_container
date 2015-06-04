@@ -29,9 +29,8 @@ class LegacyDrupal7Test extends ServiceContainerIntegrationTestBase {
     $this->assertTrue($drupal7_service instanceof Drupal7);
 
     $random_message = $this->randomString();
-    drupal_set_message($random_message, 'warning');
-    $messages = $drupal7_service->drupal_get_messages();
-    $warning_messages = $messages['warning'];
-    $this->assertTrue(in_array($random_message, $warning_messages));
+    $drupal7_service->drupal_set_message($random_message, 'warning');
+    $messages = drupal_get_messages();
+    $this->assertTrue(in_array($random_message, $messages['warning']));
   }
 }

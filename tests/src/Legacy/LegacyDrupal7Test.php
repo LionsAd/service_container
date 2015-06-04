@@ -33,13 +33,24 @@ namespace Drupal\Tests\service_container\Legacy {
      * @covers ::__call()
      */
     public function test_call() {
-      $this->assertEquals('llama', $this->drupal7_service->drupal7_legacy_test_function(), 'Calling function via legacy service works.');
+      $random_string = 'is_a_lovely_cat!';
+      $this->assertEquals('izumi_is_a_lovely_cat!', $this->drupal7_service->drupal7_legacy_test_function($random_string), 'Calling function via legacy service works.');
     }
   }
 }
 
 namespace {
   if (!function_exists('drupal7_legacy_test_function')) {
-    function drupal7_legacy_test_function() { return 'llama'; }
+    /**
+     * Test function to test legacy service.
+     *
+     * @param string $var
+     *   Test string to append.
+     * @return string
+     *   Returns a fixed string appended with $var.
+     */
+    function drupal7_legacy_test_function($var) {
+      return 'izumi_' . $var;
+    }
   }
 }
