@@ -10,6 +10,7 @@ namespace Drupal\Core\KeyValueStore;
 use Drupal\Component\Serialization\SerializationInterface;
 use Drupal\Core\Database\Query\Merge;
 use Drupal\Core\Database\Connection;
+use Drupal\Core\DependencyInjection\DependencySerializationTrait;
 
 /**
  * Defines a default key/value store implementation.
@@ -18,6 +19,8 @@ use Drupal\Core\Database\Connection;
  * to store key/value data.
  */
 class DatabaseStorage extends StorageBase {
+
+  use DependencySerializationTrait;
 
   /**
    * The serialization class to use.
@@ -75,7 +78,7 @@ class DatabaseStorage extends StorageBase {
   public function getMultiple(array $keys) {
     $values = array();
     try {
-      $result = $this->connection->query('SELECT name, value FROM {' . $this->connection->escapeTable($this->table) . '} WHERE name IN (:keys) AND collection = :collection', array(':keys' => $keys, ':collection' => $this->collection))->fetchAllAssoc('name');
+      $result = $this->connection->query('SELECT name, value FROM {' . $this->connection->escapeTable($this->table) . '} WHERE name IN ( :keys[] ) AND collection = :collection', array(':keys[]' => $keys, ':collection' => $this->collection))->fetchAllAssoc('name');
       foreach ($keys as $key) {
         if (isset($result[$key])) {
           $values[$key] = $this->serializer->decode($result[$key]->value);
@@ -110,7 +113,7 @@ class DatabaseStorage extends StorageBase {
    */
   public function set($key, $value) {
     $this->connection->merge($this->table)
-      ->key(array(
+      ->keys(array(
         'name' => $key,
         'collection' => $this->collection,
       ))
@@ -152,7 +155,7 @@ class DatabaseStorage extends StorageBase {
     // Delete in chunks when a large array is passed.
     while ($keys) {
       $this->connection->delete($this->table)
-        ->condition('name', array_splice($keys, 0, 1000))
+        ->condition('name', array_splice($keys, 0, 1000), 'IN')
         ->condition('collection', $this->collection)
         ->execute();
     }
