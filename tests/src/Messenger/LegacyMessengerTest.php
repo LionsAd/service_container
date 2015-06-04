@@ -47,9 +47,9 @@ class LegacyMessengerTest extends \PHPUnit_Framework_TestCase {
   }
 
   /**
-   * @covers ::addMessages()
+   * @covers ::addMessage()
    */
-  public function test_addMessages() {}
+  public function test_addMessage() {}
 
   /**
    * @covers ::getMessages()
@@ -65,5 +65,10 @@ class LegacyMessengerTest extends \PHPUnit_Framework_TestCase {
    * @covers ::deleteMessages()
    */
   public function test_deleteMessages() {}
+
+  /**
+   * @covers ::deleteMessagesByType()
+   */
+  public function test_deleteMessagesByType() {}
 
 }
