@@ -168,25 +168,10 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
       'arguments' => array('cron'),
     );
 
-    if (module_exists('ctools')) {
+    if ($this->moduleExists('ctools')) {
       ctools_include('plugins');
       $info = ctools_plugin_get_plugin_type_info();
       foreach($info as $module_name => $plugins) {
-        $services[$module_name . '.manager'] = array(
-          'class' => '\Drupal\service_container\Plugin\ContainerAwarePluginManager',
-          'arguments' => array(
-            $module_name . '.manager.internal.',
-          ),
-          'calls' => array(
-            array(
-              'setContainer',
-              array(
-                '@service_container',
-              ),
-            ),
-          ),
-        );
-
         foreach($plugins as $plugin_type => $plugin_data) {
           $services[$module_name . '.' . $plugin_type] = array();
           $parameters['service_container.plugin_managers']['ctools'][$module_name . '.' . $plugin_type] = array(
@@ -201,6 +186,13 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
       'parameters' => $parameters,
       'services' => $services,
     );
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function moduleExists($name) {
+    return module_exists($name);
   }
 
   /**
