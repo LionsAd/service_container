@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains \Drupal\service_container\Tests\CurrentUserIntegrationTest.
+ * Contains \Drupal\service_container\Tests\LegacyMessengerTest.
  */
 
 namespace Drupal\service_container\Tests;
