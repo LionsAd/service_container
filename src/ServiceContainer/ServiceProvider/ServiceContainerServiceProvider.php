@@ -174,10 +174,9 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
     );
 
     if ($this->moduleExists('ctools')) {
-      ctools_include('plugins');
-      $info = ctools_plugin_get_plugin_type_info();
-      foreach($info as $module_name => $plugins) {
+      foreach($this->cToolsGetTypes() as $module_name => $plugins) {
         foreach($plugins as $plugin_type => $plugin_data) {
+          $plugin_type = $this->toUnderscoreCase($plugin_type);
           $services[$module_name . '.' . $plugin_type] = array();
           $parameters['service_container.plugin_managers']['ctools'][$module_name . '.' . $plugin_type] = array(
             'owner' => $module_name,
@@ -191,6 +190,21 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
       'parameters' => $parameters,
       'services' => $services,
     );
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function cToolsGetTypes() {
+    ctools_include('plugins');
+    return ctools_plugin_get_plugin_type_info();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function toUnderscoreCase($name) {
+    return drupal_strtolower(preg_replace('/(?<!^)([A-Z])/', '_$1', $name));
   }
 
   /**
