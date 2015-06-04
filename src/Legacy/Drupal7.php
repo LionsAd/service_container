@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains \Drupal\service_container\Generic\Drupal7.
+ * Contains \Drupal\service_container\Legacy\Drupal7.
  */
 
 namespace Drupal\service_container\Legacy;
