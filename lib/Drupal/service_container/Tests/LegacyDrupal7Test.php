@@ -25,7 +25,7 @@ class LegacyDrupal7 extends ServiceContainerIntegrationTestBase {
   public function testLegacyDrupal7() {
     /** @var \Drupal\service_container\Legacy\Drupal7 $drupal7_service */
 
-    $drupal7_service = $this->container->get('messenger');
+    $drupal7_service = $this->container->get('drupal7');
     $this->assertTrue($drupal7_service instanceof Drupal7);
 
     $random_message = $this->randomString();
