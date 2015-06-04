@@ -22,6 +22,7 @@ function service_container_stream_wrappers_alter(&$wrappers) {
 function service_container_enable() {
   if (class_exists('ServiceContainer')) {
     ServiceContainer::reset();
+    ServiceContainer::init();
   }
 }
 
