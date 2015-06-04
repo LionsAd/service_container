@@ -32,7 +32,7 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
     $services = array();
 
     $services['drupal7'] = array(
-      'class' => 'Drupal\service_container\Generic\Drupal7',
+      'class' => 'Drupal\service_container\Legacy\Drupal7',
     );
 
     $services['service_container'] = array(

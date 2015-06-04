@@ -2,22 +2,22 @@
 
 /**
  * @file
- * Contains \Drupal\service_container\Tests\LegacyDrupal7.
+ * Contains \Drupal\service_container\Tests\LegacyDrupal7Test.
  */
 
 namespace Drupal\service_container\Tests;
 
 use Drupal\service_container\Legacy\Drupal7;
 
-class LegacyDrupal7 extends ServiceContainerIntegrationTestBase {
+class LegacyDrupal7Test extends ServiceContainerIntegrationTestBase {
 
   /**
    * {@inheritdoc}
    */
   public static function getInfo() {
     return array(
-      'name' => 'LegacyDrupal7',
-      'description' => 'Tests the legacy Drupal 7 integration',
+      'name' => 'LegacyDrupal7Test',
+      'description' => 'Tests the legacy Drupal 7 integration service',
       'group' => 'service_container',
     );
   }
