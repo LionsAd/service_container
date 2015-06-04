@@ -5,7 +5,7 @@
  * Contains \Drupal\service_container\Generic\Drupal7.
  */
 
-namespace Drupal\service_container\Generic;
+namespace Drupal\service_container\Legacy;
 
 class Drupal7 {
   public function __call($method, $args) {
