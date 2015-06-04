@@ -11,8 +11,6 @@ use Drupal\service_container\Legacy\Drupal7;
 
 /**
  * Class that manage the messages in Drupal.
- *
- * @codeCoverageIgnore
  */
 class LegacyMessenger implements MessengerInterface {
   protected $drupal7;
