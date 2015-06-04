@@ -8,7 +8,7 @@
 namespace Drupal\service_container\Legacy;
 
 /**
- * @codeCoverageIgnore
+ * Defines the Drupal 7 legacy service.
  */
 class Drupal7 {
   public function __call($method, $args) {
