@@ -5,7 +5,7 @@
  * Contains \Drupal\Core\Messenger\MessengerInterface.
  */
 
-namespace Drupal\Core\Messenger;
+namespace Drupal\service_container\Messenger;
 
 interface MessengerInterface {
 

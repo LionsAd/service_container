@@ -6,7 +6,6 @@
  */
 
 namespace Drupal\service_container\Messenger;
-use Drupal\Core\Messenger\MessengerInterface;
 
 /**
  * Class that manage the messages in Drupal.
