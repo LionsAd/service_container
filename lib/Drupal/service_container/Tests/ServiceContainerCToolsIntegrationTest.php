@@ -34,9 +34,17 @@ class ServiceContainerCToolsIntegrationTest extends ServiceContainerIntegrationT
    * Tests if CTools plugin types are available as services.
    */
   public function testCToolsPluginTypes() {
+    print_r($this->container->getDefinitions());
     foreach(ctools_plugin_get_plugin_type_info() as $module_name => $plugins) {
       foreach($plugins as $plugin_type => $plugin_data) {
-        $this->assertTrue(\Drupal::hasService($module_name . '.' . $plugin_type));
+        $services = array(
+          $module_name . '.' . $plugin_type,
+          $this->toStrToLower($module_name . '.' . $plugin_type),
+          $this->toUnderscoreCase($module_name) . '.' . $this->toUnderscoreCase($plugin_type)
+        );
+        foreach($services as $service) {
+          $this->assertTrue($this->container->hasDefinition($service));
+        }
       }
     }
   }
@@ -49,6 +57,34 @@ class ServiceContainerCToolsIntegrationTest extends ServiceContainerIntegrationT
       ->createInstance('ServiceContainerTestCtoolsPluginTest1');
     $this->assertTrue($service instanceof \Drupal\service_container_test_ctools\ServiceContainerTestCtoolsPlugin\ServiceContainerTestCtoolsPluginTest1);
     $this->assertEqual($service->beep(), 'beep!');
+  }
+
+  /**
+   * Lowercase a UTF-8 string.
+   *
+   * @param $text
+   *   The string to run the operation on.
+   *
+   * @return string
+   *   The string in lowercase.
+   *
+   */
+  public function toStrToLower($name) {
+    return drupal_strtolower($name);
+  }
+
+  /**
+   * Un-camelize a string.
+   *
+   * @param $text
+   *   The string to run the operation on.
+   *
+   * @return string
+   *   The string un-camelized.
+   *
+   */
+  public function toUnderscoreCase($name) {
+    return $this->toStrToLower(preg_replace('/(?<!^)([A-Z])/', '_$1', $name));
   }
 
 }
