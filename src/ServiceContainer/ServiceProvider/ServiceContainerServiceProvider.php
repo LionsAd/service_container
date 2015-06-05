@@ -176,10 +176,25 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
     if ($this->moduleExists('ctools')) {
       foreach($this->cToolsGetTypes() as $module_name => $plugins) {
         foreach($plugins as $plugin_type => $plugin_data) {
+          // Register service with original string.
           $services[$module_name . '.' . $plugin_type] = array();
           $parameters['service_container.plugin_managers']['ctools'][$module_name . '.' . $plugin_type] = array(
             'owner' => $module_name,
             'type' => $plugin_type,
+          );
+
+          // Register service alias with string to lowercase.
+          $module_name_strtolower = $this->toStrToLower($module_name);
+          $plugin_type_strtolower = $this->toStrToLower($plugin_type);
+          $services[$module_name_strtolower . '.' . $plugin_type_strtolower] = array(
+            'alias' => $module_name . '.' . $plugin_type
+          );
+
+          // Register service alias with string un-camelized and lowercase.
+          $module_name_tounderscore = $this->toUnderscoreCase($module_name);
+          $plugin_type_tounderscore = $this->toUnderscoreCase($plugin_type);
+          $services[$module_name_tounderscore . '.' . $plugin_type_tounderscore] = array(
+            'alias' => $module_name . '.' . $plugin_type
           );
         }
       }
@@ -189,21 +204,6 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
       'parameters' => $parameters,
       'services' => $services,
     );
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function cToolsGetTypes() {
-    ctools_include('plugins');
-    return ctools_plugin_get_plugin_type_info();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function moduleExists($name) {
-    return module_exists($name);
   }
 
   /**
@@ -304,4 +304,64 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
       ),
     );
   }
+
+  /**
+   * Return the full list of plugin type info for all plugin types registered in
+   * the current system.
+   *
+   * This function manages its own cache getting/setting, and should always be
+   * used as the way to initially populate the list of plugin types. Make sure you
+   * call this function to properly populate the ctools_plugin_type_info static
+   * variable.
+   *
+   * @return array
+   *   A multilevel array of plugin type info, the outer array keyed on module
+   *   name and each inner array keyed on plugin type name.
+   */
+  public function cToolsGetTypes() {
+    ctools_include('plugins');
+    return ctools_plugin_get_plugin_type_info();
+  }
+
+  /**
+   * Determines whether a given module exists.
+   *
+   * @param string $module
+   *   The name of the module (without the .module extension).
+   *
+   * @return bool
+   *   TRUE if the module is both installed and enabled, FALSE otherwise.
+   */
+  public function moduleExists($name) {
+    return module_exists($name);
+  }
+
+  /**
+   * Lowercase a UTF-8 string.
+   *
+   * @param $text
+   *   The string to run the operation on.
+   *
+   * @return string
+   *   The string in lowercase.
+   *
+   */
+  public function toStrToLower($name) {
+    return drupal_strtolower($name);
+  }
+
+  /**
+   * Un-camelize a string.
+   *
+   * @param $text
+   *   The string to run the operation on.
+   *
+   * @return string
+   *   The string un-camelized.
+   *
+   */
+  public function toUnderscoreCase($name) {
+    return $this->toStrToLower(preg_replace('/(?<!^)([A-Z])/', '_$1', $name));
+  }
+
 }
