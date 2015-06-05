@@ -15,6 +15,12 @@ use Drupal\service_container\Legacy\Drupal7;
 class LegacyMessenger implements MessengerInterface {
   protected $drupal7;
 
+  /**
+   * Constructs a LegacyMessenger object.
+   *
+   * @param \Drupal\service_container\Legacy\Drupal7 $drupal7_service
+   *    The Drupal 7 legacy service.
+   */
   public function __construct(Drupal7 $drupal7_service) {
     $this->drupal7 = $drupal7_service;
   }
