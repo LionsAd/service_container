@@ -51,7 +51,7 @@ class ServiceContainerCToolsIntegrationTest extends ServiceContainerIntegrationT
   public function testCToolsPlugin() {
     $service = \Drupal::service('service_container_test_ctools')
       ->createInstance('ServiceContainerTestCtoolsPluginTest1');
-    $this->assertTrue('\Drupal\service_container_test_ctools\ServiceContainerTestCtoolsPlugin\ServiceContainerTestCtoolsPluginTest1' instanceof $service);
+    $this->assertTrue($service instanceof \Drupal\service_container_test_ctools\ServiceContainerTestCtoolsPlugin\ServiceContainerTestCtoolsPluginTest1);
     $this->assertTrue($service->beep() == 'beep!');
   }
 }
