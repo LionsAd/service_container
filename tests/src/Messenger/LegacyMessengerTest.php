@@ -61,7 +61,7 @@ class LegacyMessengerTest extends \PHPUnit_Framework_TestCase {
       ->once()
       ->with($message, $type, FALSE);
 
-    $this->messenger_service->addMessage($message, $type);
+    $this->assertSame($this->messenger_service, $this->messenger_service->addMessage($message, $type));
   }
 
   /**
@@ -115,7 +115,7 @@ class LegacyMessengerTest extends \PHPUnit_Framework_TestCase {
       ->once()
       ->with(NULL, TRUE);
 
-    $this->messenger_service->deleteMessages();
+    $this->assertSame($this->messenger_service, $this->messenger_service->deleteMessages());
   }
 
   /**
@@ -127,7 +127,7 @@ class LegacyMessengerTest extends \PHPUnit_Framework_TestCase {
       ->once()
       ->with('warning', TRUE);
 
-    $this->messenger_service->deleteMessagesByType('warning');
+    $this->assertSame($this->messenger_service, $this->messenger_service->deleteMessagesByType('warning'));
   }
 
 }

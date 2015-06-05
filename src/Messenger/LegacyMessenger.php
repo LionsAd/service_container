@@ -24,6 +24,7 @@ class LegacyMessenger implements MessengerInterface {
    */
   public function addMessage($message, $type = self::STATUS, $repeat = FALSE) {
     $this->drupal7->drupal_set_message($message, $type, $repeat);
+    return $this;
   }
 
   /**
@@ -45,13 +46,15 @@ class LegacyMessenger implements MessengerInterface {
    * {@inheritdoc}
    */
   public function deleteMessages() {
-    return $this->drupal7->drupal_get_messages(NULL, TRUE);
+    $this->drupal7->drupal_get_messages(NULL, TRUE);
+    return $this;
   }
 
   /**
    * {@inheritdoc}
    */
   public function deleteMessagesByType($type) {
-    return $this->drupal7->drupal_get_messages($type, TRUE);
+    $this->drupal7->drupal_get_messages($type, TRUE);
+    return $this;
   }
 }
