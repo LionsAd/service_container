@@ -34,7 +34,6 @@ class ServiceContainerCToolsIntegrationTest extends ServiceContainerIntegrationT
    * Tests if CTools plugin types are available as services.
    */
   public function testCToolsPluginTypes() {
-    print_r($this->container->getDefinitions());
     foreach(ctools_plugin_get_plugin_type_info() as $module_name => $plugins) {
       foreach($plugins as $plugin_type => $plugin_data) {
         $services = array(
