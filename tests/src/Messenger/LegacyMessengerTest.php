@@ -37,7 +37,7 @@ class LegacyMessengerTest extends \PHPUnit_Framework_TestCase {
     // We can't use the mock object here because LegacyMessenger needs a
     // \Drupal\service_container\Legacy\Drupal7 argument.
     // Do we need to create an interface for it instead ?
-    $this->drupal7 = new Drupal7();
+    $this->drupal7 = \Mockery::mock('\Drupal\service_container\Legacy\Drupal7');
     $this->messenger_service = new LegacyMessenger($this->drupal7);
   }
 
@@ -53,11 +53,10 @@ class LegacyMessengerTest extends \PHPUnit_Framework_TestCase {
    * @covers ::addMessage()
    */
   public function test_addMessage() {
-    $drupal7 = \Mockery::mock('Drupal\service_container\Legacy\Drupal7');
     $message = 'Izumi';
     $type = 'warning';
 
-    $drupal7
+    $this->drupal7
       ->shouldReceive('drupal_set_message')
       ->once()
       ->with($message, $type, FALSE);
@@ -67,39 +66,51 @@ class LegacyMessengerTest extends \PHPUnit_Framework_TestCase {
 
   /**
    * @covers ::getMessages()
+   * @dataProvider getMessagesDataProvider
    */
-  public function test_getMessages() {
-    $drupal7 = \Mockery::mock('Drupal\service_container\Legacy\Drupal7');
-
-    $drupal7
+  public function test_getMessages($type, $expected) {
+    $this->drupal7
       ->shouldReceive('drupal_get_messages')
       ->once()
-      ->with(NULL, FALSE);
+      ->with(NULL, FALSE)
+      ->andReturn($expected);
 
-    $this->messenger_service->getMessages();
+    $this->assertEquals($expected, $this->messenger_service->getMessages());
+  }
+   /**
+   * @covers ::getMessagesByType()
+   * @dataProvider getMessagesDataProvider
+   */
+  public function test_getMessagesByType($type, $expected) {
+    $message = 'Izumi';
+    $this->drupal7
+      ->shouldReceive('drupal_get_messages')
+      ->once()
+      ->with($type, FALSE)
+      ->andReturn($expected);
+
+    $result = isset($expected[$type]) ? $expected[$type] : array();
+    $this->assertEquals($result, $this->messenger_service->getMessagesByType($type));
   }
 
   /**
-   * @covers ::getMessagesByType()
-   */
-  public function test_getMessagesByType() {
-    $drupal7 = \Mockery::mock('Drupal\service_container\Legacy\Drupal7');
-
-    $drupal7
-      ->shouldReceive('drupal_get_messages')
-      ->once()
-      ->with('warning', FALSE);
-
-    $this->messenger_service->getMessages('warning');
+   * Data Provider for getMessages and getMessagesByType.
+   */ 
+  public function getMessagesDataProvider() {
+    return array(
+      array('status', array()),
+      array('status', array('status' => array('Hello Status!'))),
+      array('warning', array('warning' => array('Hello World!'))),
+      array('error', array('error' => array('Hello Error!'))),
+    );
   }
+
 
   /**
    * @covers ::deleteMessages()
    */
   public function test_deleteMessages() {
-    $drupal7 = \Mockery::mock('Drupal\service_container\Legacy\Drupal7');
-
-    $drupal7
+    $this->drupal7
       ->shouldReceive('drupal_get_messages')
       ->once()
       ->with(NULL, TRUE);
@@ -111,9 +122,7 @@ class LegacyMessengerTest extends \PHPUnit_Framework_TestCase {
    * @covers ::deleteMessagesByType()
    */
   public function test_deleteMessagesByType() {
-    $drupal7 = \Mockery::mock('Drupal\service_container\Legacy\Drupal7');
-
-    $drupal7
+    $this->drupal7
       ->shouldReceive('drupal_get_messages')
       ->once()
       ->with('warning', TRUE);

@@ -38,7 +38,7 @@ class LegacyMessenger implements MessengerInterface {
    */
   public function getMessagesByType($type) {
     $messages = $this->drupal7->drupal_get_messages($type, FALSE);
-    return isset($messages[$type]) ? $messages[$type] : $messages;
+    return isset($messages[$type]) ? $messages[$type] : array();
   }
 
   /**
