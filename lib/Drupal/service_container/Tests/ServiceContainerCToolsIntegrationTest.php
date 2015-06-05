@@ -13,15 +13,7 @@ class ServiceContainerCToolsIntegrationTest extends ServiceContainerIntegrationT
    * {@inheritdoc}
    */
   protected function setUp() {
-    // Support both an array of modules and a single module.
-    $modules = func_get_args();
-    if (isset($modules[0]) && is_array($modules[0])) {
-      $modules = $modules[0];
-    }
-
-    $modules[] = 'service_container_test_ctools';
-
-    parent::setUp($modules);
+    parent::setUp('service_container_test_ctools');
 
     \ServiceContainer::init();
     $this->container = \Drupal::getContainer();
@@ -39,20 +31,24 @@ class ServiceContainerCToolsIntegrationTest extends ServiceContainerIntegrationT
   }
 
   /**
-   * Tests if service is available
+   * Tests if CTools plugin types are available as services.
    */
-  public function testInit() {
-    $this->assertTrue(\Drupal::hasService('service_container_test_ctools'));
+  public function testCToolsPluginTypes() {
+    foreach(ctools_plugin_get_plugin_type_info() as $module_name => $plugins) {
+      foreach($plugins as $plugin_type => $plugin_data) {
+        $this->assertTrue(\Drupal::hasService($module_name . '.' . $plugin_type));
+      }
+    }
   }
 
   /**
-   * Tests if CTools plugin is available
+   * Tests if a particular CTools plugin is available.
    */
   public function testCToolsPlugin() {
-    $service = $this->container->get('service_container_test_ctools')
+    $service = $this->container->get('service_container_test_ctools.ServiceContainerTestCtoolsPlugin')
       ->createInstance('ServiceContainerTestCtoolsPluginTest1');
     $this->assertTrue($service instanceof \Drupal\service_container_test_ctools\ServiceContainerTestCtoolsPlugin\ServiceContainerTestCtoolsPluginTest1);
-    $this->assertTrue($service->beep() == 'beep!');
+    $this->assertEqual($service->beep(), 'beep!');
   }
-}
 
+}
