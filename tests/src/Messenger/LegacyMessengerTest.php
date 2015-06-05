@@ -48,7 +48,7 @@ class LegacyMessengerTest extends \PHPUnit_Framework_TestCase {
 
   /**
    * @covers ::addMessage()
-   * @dataProvider setMessagesDataProvider
+   * @dataProvider addMessageDataProvider
    */
   public function test_addMessage($type, $message, $repeat) {
     $this->drupal7
@@ -88,9 +88,9 @@ class LegacyMessengerTest extends \PHPUnit_Framework_TestCase {
   }
 
   /**
-   * Data Provider for addMessage.
+   * Data Provider for addMessage().
    */
-  public function setMessagesDataProvider() {
+  public function addMessageDataProvider() {
     return array(
       array('status', 'Hello Status!', FALSE),
       array('status', 'Hello Status!', TRUE),
@@ -102,7 +102,7 @@ class LegacyMessengerTest extends \PHPUnit_Framework_TestCase {
   }
 
   /**
-   * Data Provider for getMessages and getMessagesByType.
+   * Data Provider for getMessages() and getMessagesByType().
    */
   public function getMessagesDataProvider() {
     return array(
