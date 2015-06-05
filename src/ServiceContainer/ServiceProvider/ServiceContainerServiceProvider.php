@@ -175,28 +175,11 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
 
     if ($this->moduleExists('ctools')) {
       foreach($this->cToolsGetTypes() as $module_name => $plugins) {
-
-        $services[$module_name . '.manager'] = array(
-          'class' => '\Drupal\service_container\Plugin\ContainerAwarePluginManager',
-          'arguments' => array(
-            $module_name . '.manager.internal.',
-          ),
-          'calls' => array(
-            array(
-              'setContainer',
-              array(
-                '@service_container',
-              ),
-            ),
-          ),
-        );
-
         foreach($plugins as $plugin_type => $plugin_data) {
-          $plugin_type_clean = $this->toUnderscoreCase($plugin_type);
-          $services[$module_name . '.' . $plugin_type_clean] = array();
-          $parameters['service_container.plugin_managers']['ctools'][$module_name . '.' . $plugin_type_clean] = array(
+          $services[$module_name . '.' . $plugin_type] = array();
+          $parameters['service_container.plugin_managers']['ctools'][$module_name . '.' . $plugin_type] = array(
             'owner' => $module_name,
-            'type' => $plugin_type_clean,
+            'type' => $plugin_type,
           );
         }
       }
@@ -214,13 +197,6 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
   public function cToolsGetTypes() {
     ctools_include('plugins');
     return ctools_plugin_get_plugin_type_info();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function toUnderscoreCase($name) {
-    return drupal_strtolower(preg_replace('/(?<!^)([A-Z])/', '_$1', $name));
   }
 
   /**
