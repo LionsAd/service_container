@@ -34,9 +34,6 @@ class LegacyMessengerTest extends \PHPUnit_Framework_TestCase {
   protected function setUp() {
     parent::setUp();
 
-    // We can't use the mock object here because LegacyMessenger needs a
-    // \Drupal\service_container\Legacy\Drupal7 argument.
-    // Do we need to create an interface for it instead ?
     $this->drupal7 = \Mockery::mock('\Drupal\service_container\Legacy\Drupal7');
     $this->messenger_service = new LegacyMessenger($this->drupal7);
   }
@@ -51,17 +48,15 @@ class LegacyMessengerTest extends \PHPUnit_Framework_TestCase {
 
   /**
    * @covers ::addMessage()
+   * @dataProvider setMessagesDataProvider
    */
-  public function test_addMessage() {
-    $message = 'Izumi';
-    $type = 'warning';
-
+  public function test_addMessage($type, $message, $repeat) {
     $this->drupal7
       ->shouldReceive('drupal_set_message')
       ->once()
-      ->with($message, $type, FALSE);
+      ->with($message, $type, $repeat);
 
-    $this->assertSame($this->messenger_service, $this->messenger_service->addMessage($message, $type));
+    $this->assertSame($this->messenger_service, $this->messenger_service->addMessage($message, $type, $repeat));
   }
 
   /**
@@ -82,7 +77,6 @@ class LegacyMessengerTest extends \PHPUnit_Framework_TestCase {
    * @dataProvider getMessagesDataProvider
    */
   public function test_getMessagesByType($type, $expected) {
-    $message = 'Izumi';
     $this->drupal7
       ->shouldReceive('drupal_get_messages')
       ->once()
@@ -94,8 +88,22 @@ class LegacyMessengerTest extends \PHPUnit_Framework_TestCase {
   }
 
   /**
+   * Data Provider for addMessage.
+   */
+  public function setMessagesDataProvider() {
+    return array(
+      array('status', 'Hello Status!', FALSE),
+      array('status', 'Hello Status!', TRUE),
+      array('warning', 'Hello World!', FALSE),
+      array('warning', 'Hello World!', TRUE),
+      array('error', 'Hello Error!', FALSE),
+      array('error', 'Hello Error!', TRUE),
+    );
+  }
+
+  /**
    * Data Provider for getMessages and getMessagesByType.
-   */ 
+   */
   public function getMessagesDataProvider() {
     return array(
       array('status', array()),
