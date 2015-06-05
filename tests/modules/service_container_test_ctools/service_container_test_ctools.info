@@ -1,0 +1,9 @@
+name = "Service container test ctools"
+core = 7.x
+
+dependencies[] = service_container
+dependencies[] = registry_autoload
+dependencies[] = ctools
+
+registry_autoload[] = PSR-0
+registry_autoload[] = PSR-4
