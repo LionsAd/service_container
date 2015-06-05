@@ -314,8 +314,7 @@ class Merge extends Query implements ConditionInterface {
   }
 
   /**
-   * Sets a single key field to be used as conditionIntegrityConstraintViolationException.php
-   * for this query.
+   * Sets a single key field to be used as condition for this query.
    *
    * Same as \Drupal\Core\Database\Query\Merge::keys() but offering a signature
    * that is more natural for the case of a single key.
