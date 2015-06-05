@@ -17,9 +17,9 @@ function service_container_stream_wrappers_alter(&$wrappers) {
 }
 
 /**
- * Implements hook_enable().
+ * Implements hook_modules_enabled().
  */
-function service_container_enable() {
+function service_container_modules_enabled() {
   if (class_exists('ServiceContainer')) {
     ServiceContainer::reset();
     ServiceContainer::init();
