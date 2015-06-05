@@ -13,6 +13,12 @@ use Drupal\service_container\Legacy\Drupal7;
  * Class that manage the messages in Drupal.
  */
 class LegacyMessenger implements MessengerInterface {
+
+  /**
+   * The Drupal 7 legacy service.
+   *
+   * @var \Drupal\service_container\Legacy\Drupal7
+   */
   protected $drupal7;
 
   /**
