@@ -175,12 +175,28 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
 
     if ($this->moduleExists('ctools')) {
       foreach($this->cToolsGetTypes() as $module_name => $plugins) {
+
+        $services[$module_name . '.manager'] = array(
+          'class' => '\Drupal\service_container\Plugin\ContainerAwarePluginManager',
+          'arguments' => array(
+            $module_name . '.manager.internal.',
+          ),
+          'calls' => array(
+            array(
+              'setContainer',
+              array(
+                '@service_container',
+              ),
+            ),
+          ),
+        );
+
         foreach($plugins as $plugin_type => $plugin_data) {
-          $plugin_type = $this->toUnderscoreCase($plugin_type);
-          $services[$module_name . '.' . $plugin_type] = array();
-          $parameters['service_container.plugin_managers']['ctools'][$module_name . '.' . $plugin_type] = array(
+          $plugin_type_clean = $this->toUnderscoreCase($plugin_type);
+          $services[$module_name . '.' . $plugin_type_clean] = array();
+          $parameters['service_container.plugin_managers']['ctools'][$module_name . '.' . $plugin_type_clean] = array(
             'owner' => $module_name,
-            'type' => $plugin_type,
+            'type' => $plugin_type_clean,
           );
         }
       }
