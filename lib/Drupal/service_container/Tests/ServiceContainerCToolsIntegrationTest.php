@@ -15,7 +15,13 @@ class ServiceContainerCToolsIntegrationTest extends ServiceContainerIntegrationT
   protected function setUp() {
     parent::setUp('service_container_test_ctools');
 
+    drupal_flush_all_caches();
+
+    // Once we have PR #22: https://github.com/LionsAd/service_container/pull/22
+    // we'll remove these two following lines.
+    \ServiceContainer::reset();
     \ServiceContainer::init();
+
     $this->container = \Drupal::getContainer();
   }
 
@@ -42,7 +48,7 @@ class ServiceContainerCToolsIntegrationTest extends ServiceContainerIntegrationT
           $this->toUnderscoreCase($module_name) . '.' . $this->toUnderscoreCase($plugin_type)
         );
         foreach($services as $service) {
-          $this->assertTrue($this->container->hasDefinition($service));
+          $this->assertTrue($this->container->has($service));
         }
       }
     }
@@ -52,9 +58,12 @@ class ServiceContainerCToolsIntegrationTest extends ServiceContainerIntegrationT
    * Tests if a particular CTools plugin is available.
    */
   public function testCToolsPlugin() {
-    $service = $this->container->get('service_container_test_ctools.ServiceContainerTestCtoolsPlugin')
+    $service = \Drupal::service('service_container_test_ctools.ServiceContainerTestCtoolsPlugin')
       ->createInstance('ServiceContainerTestCtoolsPluginTest1');
-    $this->assertTrue($service instanceof \Drupal\service_container_test_ctools\ServiceContainerTestCtoolsPlugin\ServiceContainerTestCtoolsPluginTest1);
+    $this->assertEqual($service->beep(), 'beep!');
+
+    $service = \Drupal::service('service_container_test_ctools.yolo')
+      ->createInstance('yolo1');
     $this->assertEqual($service->beep(), 'beep!');
   }
 
