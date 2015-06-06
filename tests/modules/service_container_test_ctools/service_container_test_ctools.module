@@ -16,5 +16,9 @@ function service_container_test_ctools_ctools_plugin_type() {
       'use hooks' => FALSE,
       'extension' => 'php',
     ),
+    'yolo' => array(
+      'use hooks' => FALSE,
+      'extension' => 'php'
+    )
   );
 }
