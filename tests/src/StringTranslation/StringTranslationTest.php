@@ -5,7 +5,7 @@
  * Contains \Drupal\Tests\service_container\StringTranslation\StringTranslationTest
  */
 
-namespace Drupal\Tests\service_container\StringTranslation;
+namespace Drupal\service_container\StringTranslation;
 
 use Drupal\service_container\StringTranslation\StringTranslation;
 
