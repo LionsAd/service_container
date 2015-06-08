@@ -70,7 +70,7 @@ class MTimeProtectedFastFileStorage extends FileStorage {
 
     // Write the file out to a temporary location. Prepend with a '.' to keep it
     // hidden from listings and web servers.
-    $temporary_path = tempnam($this->directory, '.');
+    $temporary_path = $this->tempnam($this->directory, '.');
     if (!$temporary_path || !@file_put_contents($temporary_path, $data)) {
       return FALSE;
     }
@@ -103,7 +103,7 @@ class MTimeProtectedFastFileStorage extends FileStorage {
       // iteration.
       if ($i > 0) {
         $this->unlink($temporary_path);
-        $temporary_path = tempnam($this->directory, '.');
+        $temporary_path = $this->tempnam($this->directory, '.');
         rename($full_path, $temporary_path);
         // Make sure to not loop infinitely on a hopelessly slow filesystem.
         if ($i > 10) {
@@ -119,7 +119,7 @@ class MTimeProtectedFastFileStorage extends FileStorage {
   }
 
   /**
-   * Returns the full path where the file is or should be stored.
+   * Gets the full path where the file is or should be stored.
    *
    * This function creates a file path that includes a unique containing
    * directory for the file and a file name that is a hash of the virtual file
@@ -162,7 +162,15 @@ class MTimeProtectedFastFileStorage extends FileStorage {
   }
 
   /**
-   * Returns the full path of the containing directory where the file is or should be stored.
+   * Gets the full path of the containing directory where the file is or should
+   * be stored.
+   *
+   * @param string $name
+   *   The virtual file name. Can be a relative path.
+   *
+   * @return string
+   *   The full path of the containing directory where the file is or should be
+   *   stored.
    */
   protected function getContainingDirectoryFullPath($name) {
     // Remove the .php file extension from the directory name.
@@ -184,4 +192,20 @@ class MTimeProtectedFastFileStorage extends FileStorage {
     return filemtime($directory);
   }
 
+  /**
+   * A brute force tempnam implementation supporting streams.
+   *
+   * @param $directory
+   *   The directory where the temporary filename will be created.
+   * @param $prefix
+   *   The prefix of the generated temporary filename.
+   * @return string
+   *   Returns the new temporary filename (with path), or FALSE on failure.
+   */
+  protected function tempnam($directory, $prefix) {
+    do {
+      $path = $directory . '/' . $prefix . substr(str_shuffle(hash('sha256', microtime())), 0, 10);
+    } while (file_exists($path));
+    return $path;
+  }
 }

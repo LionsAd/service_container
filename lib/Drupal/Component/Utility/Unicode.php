@@ -38,7 +38,7 @@ class Unicode {
    *
    * @see http://unicode.org/glossary
    */
-  const PREG_CLASS_WORD_BOUNDARY = <<< 'EOD'
+  const PREG_CLASS_WORD_BOUNDARY = <<<'EOD'
 \x{0}-\x{2F}\x{3A}-\x{40}\x{5B}-\x{60}\x{7B}-\x{A9}\x{AB}-\x{B1}\x{B4}
 \x{B6}-\x{B8}\x{BB}\x{BF}\x{D7}\x{F7}\x{2C2}-\x{2C5}\x{2D2}-\x{2DF}
 \x{2E5}-\x{2EB}\x{2ED}\x{2EF}-\x{2FF}\x{375}\x{37E}-\x{385}\x{387}\x{3F6}
@@ -100,7 +100,7 @@ EOD;
   protected static $status = 0;
 
   /**
-   * Get the current status of unicode/multibyte support on this environment.
+   * Gets the current status of unicode/multibyte support on this environment.
    *
    * @return int
    *   The status of multibyte support. It can be one of:
@@ -181,6 +181,38 @@ EOD;
     mb_language('uni');
     static::$status = static::STATUS_MULTIBYTE;
     return '';
+  }
+
+  /**
+   * Decodes UTF byte-order mark (BOM) into the encoding's name.
+   *
+   * @param string $data
+   *   The data possibly containing a BOM. This can be the entire contents of
+   *   a file, or just a fragment containing at least the first five bytes.
+   *
+   * @return string|bool
+   *   The name of the encoding, or FALSE if no byte order mark was present.
+   */
+  public static function encodingFromBOM($data) {
+    static $bomMap = array(
+      "\xEF\xBB\xBF" => 'UTF-8',
+      "\xFE\xFF" => 'UTF-16BE',
+      "\xFF\xFE" => 'UTF-16LE',
+      "\x00\x00\xFE\xFF" => 'UTF-32BE',
+      "\xFF\xFE\x00\x00" => 'UTF-32LE',
+      "\x2B\x2F\x76\x38" => 'UTF-7',
+      "\x2B\x2F\x76\x39" => 'UTF-7',
+      "\x2B\x2F\x76\x2B" => 'UTF-7',
+      "\x2B\x2F\x76\x2F" => 'UTF-7',
+      "\x2B\x2F\x76\x38\x2D" => 'UTF-7',
+    );
+
+    foreach ($bomMap as $bom => $encoding) {
+      if (strpos($data, $bom) === 0) {
+        return $encoding;
+      }
+    }
+    return FALSE;
   }
 
   /**
@@ -539,6 +571,22 @@ EOD;
     }
 
     return $string;
+  }
+
+  /**
+   * Compares UTF-8-encoded strings in a binary safe case-insensitive manner.
+   *
+   * @param string $str1
+   *   The first string.
+   * @param string $str2
+   *   The second string.
+   *
+   * @return int
+   *   Returns < 0 if $str1 is less than $str2; > 0 if $str1 is greater than
+   *   $str2, and 0 if they are equal.
+   */
+  public static function strcasecmp($str1 , $str2) {
+    return strcmp(static::strtoupper($str1), static::strtoupper($str2));
   }
 
   /**
