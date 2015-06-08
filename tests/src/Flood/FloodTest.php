@@ -7,7 +7,6 @@
 
 namespace Drupal\Tests\service_container\Flood;
 
-use Drupal\Core\Database\Database;
 use Drupal\service_container\Flood\DatabaseBackend;
 use Drupal\service_container\Legacy\Drupal7;
 
@@ -30,7 +29,7 @@ class FloodTest extends \PHPUnit_Framework_TestCase {
     parent::setUp();
 
     $drupal7 = new Drupal7();
-    $connection = Database::getConnection();
+    $connection = \Database::getConnection();
 
     $this->flood_service = new DatabaseBackend($connection, $drupal7);
   }
