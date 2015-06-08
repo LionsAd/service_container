@@ -6,8 +6,8 @@
  */
 
 namespace Drupal\Tests\service_container\Flood;
+
 use Drupal\Core\Database\Connection;
-use Drupal\Core\Database\Database;
 use Drupal\service_container\Flood\DatabaseBackend;
 use Drupal\service_container\Legacy\Drupal7;
 
