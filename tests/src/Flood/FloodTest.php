@@ -30,9 +30,9 @@ class FloodTest extends \PHPUnit_Framework_TestCase {
     parent::setUp();
 
     $drupal7 = new Drupal7();
-    $database = new Database();
+    $connection = new Connection();
 
-    $this->flood_service = new DatabaseBackend($database, $drupal7);
+    $this->flood_service = new DatabaseBackend($connection, $drupal7);
   }
 
   /**
