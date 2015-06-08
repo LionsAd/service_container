@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains \Drupal\Tests\service_container\StringTranslation\StringTranslationTest
+ * Contains \Drupal\service_container\StringTranslation\StringTranslationTest
  */
 
 namespace Drupal\service_container\StringTranslation;
