@@ -34,7 +34,6 @@ class WatchdogLogger extends LoggerBase implements LoggerInterface {
 
   /**
    * {@inheritdoc}
-   * @codeCoverageIgnore
    */
   public function log($level, $message, array $context = array()) {
     $map = array(

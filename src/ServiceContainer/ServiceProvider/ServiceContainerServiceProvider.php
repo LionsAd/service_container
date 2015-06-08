@@ -41,7 +41,7 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
 
     $services['module_handler'] = array(
       'class' => '\Drupal\service_container\Extension\ModuleHandler',
-      'arguments' => array('@drupal7', DRUPAL_ROOT),
+      'arguments' => array(DRUPAL_ROOT, '@drupal7'),
     );
 
     $services['module_installer'] = array(
