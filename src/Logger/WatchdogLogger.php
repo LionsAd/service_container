@@ -26,9 +26,12 @@ class WatchdogLogger extends LoggerBase implements LoggerInterface {
   protected $drupal7;
 
   /**
-   * {@inheritdoc}
+   * Constructs a WatchdogLogger object.
+   *
+   * @param \Drupal\service_container\Legacy\Drupal7 $drupal7
+   *   The Drupal7 service.
    */
-  function __construct(Drupal7 $drupal7) {
+  public function __construct(Drupal7 $drupal7) {
     $this->drupal7 = $drupal7;
   }
 

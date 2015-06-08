@@ -22,13 +22,20 @@ class WatchdogLoggerTest extends \PHPUnit_Framework_TestCase {
   protected $watchdogLogger;
 
   /**
+   * The Drupal 7 legacy service
+   *
+   * @var \Drupal\service_container\Legacy\Drupal7
+   */
+  protected $drupal7;
+
+  /**
    * {@inheritdoc}
    */
   protected function setUp() {
     parent::setUp();
 
-    $drupal7 = new Drupal7();
-    $this->watchdogLogger = new WatchdogLogger($drupal7);
+    $this->drupal7 = \Mockery::mock('\Drupal\service_container\Legacy\Drupal7');
+    $this->watchdogLogger = new WatchdogLogger($this->drupal7);
   }
 
   /**

@@ -140,6 +140,28 @@ class Drupal7 {
   }
 
   /**
+   * Invokes a hook in a particular module.
+   *
+   * All arguments are passed by value. Use drupal_alter() if you need to pass
+   * arguments by reference.
+   *
+   * @param $module
+   *   The name of the module (without the .module extension).
+   * @param $hook
+   *   The name of the hook to invoke.
+   * @param ...
+   *   Arguments to pass to the hook implementation.
+   *
+   * @return
+   *   The return value of the hook implementation.
+   *
+   * @see drupal_alter()
+   */
+  public function module_invoke($module, $hook) {
+    return module_invoke($module, $hook);
+  }
+
+  /**
    * Invokes a hook in all enabled modules that implement it.
    *
    * All arguments are passed by value. Use drupal_alter() if you need to pass
