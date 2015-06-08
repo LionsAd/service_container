@@ -8,26 +8,35 @@
 // Core Hooks
 
 /**
+ * Implements hook_stream_wrappers_alter().
+ */
+function service_container_stream_wrappers_alter(&$wrappers) {
+  if (class_exists('ServiceContainer')) {
+    ServiceContainer::init();
+  }
+}
+
+/**
+ * Implements hook_modules_enabled().
+ */
+function service_container_modules_enabled() {
+  if (class_exists('ServiceContainer')) {
+    ServiceContainer::reset();
+    ServiceContainer::init();
+  }
+}
+
+/**
  * Implements hook_module_implements_alter().
  */
 function service_container_module_implements_alter(&$implementations, $hook) {
   // Moves our hook_init() implementation to occur first so that we
   // can initialize the container.
-  if ($hook == 'init') {
+  if ($hook == 'stream_wrappers_alter') {
     $group = $implementations['service_container'];
     unset($implementations['service_container']);
     $implementations = array('service_container' => $group) + $implementations;
   }
-}
-
-/**
- * Implements hook_init().
- */
-function service_container_init() {
-  // Initalize the container, now that Drupal is booted.
-  // Note: If this turns out to be not early enough, move to
-  //       hook_stream_wrappers_alter().
-  ServiceContainer::init();
 }
 
 // -----------------------------------------------------------------------
