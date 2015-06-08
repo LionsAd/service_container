@@ -7,8 +7,9 @@
 
 namespace Drupal\Tests\service_container\Flood;
 use Drupal\Core\Database\Connection;
+use Drupal\Core\Database\Database;
 use Drupal\service_container\Flood\DatabaseBackend;
-
+use Drupal\service_container\Legacy\Drupal7;
 
 /**
  * @coversDefaultClass \Drupal\service_container\Flood\DatabaseBackend
@@ -27,10 +28,18 @@ class FloodTest extends \PHPUnit_Framework_TestCase {
    */
   protected function setUp() {
     parent::setUp();
+
+    $drupal7 = new Drupal7();
+    $database = new Database();
+
+    $this->flood_service = new DatabaseBackend($database, $drupal7);
   }
 
-
-
+  /**
+   * @covers ::__construct()
+   */
+  public function test_construct() {
+    $this->assertInstanceOf('\Drupal\service_container\Flood\DatabaseBackend', $this->flood_service);
+  }
 
 }
-

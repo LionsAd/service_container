@@ -8,7 +8,6 @@
 namespace Drupal\service_container\Flood;
 
 use Drupal\service_container\Legacy\Drupal7;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Flood\FloodInterface;
 
@@ -44,12 +43,11 @@ class DatabaseBackend implements FloodInterface {
    * @param \Drupal\Core\Database\Connection $connection
    *   The database connection which will be used to store the flood event
    *   information.
-   * @param \Symfony\Component\HttpFoundation\RequestStack $request_stack
-   *   The request stack used to retrieve the current request.
+   * @param \Drupal\service_container\Legacy\Drupal7
+   *   The Drupal 7 legacy service.
    */
-  public function __construct(Connection $connection, RequestStack $request_stack, Drupal7 $drupal7) {
+  public function __construct(Connection $connection, Drupal7 $drupal7) {
     $this->connection = $connection;
-    $this->requestStack = $request_stack;
     $this->drupal7 = $drupal7;
   }
 

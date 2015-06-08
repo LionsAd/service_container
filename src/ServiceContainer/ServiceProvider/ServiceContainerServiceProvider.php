@@ -57,16 +57,9 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
 
     $services['flood'] = array(
       'class' => '\Drupal\service_container\Flood\DatabaseBackend',
-      'arguments' => array('@database', '@request_stack', '@drupal7'),
+      'arguments' => array('@database', '@drupal7'),
       'tags' => array(
         array('name' => 'backend_overridable'),
-      ),
-    );
-
-    $services['request_stack'] = array(
-      'class' => 'Symfony\Component\HttpFoundation\RequestStack',
-      'tags' => array(
-        array('name' => 'persist'),
       ),
     );
 
