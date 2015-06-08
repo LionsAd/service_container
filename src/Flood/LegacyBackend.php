@@ -13,6 +13,7 @@ use Drupal\Core\Flood\FloodInterface;
 
 /**
  * Defines the database flood backend. This is the default Drupal backend.
+ * @codeCoverageIgnore
  */
 class LegacyBackend implements FloodInterface {
 
