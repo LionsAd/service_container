@@ -13,7 +13,15 @@ namespace Drupal\service_container\Legacy;
  * @method void flood_register_event(string $name, integer $window, string $identifier)
  * @method void flood_clear_event(string $name, string $identifier)
  * @method bool flood_is_allowed(string $name, integer $threshold, integer $window, string $identifier)
- *
+ * @method bool module_load_all(bool $bootstrap)
+ * @method array module_list(bool $refresh, bool $bootstrap_refresh, bool $sort, array $fixed_list)
+ * @method bool module_exists(string $module)
+ * @method string drupal_get_filename(string $type, string $name, string $filename)
+ * @method void module_load_all_includes(string $type, string $name)
+ * @method array module_implements(string $hook, bool $sort, bool $reset)
+ * @method void module_implements_write_cache()
+ * @method void drupal_static_reset(string $name)
+ * @method array system_rebuild_module_data()
  */
 class Drupal7 {
 
@@ -238,6 +246,23 @@ class Drupal7 {
    */
   public function drupal_alter($type, &$data, &$context1 = NULL, &$context2 = NULL, &$context3 = NULL) {
     drupal_alter($type, $data, $context1, $context2, $context3);
+  }
+
+  /**
+   * Includes a file with the provided type and name.
+   *
+   * This prevents including a theme, engine, module, etc., more than once.
+   *
+   * @param $type
+   *   The type of item to load (i.e. theme, theme_engine, module).
+   * @param $name
+   *   The name of the item to load.
+   *
+   * @return
+   *   TRUE if the item is loaded or has already been loaded.
+   */
+  public function drupal_load($type, $name) {
+    return drupal_load($type, $name);
   }
 
 }
