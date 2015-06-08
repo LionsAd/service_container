@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Definition of Drupal\service_container\Flood\DatabaseBackend.
+ * Definition of Drupal\service_container\Flood\LegacyBackend.
  */
 
 namespace Drupal\service_container\Flood;
@@ -14,7 +14,7 @@ use Drupal\Core\Flood\FloodInterface;
 /**
  * Defines the database flood backend. This is the default Drupal backend.
  */
-class DatabaseBackend implements FloodInterface {
+class LegacyBackend implements FloodInterface {
 
   /**
    * The database connection used to store flood event information.

@@ -56,7 +56,7 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
     );
 
     $services['flood'] = array(
-      'class' => '\Drupal\service_container\Flood\DatabaseBackend',
+      'class' => '\Drupal\service_container\Flood\LegacyBackend',
       'arguments' => array('@database', '@drupal7'),
       'tags' => array(
         array('name' => 'backend_overridable'),
