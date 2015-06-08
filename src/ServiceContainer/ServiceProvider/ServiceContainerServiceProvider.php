@@ -49,10 +49,25 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
     );
 
     $services['database'] = array(
-      'class' => 'Drupal\Core\Database\Connection',
+      'class' => '\Drupal\Core\Database\Connection',
       'factory_class' => 'Drupal\Core\Database\Database',
       'factory_method' => 'getConnection',
       'arguments' => array('default'),
+    );
+
+    $services['flood'] = array(
+      'class' => '\Drupal\service_container\Flood\DatabaseBackend',
+      'arguments' => array('@database', '@request_stack', '@drupal7'),
+      'tags' => array(
+        array('name' => 'backend_overridable'),
+      ),
+    );
+
+    $services['request_stack'] = array(
+      'class' => 'Symfony\Component\HttpFoundation\RequestStack',
+      'tags' => array(
+        array('name' => 'persist'),
+      ),
     );
 
     $services['serialization.phpserialize'] = array(
