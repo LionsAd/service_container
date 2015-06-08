@@ -146,6 +146,7 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
 
     $services['logger.dblog'] = array(
       'class' => 'Drupal\service_container\Logger\WatchdogLogger',
+      'arguments' => array('@drupal7'),
       'tags' => array(
         array('name' => 'logger'),
       ),
