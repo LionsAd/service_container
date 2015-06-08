@@ -30,4 +30,18 @@ class StringTranslation implements TranslationInterface {
     return format_plural($count, $singular, $plural, $args, $options);
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function formatPluralTranslated($count, $translation, array $args = array(), array $options = array()) {
+    throw new \BadMethodCallException('StringTranslation::formatPluralTranslated is not implemented.');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getNumberOfPlurals($langCode = NULL) {
+    throw new \BadMethodCallException('StringTranslation::getNumberOfPlurals is not implemented.');
+  }
+
 }
