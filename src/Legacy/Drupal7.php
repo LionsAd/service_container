@@ -9,16 +9,14 @@ namespace Drupal\service_container\Legacy;
 
 /**
  * Defines the Drupal 7 legacy service.
+ *
+ * @method void flood_register_event(string $name, integer $window, string $identifier)
+ * @method void flood_clear_event(string $name, string $identifier)
+ * @method bool flood_is_allowed(string $name, integer $threshold, integer $window, string $identifier)
+ *
  */
 class Drupal7 {
 
-
-  /**
-   * @method void flood_register_event
-   * @method void flood_clear_event
-   * @method bool flood_is_allowed
-   *
-   */
   public function __call($method, $args) {
     return call_user_func_array($method, $args);
   }
