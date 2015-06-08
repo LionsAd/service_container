@@ -55,6 +55,14 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
       'arguments' => array('default'),
     );
 
+    $services['flood'] = array(
+      'class' => '\Drupal\service_container\Flood\LegacyBackend',
+      'arguments' => array('@database', '@drupal7'),
+      'tags' => array(
+        array('name' => 'backend_overridable'),
+      ),
+    );
+
     $services['serialization.phpserialize'] = array(
       'class' => 'Drupal\Component\Serialization\PhpSerialize',
     );
