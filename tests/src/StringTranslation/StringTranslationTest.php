@@ -10,7 +10,7 @@ namespace Drupal\Tests\service_container\StringTranslation;
 use Drupal\service_container\StringTranslation\StringTranslation;
 
 /**
- * @coversDefaultClass \Drupal\service_container\StringTranslation\StringTranslationTest
+ * @coversDefaultClass \Drupal\service_container\StringTranslation\StringTranslation
  */
 class StringTranslationTest extends \PHPUnit_Framework_TestCase {
 
