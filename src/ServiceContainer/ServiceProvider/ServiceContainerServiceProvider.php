@@ -49,7 +49,7 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
     );
 
     $services['database'] = array(
-      'class' => '\Drupal\Core\Database\Connection',
+      'class' => 'Drupal\Core\Database\Connection',
       'factory_class' => 'Drupal\Core\Database\Database',
       'factory_method' => 'getConnection',
       'arguments' => array('default'),
