@@ -24,13 +24,6 @@ class DatabaseBackend implements FloodInterface {
   protected $connection;
 
   /**
-   * The request stack.
-   *
-   * @var \Symfony\Component\HttpFoundation\RequestStack
-   */
-  protected $requestStack;
-
-  /**
    * The Drupal 7 legacy service.
    *
    * @var \Drupal\service_container\Legacy\Drupal7
