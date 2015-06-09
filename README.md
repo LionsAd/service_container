@@ -87,4 +87,3 @@ For some reasons, we had to alter them a bit to make them compatible with Drupal
 ### Example of modules using this module
 * [render_cache 7.x-2.x](https://www.drupal.org/project/render_cache)
 * [openlayers 7.x-3.x](https://www.drupal.org/project/openlayers)
-
