@@ -8,17 +8,6 @@
 // Contrib Hooks
 
 /**
- * Implements hook_ctools_plugin_type().
- */
-function service_container_symfony_ctools_plugin_type() {
-  $items['ServiceProvider'] = array(
-    'cache' => FALSE,
-  );
-
-  return $items;
-}
-
-/**
  * Implements hook_ctools_plugin_directory().
  */
 function service_container_symfony_ctools_plugin_directory($owner, $plugin_type) {
