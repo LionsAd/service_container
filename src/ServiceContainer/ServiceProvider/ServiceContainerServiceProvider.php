@@ -8,6 +8,7 @@
 namespace Drupal\service_container\ServiceContainer\ServiceProvider;
 
 use Drupal\service_container\DependencyInjection\ServiceProviderInterface;
+use Drupal\service_container\DependencyInjection\Container;
 
 /**
  * Provides render cache service definitions.
@@ -173,8 +174,6 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
       'arguments' => array('cron'),
     );
 
-    // @todo Make it  possible to register all ctools plugins here.
-
     return array(
       'parameters' => $parameters,
       'services' => $services,
@@ -185,6 +184,13 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
    * {@inheritdoc}
    */
   public function alterContainerDefinition(&$container_definition) {
+
+    if (!empty($container_definition['parameters']['ctools_plugins_auto_discovery']) && $this->moduleExists('ctools')) {
+      $ctools_types = $this->cToolsGetTypes();
+      $filtered_types = array_intersect_key($ctools_types, $container_definition['parameters']['ctools_plugins_auto_discovery']);
+      $this->registerCToolsPluginTypes($container_definition, $filtered_types);
+    }
+
     // Set empty value when its not set.
     if (empty($container_definition['tags']['plugin_manager'])) {
       $container_definition['tags']['plugin_manager'] = array();
@@ -213,9 +219,49 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
           $definition += array(
             'arguments' => array(),
           );
-          array_unshift($definition['arguments'], $definition);
+          // array_unshift() internally uses a reference, therefore creates an
+          // endless recursion. Use a copy to prevent that.
+          $definition_copy = $definition;
+          array_unshift($definition['arguments'], $definition_copy);
           $container_definition['services'][$tag['prefix'] . $key] = $definition + array('public' => FALSE);
         }
+      }
+    }
+  }
+
+  /**
+   * Automatically register all ctools plugins of the given types.
+   *
+   * @param @todo
+   * @param @todo
+   */
+  public function registerCToolsPluginTypes(&$container_definition, $ctools_types) {
+    foreach($ctools_types as $module_name => $plugins) {
+      foreach($plugins as $plugin_type => $plugin_data) {
+        if (isset($container_definition['parameters']['service_container.plugin_managers']['ctools'][$module_name . '.' . $plugin_type])) {
+          continue;
+        }
+        // Register service with original string.
+        $name = $module_name . '.' . $plugin_type;
+        $container_definition['services'][$name] = array();
+
+        // Check candidates for needed aliases.
+        $candidates = array();
+        $candidates[$module_name . '.' . Container::underscore($plugin_type)] = TRUE;
+        $candidates[$name] = FALSE;
+
+        foreach ($candidates as $candidate => $value) {
+          if ($value) {
+            $container_definition['services'][$candidate] = array(
+              'alias' => $name,
+            );
+          }
+        }
+
+        $container_definition['parameters']['service_container.plugin_managers']['ctools'][$module_name . '.' . $plugin_type] = array(
+          'owner' => $module_name,
+          'type' => $plugin_type,
+        );
       }
     }
   }
@@ -278,5 +324,36 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
         ),
       ),
     );
+  }
+
+  /**
+   * Return the full list of plugin type info for all plugin types registered in
+   * the current system.
+   *
+   * This function manages its own cache getting/setting, and should always be
+   * used as the way to initially populate the list of plugin types. Make sure you
+   * call this function to properly populate the ctools_plugin_type_info static
+   * variable.
+   *
+   * @return array
+   *   A multilevel array of plugin type info, the outer array keyed on module
+   *   name and each inner array keyed on plugin type name.
+   */
+  public function cToolsGetTypes() {
+    ctools_include('plugins');
+    return ctools_plugin_get_plugin_type_info();
+  }
+
+  /**
+   * Determines whether a given module exists.
+   *
+   * @param string $module
+   *   The name of the module (without the .module extension).
+   *
+   * @return bool
+   *   TRUE if the module is both installed and enabled, FALSE otherwise.
+   */
+  public function moduleExists($name) {
+    return module_exists($name);
   }
 }
