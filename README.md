@@ -86,10 +86,9 @@ So you can use normal container parameter syntax.
 - service\_container is tested via simpletest for integration with Drupal. (run ./tests/run-simpletests.sh)
 - service\_container is tested via PHPUnit for code coverage. (run ./tests/run-coverage.sh)
 
-### List of Drupal 8 services that we've altered
+### List of services that we've altered
 
-Here's the list of the service that we've copied from Drupal 8.
-For some reasons, we had to alter them a bit to make them compatible with Drupal 7.
+The following services contains files that has been altered from their Drupal 8 counterpart to make them compatible with Drupal 7.
 
 * Database
 * KeyValueStore
