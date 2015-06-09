@@ -276,6 +276,16 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
   }
 
   /**
+   * Tests that Container::get() for aliased services works properly.
+   * @covers ::get()
+   */
+  public function test_get_alias() {
+    $service = $this->container->get('service.provider');
+    $aliased_service = $this->container->get('service.provider_alias');
+    $this->assertSame($service, $aliased_service);
+  }
+
+  /**
    * Tests that Container::get() for factories via services works properly.
    * @covers ::get()
    */
@@ -306,6 +316,31 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
   public function test_get_factoryWrong() {
     $this->container->get('wrong_factory');
   }
+
+  /**
+   * Tests Container::get() for factories via services (Symfony 2.7.0).
+   * @covers ::get()
+   */
+  public function test_get_factoryServiceNew() {
+    $factory_service = $this->container->get('factory_service_new');
+    $factory_service_class = $this->container->getParameter('factory_service_class');
+    $this->assertInstanceOf($factory_service_class, $factory_service);
+  }
+
+  /**
+   * Tests that Container::get() for factories via class works (Symfony 2.7.0).
+   * @covers ::get()
+   */
+  public function test_get_factoryClassNew() {
+    $service = $this->container->get('service.provider');
+    $factory_service= $this->container->get('factory_class_new');
+
+    $this->assertInstanceOf(get_class($service), $factory_service);
+    $this->assertEquals('bar', $factory_service->getSomeParameter(), 'Correct parameter was passed via the factory class instantiation.');
+    $this->assertEquals($this->container, $factory_service->getContainer(), 'Container was injected via setter injection.');
+  }
+
+
 
   /**
    * Tests that private services work correctly.
@@ -404,6 +439,10 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
         '%some_config%'
       ),
     );
+    $services['service.provider_alias'] = array(
+      'alias' => 'service.provider',
+    );
+
     $services['service_using_array'] = array(
       'class' => '\Drupal\Tests\service_container\DependencyInjection\MockService',
       'arguments' => array(array('@other.service'), '%some_private_config%')
@@ -431,6 +470,26 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
         array('setContainer', array('@service_container')),
       ),
     );
+    $services['factory_service_new'] = array(
+      'class' => '\Drupal\service_container\ServiceContainer\ControllerInterface',
+      'factory' => array(
+        '@service.provider',
+        'getFactoryMethod',
+      ),
+      'arguments' => array('%factory_service_class%'),
+    );
+    $services['factory_class_new'] = array(
+      'class' => '\Drupal\service_container\ServiceContainer\ControllerInterface',
+      'factory' => '\Drupal\Tests\service_container\DependencyInjection\MockService::getFactoryMethod',
+      'arguments' => array(
+        '\Drupal\Tests\service_container\DependencyInjection\MockService',
+        array(NULL, 'bar'),
+      ),
+      'calls' => array(
+        array('setContainer', array('@service_container')),
+      ),
+    );
+
     $services['wrong_factory'] = array(
       'class' => '\Drupal\service_container\ServiceContainer\ControllerInterface',
       'factory_method' => 'getFactoryMethod',

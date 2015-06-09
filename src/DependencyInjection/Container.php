@@ -94,7 +94,7 @@ class Container implements ContainerInterface {
     }
 
     if (isset($definition['alias'])) {
-      return $this->get(substr($definition['alias'], 1), $invalidBehavior);
+      return $this->get($definition['alias'], $invalidBehavior);
     }
 
     $this->loading[$name] = TRUE;
