@@ -174,34 +174,6 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
       'arguments' => array('cron'),
     );
 
-    if ($this->moduleExists('ctools')) {
-      foreach($this->cToolsGetTypes() as $module_name => $plugins) {
-        foreach($plugins as $plugin_type => $plugin_data) {
-          // Register service with original string.
-          $name = $module_name . '.' . $plugin_type;
-          $services[$name] = array();
-
-          // Check candidates for needed aliases.
-          $candidates = array();
-          $candidates[$module_name . '.' . Container::underscore($plugin_type)] = TRUE;
-          $candidates[$name] = FALSE;
-
-          foreach ($candidates as $candidate => $value) {
-            if ($value) {
-              $services[$candidate] = array(
-                'alias' => $name,
-              );
-            }
-          }
-
-          $parameters['service_container.plugin_managers']['ctools'][$module_name . '.' . $plugin_type] = array(
-            'owner' => $module_name,
-            'type' => $plugin_type,
-          );
-        }
-      }
-    }
-
     return array(
       'parameters' => $parameters,
       'services' => $services,
@@ -212,6 +184,13 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
    * {@inheritdoc}
    */
   public function alterContainerDefinition(&$container_definition) {
+
+    if (!empty($container_definition['parameters']['ctools_plugins_auto_discovery']) && $this->moduleExists('ctools')) {
+      $ctools_types = $this->cToolsGetTypes();
+      $filtered_types = array_intersect_key($ctools_types, $container_definition['parameters']['ctools_plugins_auto_discovery']);
+      $this->registerCToolsPluginTypes($container_definition, $filtered_types);
+    }
+
     // Set empty value when its not set.
     if (empty($container_definition['tags']['plugin_manager'])) {
       $container_definition['tags']['plugin_manager'] = array();
@@ -246,6 +225,43 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
           array_unshift($definition['arguments'], $definition_copy);
           $container_definition['services'][$tag['prefix'] . $key] = $definition + array('public' => FALSE);
         }
+      }
+    }
+  }
+
+  /**
+   * Automatically register all ctools plugins of the given types.
+   *
+   * @param @todo
+   * @param @todo
+   */
+  public function registerCToolsPluginTypes(&$container_definition, $ctools_types) {
+    foreach($ctools_types as $module_name => $plugins) {
+      foreach($plugins as $plugin_type => $plugin_data) {
+        if (isset($container_definition['parameters']['service_container.plugin_managers']['ctools'][$module_name . '.' . $plugin_type])) {
+          continue;
+        }
+        // Register service with original string.
+        $name = $module_name . '.' . $plugin_type;
+        $container_definition['services'][$name] = array();
+
+        // Check candidates for needed aliases.
+        $candidates = array();
+        $candidates[$module_name . '.' . Container::underscore($plugin_type)] = TRUE;
+        $candidates[$name] = FALSE;
+
+        foreach ($candidates as $candidate => $value) {
+          if ($value) {
+            $container_definition['services'][$candidate] = array(
+              'alias' => $name,
+            );
+          }
+        }
+
+        $container_definition['parameters']['service_container.plugin_managers']['ctools'][$module_name . '.' . $plugin_type] = array(
+          'owner' => $module_name,
+          'type' => $plugin_type,
+        );
       }
     }
   }
