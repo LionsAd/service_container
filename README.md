@@ -94,5 +94,5 @@ For some reasons, we had to alter them a bit to make them compatible with Drupal
 * Database
 * KeyValueStore
 
-### Example of module using this module
+### List of modules using this module
 * [Openlayers](https://www.drupal.org/project/openlayers)
