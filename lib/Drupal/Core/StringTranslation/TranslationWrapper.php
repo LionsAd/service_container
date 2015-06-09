@@ -17,7 +17,6 @@ namespace Drupal\Core\StringTranslation;
  * @see \Drupal\Core\Annotation\Translation
  */
 class TranslationWrapper {
-  use StringTranslationTrait;
 
   /**
    * The string to be translated.
@@ -39,6 +38,13 @@ class TranslationWrapper {
    * @var array
    */
   protected $options;
+
+  /**
+   * The string translation service.
+   *
+   * @var \Drupal\Core\StringTranslation\TranslationInterface
+   */
+  protected $stringTranslation;
 
   /**
    * Constructs a new class instance.
@@ -104,6 +110,29 @@ class TranslationWrapper {
    */
   public function __sleep() {
     return array('string', 'arguments', 'options');
+  }
+
+  /**
+   * Gets the string translation service.
+   *
+   * @return \Drupal\Core\StringTranslation\TranslationInterface
+   *   The string translation service.
+   */
+  protected function getStringTranslation() {
+    if (!$this->stringTranslation) {
+      $this->stringTranslation = \Drupal::service('string_translation');
+    }
+
+    return $this->stringTranslation;
+  }
+
+  /**
+   * Translates a string to the current language or to a given language.
+   *
+   * See the t() documentation for details.
+   */
+  protected function t($string, array $args = array(), array $options = array()) {
+    return $this->getStringTranslation()->translate($string, $args, $options);
   }
 
 }
