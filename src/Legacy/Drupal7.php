@@ -36,6 +36,7 @@ namespace Drupal\service_container\Legacy;
  * @method mixed variable_get($name, $default = NULL)
  * @method void variable_set($name, $value)
  *
+ * @codeCoverageIgnore
  */
 class Drupal7 {
 
@@ -89,8 +90,6 @@ class Drupal7 {
    *   An HTML string containing a link to the given path.
    *
    * @see url()
-   *
-   * @codeCoverageIgnore
    */
   public function l($text, $path, array $options = array()) {
     return l($text, $path, $options);
@@ -156,8 +155,6 @@ class Drupal7 {
    * @see get_t()
    * @see format_string()
    * @ingroup sanitization
-   *
-   * @codeCoverageIgnore
    */
   public function t($string, array $args = array(), array $options = array()) {
     return t($string, $args, $options);
@@ -249,8 +246,6 @@ class Drupal7 {
    *   The return value of the hook implementation.
    *
    * @see drupal_alter()
-   *
-   * @codeCoverageIgnore
    */
   public function module_invoke($module, $hook) {
     $args = func_get_args();
@@ -276,8 +271,6 @@ class Drupal7 {
    *   arrays from their implementations, those are merged into one array.
    *
    * @see drupal_alter()
-   *
-   * @codeCoverageIgnore
    */
   public function module_invoke_all($hook) {
     $args = func_get_args();
@@ -342,8 +335,6 @@ class Drupal7 {
    *   should not be used for new Drupal 7 code either. It is here only for
    *   backwards compatibility with older code that passed additional arguments
    *   to drupal_alter().
-   *
-   * @codeCoverageIgnore
    */
   public function drupal_alter($type, &$data, &$context1 = NULL, &$context2 = NULL, &$context3 = NULL) {
     drupal_alter($type, $data, $context1, $context2, $context3);
@@ -361,8 +352,6 @@ class Drupal7 {
    *
    * @return
    *   TRUE if the item is loaded or has already been loaded.
-   *
-   * @codeCoverageIgnore
    */
   public function drupal_load($type, $name) {
     return drupal_load($type, $name);
