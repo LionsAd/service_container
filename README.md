@@ -92,6 +92,7 @@ The following services contains files that has been altered from their Drupal 8 
 
 * Database
 * KeyValueStore
+* StringTranslation
 
 ### List of modules using this module
 * [Openlayers](https://www.drupal.org/project/openlayers)
