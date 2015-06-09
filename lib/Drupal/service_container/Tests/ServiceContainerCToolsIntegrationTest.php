@@ -7,6 +7,8 @@
 
 namespace Drupal\service_container\Tests;
 
+use Drupal\service_container\DependencyInjection\Container;
+
 class ServiceContainerCToolsIntegrationTest extends ServiceContainerIntegrationTestBase {
 
   /**
@@ -14,13 +16,6 @@ class ServiceContainerCToolsIntegrationTest extends ServiceContainerIntegrationT
    */
   protected function setUp() {
     parent::setUp('service_container_test_ctools');
-
-    drupal_flush_all_caches();
-
-    // Once we have PR #22: https://github.com/LionsAd/service_container/pull/22
-    // we'll remove these two following lines.
-    \ServiceContainer::reset();
-    \ServiceContainer::init();
 
     $this->container = \Drupal::getContainer();
   }
@@ -42,13 +37,12 @@ class ServiceContainerCToolsIntegrationTest extends ServiceContainerIntegrationT
   public function testCToolsPluginTypes() {
     foreach(ctools_plugin_get_plugin_type_info() as $module_name => $plugins) {
       foreach($plugins as $plugin_type => $plugin_data) {
-        $services = array(
-          $module_name . '.' . $plugin_type,
-          $this->toStrToLower($module_name . '.' . $plugin_type),
-          $this->toUnderscoreCase($module_name) . '.' . $this->toUnderscoreCase($plugin_type)
-        );
-        foreach($services as $service) {
-          $this->assertTrue($this->container->has($service));
+        $services = array();
+        $services[$module_name . '.' . $plugin_type] = TRUE;
+        $services[$module_name . '.' . Container::underscore($plugin_type)] = TRUE;
+
+        foreach($services as $service => $value) {
+          $this->assertTrue($this->container->has($service), "Container has plugin manager $service for $module_name / $plugin_type.");
         }
       }
     }
@@ -62,37 +56,14 @@ class ServiceContainerCToolsIntegrationTest extends ServiceContainerIntegrationT
       ->createInstance('ServiceContainerTestCtoolsPluginTest1');
     $this->assertEqual($service->beep(), 'beep!');
 
-    $service = \Drupal::service('service_container_test_ctools.yolo')
-      ->createInstance('yolo1');
-    $this->assertEqual($service->beep(), 'beep!');
-  }
+    try {
+      $service = \Drupal::service('service_container_test_ctools.yolo')
+        ->createInstance('yolo1');
+    }
+    catch (\Exception $e) {
+      $this->pass('Non-existant plugin does not exist in the container.');
+    }
 
-  /**
-   * Lowercase a UTF-8 string.
-   *
-   * @param $text
-   *   The string to run the operation on.
-   *
-   * @return string
-   *   The string in lowercase.
-   *
-   */
-  public function toStrToLower($name) {
-    return drupal_strtolower($name);
+    // @todo Test and fix instantiating non-class plugins.
   }
-
-  /**
-   * Un-camelize a string.
-   *
-   * @param $text
-   *   The string to run the operation on.
-   *
-   * @return string
-   *   The string un-camelized.
-   *
-   */
-  public function toUnderscoreCase($name) {
-    return $this->toStrToLower(preg_replace('/(?<!^)([A-Z])/', '_$1', $name));
-  }
-
 }

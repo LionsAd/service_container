@@ -8,6 +8,7 @@
 namespace Drupal\service_container\ServiceContainer\ServiceProvider;
 
 use Drupal\service_container\DependencyInjection\ServiceProviderInterface;
+use Drupal\service_container\DependencyInjection\Container;
 
 /**
  * Provides render cache service definitions.
@@ -177,24 +178,25 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
       foreach($this->cToolsGetTypes() as $module_name => $plugins) {
         foreach($plugins as $plugin_type => $plugin_data) {
           // Register service with original string.
-          $services[$module_name . '.' . $plugin_type] = array();
+          $name = $module_name . '.' . $plugin_type;
+          $services[$name] = array();
+
+          // Check candidates for needed aliases.
+          $candidates = array();
+          $candidates[$module_name . '.' . Container::underscore($plugin_type)] = TRUE;
+          $candidates[$name] = FALSE;
+
+          foreach ($candidates as $candidate => $value) {
+            if ($value) {
+              $services[$candidate] = array(
+                'alias' => $name,
+              );
+            }
+          }
+
           $parameters['service_container.plugin_managers']['ctools'][$module_name . '.' . $plugin_type] = array(
             'owner' => $module_name,
             'type' => $plugin_type,
-          );
-
-          // Register service alias with string to lowercase.
-          $module_name_strtolower = $this->toStrToLower($module_name);
-          $plugin_type_strtolower = $this->toStrToLower($plugin_type);
-          $services[$module_name_strtolower . '.' . $plugin_type_strtolower] = array(
-            'alias' => $module_name . '.' . $plugin_type
-          );
-
-          // Register service alias with string un-camelized and lowercase.
-          $module_name_tounderscore = $this->toUnderscoreCase($module_name);
-          $plugin_type_tounderscore = $this->toUnderscoreCase($plugin_type);
-          $services[$module_name_tounderscore . '.' . $plugin_type_tounderscore] = array(
-            'alias' => $module_name . '.' . $plugin_type
           );
         }
       }
@@ -238,7 +240,10 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
           $definition += array(
             'arguments' => array(),
           );
-          array_unshift($definition['arguments'], $definition);
+          // array_unshift() internally uses a reference, therefore creates an
+          // endless recursion. Use a copy to prevent that.
+          $definition_copy = $definition;
+          array_unshift($definition['arguments'], $definition_copy);
           $container_definition['services'][$tag['prefix'] . $key] = $definition + array('public' => FALSE);
         }
       }
@@ -263,6 +268,7 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
       }
 
       $container_definition['services'][$name] = $this->getPluginManagerDefinition($name, $discovery_class, $plugin_manager);
+
       $tags = $container_definition['services'][$name]['tags'];
 
       foreach ($tags as $tag) {
@@ -335,33 +341,4 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
   public function moduleExists($name) {
     return module_exists($name);
   }
-
-  /**
-   * Lowercase a UTF-8 string.
-   *
-   * @param $text
-   *   The string to run the operation on.
-   *
-   * @return string
-   *   The string in lowercase.
-   *
-   */
-  public function toStrToLower($name) {
-    return drupal_strtolower($name);
-  }
-
-  /**
-   * Un-camelize a string.
-   *
-   * @param $text
-   *   The string to run the operation on.
-   *
-   * @return string
-   *   The string un-camelized.
-   *
-   */
-  public function toUnderscoreCase($name) {
-    return $this->toStrToLower(preg_replace('/(?<!^)([A-Z])/', '_$1', $name));
-  }
-
 }
