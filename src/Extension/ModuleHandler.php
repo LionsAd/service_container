@@ -75,7 +75,7 @@ class ModuleHandler implements ModuleHandlerInterface {
    * {@inheritdoc}
    */
   public function isLoaded() {
-    return $this->drupal7->module_load_all(NULL);
+    return $this->drupal7->module_load_all();
   }
 
   /**

@@ -10,17 +10,17 @@ namespace Drupal\service_container\Legacy;
 /**
  * Defines the Drupal 7 legacy service.
  *
- * @method void flood_register_event(string $name, integer $window, string $identifier)
- * @method void flood_clear_event(string $name, string $identifier)
- * @method bool flood_is_allowed(string $name, integer $threshold, integer $window, string $identifier)
- * @method bool module_load_all(bool $bootstrap)
- * @method array module_list(bool $refresh, bool $bootstrap_refresh, bool $sort, array $fixed_list)
+ * @method void flood_register_event(string $name, integer $window = 3600, string $identifier = NULL)
+ * @method void flood_clear_event(string $name, string $identifier = NULL)
+ * @method bool flood_is_allowed(string $name, integer $threshold, integer $window = 3600, string $identifier = NULL)
+ * @method bool module_load_all(bool $bootstrap = FALSE)
+ * @method array module_list(bool $refresh = FALSE, bool $bootstrap_refresh = FALSE, bool $sort = FALSE, array $fixed_list = NULL)
  * @method bool module_exists(string $module)
- * @method string drupal_get_filename(string $type, string $name, string $filename)
- * @method void module_load_all_includes(string $type, string $name)
- * @method array module_implements(string $hook, bool $sort, bool $reset)
+ * @method string drupal_get_filename(string $type, string $name, string $filename = NULL)
+ * @method void module_load_all_includes(string $type, string $name = NULL)
+ * @method array module_implements(string $hook, bool $sort = FALSE, bool $reset = FALSE)
  * @method void module_implements_write_cache()
- * @method void drupal_static_reset(string $name)
+ * @method void drupal_static_reset(string $name = NULL)
  * @method array system_rebuild_module_data()
  */
 class Drupal7 {
