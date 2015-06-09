@@ -7,7 +7,7 @@
 
 namespace Drupal\service_container_symfony\ServiceContainer\ServiceProvider;
 
-use Drupal\Core\DependencyInjection\Dumper\PhpArrayDumper;
+use Drupal\service_container_symfony\DependencyInjection\Dumper\PhpArrayDumper;
 use Drupal\service_container\DependencyInjection\ServiceProviderInterface;
 use Drupal\service_container\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -25,9 +25,6 @@ class ServiceContainerSymfonyServiceProvider implements ServiceProviderInterface
    * {@inheritdoc}
    */
   public function getContainerDefinition() {
-    $parameters = array();
-    $services = array();
-
     $modules = module_list();
     $container = new ContainerBuilder();
     $yaml_loader = new YamlFileLoader($container);
@@ -41,12 +38,7 @@ class ServiceContainerSymfonyServiceProvider implements ServiceProviderInterface
     }
 
     $dumper = new PhpArrayDumper($container);
-
-
-    return array(
-      'parameters' => $parameters,
-      'services' => $services,
-    );
+    return $dumper->getArray();
   }
 
   /**

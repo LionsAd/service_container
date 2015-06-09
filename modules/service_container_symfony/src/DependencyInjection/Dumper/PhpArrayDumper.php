@@ -5,7 +5,7 @@
  * Contains \Drupal\service_container_symfony\DependencyInjection\Dumper
  */
 
-namespace Drupal\Core\DependencyInjection\Dumper;
+namespace Drupal\service_container_symfony\DependencyInjection\Dumper;
 
 use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerInterface;
