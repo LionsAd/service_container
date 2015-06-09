@@ -7,8 +7,11 @@
 
 namespace Drupal\service_container_symfony\ServiceContainer\ServiceProvider;
 
+use Drupal\Core\DependencyInjection\Dumper\PhpArrayDumper;
 use Drupal\service_container\DependencyInjection\ServiceProviderInterface;
 use Drupal\service_container\DependencyInjection\Container;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 /**
  * Provides render cache service definitions.
@@ -24,6 +27,21 @@ class ServiceContainerSymfonyServiceProvider implements ServiceProviderInterface
   public function getContainerDefinition() {
     $parameters = array();
     $services = array();
+
+    $modules = module_list();
+    $container = new ContainerBuilder();
+    $yaml_loader = new YamlFileLoader($container);
+
+    foreach ($modules as $module) {
+      $filename = drupal_get_filename('module', $module);
+      $services = dirname($filename) . "/$module.services.yml";
+      if (file_exists($services)) {
+        $yaml_loader->load($services);
+      }
+    }
+
+    $dumper = new PhpArrayDumper($container);
+
 
     return array(
       'parameters' => $parameters,
