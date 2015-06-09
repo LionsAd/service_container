@@ -27,8 +27,14 @@ namespace Drupal\service_container\Legacy;
  * @method bool module_enable(array $module_list, bool $enable_dependencies = TRUE)
  * @method bool module_disable(array $module_list, bool $enable_dependencies = TRUE)
  * @method bool drupal_uninstall_modules(array $module_list = array(), bool $uninstall_dependents = TRUE)
- * @method void watchdog($type, $message, $variables = array(), $severity = WATCHDOG_NOTICE, $link = NULL) {
-
+ * @method void watchdog($type, $message, $variables = array(), $severity = WATCHDOG_NOTICE, $link = NULL)
+ * @method bool user_access($string, $account = NULL)
+ * @method bool user_is_logged_in()
+ * @method bool user_is_anonymous()
+ * @method string drupal_get_user_timezone()
+ * @method string format_plural($count, $singular, $plural, array $args = array(), array $options = array())
+ * @method mixed variable_get($name, $default = NULL)
+ * @method void variable_set($name, $value)
  *
  */
 class Drupal7 {
