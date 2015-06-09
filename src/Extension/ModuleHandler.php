@@ -9,6 +9,7 @@ namespace Drupal\service_container\Extension;
 
 use Drupal\Core\Extension\Extension;
 use Drupal\Core\Extension\ModuleHandlerInterface;
+use Drupal\service_container\Legacy\Drupal7;
 
 /**
  * Class that manages modules in a Drupal installation.
@@ -18,6 +19,13 @@ use Drupal\Core\Extension\ModuleHandlerInterface;
  * @todo: Some of this might be unit-testable.
  */
 class ModuleHandler implements ModuleHandlerInterface {
+
+  /**
+   * The Drupal7 service.
+   *
+   * @var \Drupal\service_container\Legacy\Drupal7
+   */
+  protected $drupal7;
 
   /**
    * The app root.
@@ -31,52 +39,43 @@ class ModuleHandler implements ModuleHandlerInterface {
    *
    * @param string $root
    *   The app root.
-   * @param array $module_list
-   *   An associative array whose keys are the names of installed modules and
-   *   whose values are Extension class parameters. This is normally the
-   *   %container.modules% parameter being set up by DrupalKernel.
-   * @param \Drupal\Core\Cache\CacheBackendInterface $cache_backend
-   *   Cache backend for storing module hook implementation information.
+   * @param \Drupal\service_container\Legacy\Drupal7 $drupal7
+   *   The Drupal 7 legacy service.
    *
    * @see \Drupal\Core\DrupalKernel
    * @see \Drupal\Core\CoreServiceProvider
    */
-  public function __construct($root, array $module_list = array()) {
+  public function __construct($root, Drupal7 $drupal7) {
     $this->root = $root;
-  }
-
-  public static function create() {
-    return new static(
-      DRUPAL_ROOT
-    );
+    $this->drupal7 = $drupal7;
   }
 
   /**
    * {@inheritdoc}
    */
   public function load($name) {
-    return drupal_load('module', $name);
+    return $this->drupal7->drupal_load('module', $name);
   }
 
   /**
    * {@inheritdoc}
    */
   public function loadAll() {
-    module_load_all();
+    $this->drupal7->module_load_all();
   }
 
   /**
    * {@inheritdoc}
    */
   public function reload() {
-    module_load_all();
+    $this->drupal7->module_load_all();
   }
 
   /**
    * {@inheritdoc}
    */
   public function isLoaded() {
-    return module_load_all(NULL);
+    return $this->drupal7->module_load_all();
   }
 
   /**
@@ -84,7 +83,7 @@ class ModuleHandler implements ModuleHandlerInterface {
    */
   public function getModuleList() {
     $module_list = array();
-    foreach (module_list() as $module) {
+    foreach ($this->drupal7->module_list() as $module) {
       $module_list[$module] = $this->getModule($module);
     }
     return $module_list;
@@ -94,11 +93,11 @@ class ModuleHandler implements ModuleHandlerInterface {
    * {@inheritdoc}
    */
   public function getModule($name) {
-    if (!module_exists($name)) {
+    if (!$this->drupal7->module_exists($name)) {
       throw new \InvalidArgumentException(sprintf('The module %s does not exist.', $name));
     }
 
-    $filename = drupal_get_filename('module', $name);
+    $filename = $this->drupal7->drupal_get_filename('module', $name);
     return new Extension($this->root, 'module', $filename, $name . '.info');
   }
 
@@ -113,7 +112,7 @@ class ModuleHandler implements ModuleHandlerInterface {
         'filename' => $filename,
       );
     }
-    module_list(FALSE, FALSE, FALSE, $module_list);
+    $this->drupal7->module_list(FALSE, FALSE, FALSE, $module_list);
   }
 
   /**
@@ -141,56 +140,56 @@ class ModuleHandler implements ModuleHandlerInterface {
    * {@inheritdoc}
    */
   public function moduleExists($module) {
-    return module_exists($module);
+    return $this->drupal7->module_exists($module);
   }
 
   /**
    * {@inheritdoc}
    */
   public function loadAllIncludes($type, $name = NULL) {
-    module_load_all_includes($type, $name);
+    $this->drupal7->module_load_all_includes($type, $name);
   }
 
   /**
    * {@inheritdoc}
    */
   public function loadInclude($module, $type, $name = NULL) {
-    module_load_include($type, $module, $name);
+    $this->drupal7->module_load_include($type, $module, $name);
   }
 
   /**
    * {@inheritdoc}
    */
   public function getHookInfo() {
-    return module_hook_info();
+    return $this->drupal7->module_hook_info();
   }
 
   /**
    * {@inheritdoc}
    */
   public function getImplementations($hook) {
-    return module_implements($hook);
+    return $this->drupal7->module_implements($hook);
   }
 
   /**
    * {@inheritdoc}
    */
   public function writeCache() {
-    module_implements_write_cache();
+    $this->drupal7->module_implements_write_cache();
   }
 
   /**
    * {@inheritdoc}
    */
   public function resetImplementations() {
-    drupal_static_reset('module_implements');
+    $this->drupal7->drupal_static_reset('module_implements');
   }
 
   /**
    * {@inheritdoc}
    */
   public function implementsHook($module, $hook) {
-    $implementations = module_implements($hook);
+    $implementations = $this->drupal7->module_implements($hook);
     return in_array($module, $implementations);
   }
 
@@ -198,14 +197,14 @@ class ModuleHandler implements ModuleHandlerInterface {
    * {@inheritdoc}
    */
   public function invoke($module, $hook, array $args = array()) {
-    return module_invoke($module, $hook, $args);
+    return $this->drupal7->module_invoke($module, $hook, $args);
   }
 
   /**
    * {@inheritdoc}
    */
   public function invokeAll($hook, array $args = array()) {
-    return module_invoke_all($hook, $args);
+    return $this->drupal7->module_invoke_all($hook, $args);
   }
 
   /**
@@ -213,7 +212,7 @@ class ModuleHandler implements ModuleHandlerInterface {
    */
   public function alter($type, &$data, &$context1 = NULL, &$context2 = NULL) {
     // @todo Sadly ::alter() does not allow three $context values.
-    drupal_alter($type, $data, $context1, $context2);
+    $this->drupal7->drupal_alter($type, $data, $context1, $context2);
   }
 
   /**
@@ -231,7 +230,7 @@ class ModuleHandler implements ModuleHandlerInterface {
    * {@inheritdoc}
    */
   public function getName($module) {
-    $module_data = system_rebuild_module_data();
+    $module_data = $this->drupal7->system_rebuild_module_data();
     return $module_data[$module]->info['name'];
   }
 

@@ -9,6 +9,7 @@ namespace Drupal\service_container\Session;
 
 use Drupal\Core\Session\AccountInterface;
 use Drupal\service_container\Variable;
+use Drupal\service_container\Legacy\Drupal7;
 
 /**
  * Wraps the global user to provide the account interface.
@@ -16,6 +17,13 @@ use Drupal\service_container\Variable;
  * @codeCoverageIgnore
  */
 class Account implements AccountInterface {
+
+  /**
+   * The Drupal7 service.
+   *
+   * @var \Drupal\service_container\Legacy\Drupal7
+   */
+  protected $drupal7;
 
   /**
    * The variable storage.
@@ -27,10 +35,13 @@ class Account implements AccountInterface {
   /**
    * Constructs a new Account instance.
    *
+   * @param \Drupal\service_container\Legacy\Drupal7 $drupal7
+   *   The Drupal7 service.
    * @param \Drupal\service_container\Variable $variable
    *   The variable storage.
    */
-  public function __construct(Variable $variable) {
+  public function __construct(Drupal7 $drupal7, Variable $variable) {
+    $this->drupal7 = $drupal7;
     $this->variable = $variable;
   }
 
@@ -58,7 +69,7 @@ class Account implements AccountInterface {
    * {@inheritdoc}
    */
   public function hasPermission($permission) {
-    return user_access($permission, $GLOBALS['user']);
+    return $this->drupal7->user_access($permission, $GLOBALS['user']);
   }
 
   /**
@@ -86,14 +97,14 @@ class Account implements AccountInterface {
    * {@inheritdoc}
    */
   public function isAuthenticated() {
-    return user_is_logged_in();
+    return $this->drupal7->user_is_logged_in();
   }
 
   /**
    * {@inheritdoc}
    */
   public function isAnonymous() {
-    return user_is_anonymous();
+    return $this->drupal7->user_is_anonymous();
   }
 
   /**
@@ -128,7 +139,7 @@ class Account implements AccountInterface {
    * {@inheritdoc}
    */
   public function getTimeZone() {
-    return drupal_get_user_timezone();
+    return $this->drupal7->drupal_get_user_timezone();
   }
 
   /**
