@@ -258,10 +258,6 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
    */
   public function test_get_notFoundMultiple() {
     $container = \Mockery::mock('Drupal\service_container\DependencyInjection\Container[getDefinition]', array($this->containerDefinition));
-    $container->shouldReceive('getDefinition')
-      ->once()
-      ->with('service_not_exists', FALSE)
-      ->andReturn(NULL);
 
     $this->assertNull($container->get('service_not_exists', ContainerInterface::NULL_ON_INVALID_REFERENCE, 'Not found service does not throw exception.'));
     $this->assertNull($container->get('service_not_exists', ContainerInterface::NULL_ON_INVALID_REFERENCE, 'Not found service does not throw exception on second call.'));
@@ -395,9 +391,18 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
       'arguments' => array('@other.service', '%some_private_config%'),
       'public' => FALSE,
     );
+    $private_hash = sha1(serialize($private_service));
+
     $services['service_using_private'] = array(
       'class' => '\Drupal\Tests\service_container\DependencyInjection\MockService',
-      'arguments' => array((object) array( 'type' => 'service', 'value' => $private_service ), '%some_config%'),
+      'arguments' => array(
+        (object) array(
+          'type' => 'service',
+          'value' => $private_service,
+          'id' => 'private__' . $private_hash,
+        ),
+        '%some_config%'
+      ),
     );
     $services['service_using_array'] = array(
       'class' => '\Drupal\Tests\service_container\DependencyInjection\MockService',
