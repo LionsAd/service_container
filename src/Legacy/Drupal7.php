@@ -24,6 +24,10 @@ namespace Drupal\service_container\Legacy;
  * @method void drupal_static_reset(string $name = NULL)
  * @method array system_rebuild_module_data()
  * @method array module_hook_info()
+ * @method bool module_enable(array $module_list, bool $enable_dependencies = TRUE)
+ * @method bool module_disable(array $module_list, bool $enable_dependencies = TRUE)
+ * @method bool drupal_uninstall_modules(array $module_list = array(), bool $uninstall_dependents = TRUE)
+ *
  */
 class Drupal7 {
 
