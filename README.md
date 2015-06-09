@@ -77,8 +77,7 @@ So you can use normal container parameter syntax.
 
 ### List of Drupal 8 core services that we've altered
 
-Here's the list of the service that we've copied from Drupal 8.
-For some reasons, we had to alter them a bit to make them compatible with Drupal 7.
+The following services contains files that has been altered from their Drupal 8 counterpart to make them compatible with Drupal 7.
 
 * Database
 * KeyValueStore
