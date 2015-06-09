@@ -284,7 +284,6 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
       }
 
       $container_definition['services'][$name] = $this->getPluginManagerDefinition($name, $discovery_class, $plugin_manager);
-
       $tags = $container_definition['services'][$name]['tags'];
 
       foreach ($tags as $tag) {
