@@ -1,20 +1,20 @@
 # service\_container
 
-Service Container is an API module based on ctools to enable a Drupal 7 quick and easy lightweight service container with 100% unit test coverage.
+Service Container is an API module based on [ctools](https://www.drupal.org/project/ctools) to enable a Drupal 7 quick and easy lightweight service container with 100% unit test coverage.
 
 It is very similar in syntax to a Symfony container, but was written from scratch as a symfony dependency was not wanted - using some of Drupal 8 Core and Component directly. They will likely depend on a drupal8core project in the future - but for now the copy is fine.
 
 This allows to use an extensible service container (like in Drupal 8) and write modules in Drupal 7 as if they were using Drupal 8.
 
-The main benefit is being able to use unit testing.
+The main benefit is being able to use unit testing but also to write Drupal 7 module with Drupal 8 style of coding in mind.
 
-service\_container uses PHP Unit and travis.yml, but the tests and a composer.json are isolated in the tests/ directory, so no vendor or composer multi map is needed by default.
+The module uses PHP Unit and travis.yml, but the tests and a composer.json are isolated in the tests/ directory, so no vendor or composer multi map is needed by default.
 
 It was originally written for the render\_cache module, but since then others have expressed interest in using it, so it was split it out and made a dependency of render\_cache instead.
 
 You need:
 
-- registry\_autoload
+- [registry\_autoload](https://www.drupal.org/project/registry_autoload)
 
 or any other PSR-4 autoloader.
 
@@ -62,21 +62,28 @@ $plugin = array(
 
 So you can use normal container parameter syntax.
 
+### Example of module using this module
+* [Openlayers](https://www.drupal.org/project/openlayers)
+
 ### Provides the following services:
 
 * module handler ('module_handler') and module installer ('module_installer')
 * service container ('service_container')
 * database ('database')
 * key value store ('keyvalue', 'keyvalue.database')
-* a wrapper for variable_get()  / variable_set() ('variable')
+* variable, a wrapper for variable_get() / variable_set()
 * A lock ('lock')
 * A wrapper for url() / l() ('url_generator', 'link_generator')
-* TODO
+* Flood, a wrapper for the flood mechanisms
+* Messenger, a wrapper for displaying messages
+* Drupal 7 Legacy, a wrapper for accessing the Drupal 7 legacy functions.
+* More to come...
 
 ### Testing
 
-- service\_container is tested via PHPUnit for code correctness.
-- service\_container is tested via simpletest for integration with Drupal.
+- service\_container is tested via PHPUnit for code correctness. (run ./tests/run-tests.sh)
+- service\_container is tested via simpletest for integration with Drupal. (run ./tests/run-simpletests.sh)
+- service\_container is tested via PHPUnit for code coverage. (run ./tests/run-coverage.sh)
 
 ### Status
 
