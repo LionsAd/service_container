@@ -1,5 +1,9 @@
 # service\_container
 
+[![Build Status](https://travis-ci.org/LionsAd/service_container.svg?branch=7.x-1.x)](https://travis-ci.org/LionsAd/service_container)
+[![Coverage Status](https://coveralls.io/repos/LionsAd/service_container/badge.png?branch=7.x-1.x)](https://coveralls.io/r/LionsAd/service_container?branch=7.x-1.x)
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/LionsAd/service_container?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Service Container is an API module based on [ctools](https://www.drupal.org/project/ctools) to enable a Drupal 7 quick and easy lightweight service container with 100% unit test coverage.
 
 It is very similar in syntax to a Symfony container, but was written from scratch as a symfony dependency was not wanted - using some of Drupal 8 Core and Component directly. They will likely depend on a drupal8core project in the future - but for now the copy is fine.
@@ -62,9 +66,6 @@ $plugin = array(
 
 So you can use normal container parameter syntax.
 
-### Example of module using this module
-* [Openlayers](https://www.drupal.org/project/openlayers)
-
 ### Provides the following services:
 
 * module handler ('module_handler') and module installer ('module_installer')
@@ -85,8 +86,13 @@ So you can use normal container parameter syntax.
 - service\_container is tested via simpletest for integration with Drupal. (run ./tests/run-simpletests.sh)
 - service\_container is tested via PHPUnit for code coverage. (run ./tests/run-coverage.sh)
 
-### Status
+### List of Drupal 8 services that we've altered
 
-[![Build Status](https://travis-ci.org/LionsAd/service_container.svg?branch=7.x-1.x)](https://travis-ci.org/LionsAd/service_container)
-[![Coverage Status](https://coveralls.io/repos/LionsAd/service_container/badge.png?branch=7.x-1.x)](https://coveralls.io/r/LionsAd/service_container?branch=7.x-1.x)
-[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/LionsAd/service_container?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+Here's the list of the service that we've copied from Drupal 8.
+For some reasons, we had to alter them a bit to make them compatible with Drupal 7.
+
+* Database
+* KeyValueStore
+
+### Example of module using this module
+* [Openlayers](https://www.drupal.org/project/openlayers)
