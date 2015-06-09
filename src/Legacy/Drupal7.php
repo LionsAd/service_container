@@ -17,11 +17,13 @@ namespace Drupal\service_container\Legacy;
  * @method array module_list(bool $refresh = FALSE, bool $bootstrap_refresh = FALSE, bool $sort = FALSE, array $fixed_list = NULL)
  * @method bool module_exists(string $module)
  * @method string drupal_get_filename(string $type, string $name, string $filename = NULL)
+ * @method string|bool module_load_include(string $type, string $module, string $name = NULL)
  * @method void module_load_all_includes(string $type, string $name = NULL)
  * @method array module_implements(string $hook, bool $sort = FALSE, bool $reset = FALSE)
  * @method void module_implements_write_cache()
  * @method void drupal_static_reset(string $name = NULL)
  * @method array system_rebuild_module_data()
+ * @method array module_hook_info()
  */
 class Drupal7 {
 
@@ -170,7 +172,11 @@ class Drupal7 {
    * @codeCoverageIgnore
    */
   public function module_invoke($module, $hook) {
-    return module_invoke($module, $hook);
+    $args = func_get_args();
+    // Remove $module and $hook from the arguments.
+    unset($args[0], $args[1]);
+
+    return module_invoke($module, $hook, $args);
   }
 
   /**
@@ -193,7 +199,11 @@ class Drupal7 {
    * @codeCoverageIgnore
    */
   public function module_invoke_all($hook) {
-    return module_invoke_all($hook);
+    $args = func_get_args();
+    // Remove $hook from the arguments.
+    unset($args[0]);
+
+    return module_invoke_all($hook, $args);
   }
 
   /**
