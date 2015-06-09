@@ -17,7 +17,7 @@ namespace Drupal\service_container\Legacy;
  * @method array module_list(bool $refresh = FALSE, bool $bootstrap_refresh = FALSE, bool $sort = FALSE, array $fixed_list = NULL)
  * @method bool module_exists(string $module)
  * @method string drupal_get_filename(string $type, string $name, string $filename = NULL)
- * @method string|bool module_load_include(string $type, string $module, string $name = NULL)
+ * @method string module_load_include(string $type, string $module, string $name = NULL)
  * @method void module_load_all_includes(string $type, string $name = NULL)
  * @method array module_implements(string $hook, bool $sort = FALSE, bool $reset = FALSE)
  * @method void module_implements_write_cache()
