@@ -46,13 +46,6 @@ class Container implements ContainerInterface {
   protected $loading = array();
 
   /**
-   * The private services counter.
-   *
-   * @var int
-   */
-   protected $privateServicesCounter = 0;
-
-  /**
    * Can the container parameters still be changed.
    *
    * For testing purposes the container needs to be changed.
@@ -89,17 +82,26 @@ class Container implements ContainerInterface {
       throw new RuntimeException(sprintf('Circular reference detected for service "%s", path: "%s".', $name, implode(' -> ', array_keys($this->loading))));
     }
 
-    $definition = $this->getDefinition($name, $invalidBehavior === ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE);
+    $definition = isset($this->serviceDefinitions[$name]) ? $this->serviceDefinitions[$name] : NULL;
+
+    if (!$definition && $invalidBehavior === ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE) {
+      throw new RuntimeException(sprintf('The "%s" service definition does not exist.', $name));
+    }
 
     if (!$definition) {
       $this->services[$name] = NULL;
       return $this->services[$name];
     }
 
+    if (isset($definition['alias'])) {
+      return $this->get($definition['alias'], $invalidBehavior);
+    }
+
     $this->loading[$name] = TRUE;
 
     $definition += array(
       'class' => '',
+      'factory' => '',
       'factory_class' => '',
       'factory_method' => '',
       'factory_service' => '',
@@ -110,9 +112,19 @@ class Container implements ContainerInterface {
     ); // @codeCoverageIgnore
 
     try {
-      $arguments = $this->expandArguments($definition['arguments'], $invalidBehavior);
-
-      if (!empty($definition['factory_method'])) {
+      if (!empty($definition['arguments'])) {
+        $arguments = $this->expandArguments($definition['arguments'], $invalidBehavior);
+      } else {
+        $arguments = array();
+      }
+      if (!empty($definition['factory'])) {
+        $factory = $definition['factory'];
+        if (is_array($factory)) {
+          $factory = $this->expandArguments($factory, $invalidBehavior);
+        }
+        $service = call_user_func_array($factory, $arguments);
+      }
+      elseif (!empty($definition['factory_method'])) {
         $method = $definition['factory_method'];
 
         if (!empty($definition['factory_class'])) {
@@ -200,6 +212,9 @@ class Container implements ContainerInterface {
    * {@inheritdoc}
    */
   public function set($id, $service, $scope = self::SCOPE_CONTAINER) {
+    if (isset($service)) {
+      $service->_serviceId = $id;
+    }
     $this->services[$id] = $service;
   }
 
@@ -241,7 +256,6 @@ class Container implements ContainerInterface {
    * {@inheritdoc}
    */
   public function getParameter($name) {
-    $name = strtolower($name);
     return isset($this->parameters[$name]) ? $this->parameters[$name] : NULL;
   }
 
@@ -278,9 +292,7 @@ class Container implements ContainerInterface {
   protected function expandArguments($arguments, $invalidBehavior = ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE) {
     foreach ($arguments as $key => $argument) {
       if ($argument instanceof \stdClass) {
-        // We need a unique service name.
-        $name = 'private__' . $this->privateServicesCounter;
-        $this->privateServicesCounter++;
+        $name = $argument->id;
         $this->serviceDefinitions[$name] = $argument->value;
         $arguments[$key] = $this->get($name, $invalidBehavior);
         unset($this->serviceDefinitions[$name]);
