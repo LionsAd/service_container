@@ -36,6 +36,9 @@ class ServiceContainerCToolsIntegrationTest extends ServiceContainerIntegrationT
    */
   public function testCToolsPluginTypes() {
     foreach(ctools_plugin_get_plugin_type_info() as $module_name => $plugins) {
+      if ($module_name != 'service_container_test_ctools') {
+        continue;
+      }
       foreach($plugins as $plugin_type => $plugin_data) {
         $services = array();
         $services[$module_name . '.' . $plugin_type] = TRUE;
