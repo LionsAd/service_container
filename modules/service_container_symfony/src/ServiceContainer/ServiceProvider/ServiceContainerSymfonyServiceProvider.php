@@ -7,11 +7,11 @@
 
 namespace Drupal\service_container_symfony\ServiceContainer\ServiceProvider;
 
+use Drupal\Component\FileCache\FileCacheFactory;
+use Drupal\Core\DependencyInjection\ContainerBuilder;
+use Drupal\Core\DependencyInjection\YamlFileLoader;
 use Drupal\service_container_symfony\DependencyInjection\Dumper\PhpArrayDumper;
 use Drupal\service_container\DependencyInjection\ServiceProviderInterface;
-use Drupal\service_container\DependencyInjection\Container;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 /**
  * Provides render cache service definitions.
@@ -25,6 +25,7 @@ class ServiceContainerSymfonyServiceProvider implements ServiceProviderInterface
    * {@inheritdoc}
    */
   public function getContainerDefinition() {
+    FileCacheFactory::setConfiguration(['default' => ['class' => '\Drupal\Component\FileCache\NullFileCache']]);
     $modules = module_list();
     $container = new ContainerBuilder();
     $yaml_loader = new YamlFileLoader($container);
