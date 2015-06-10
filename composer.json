@@ -11,5 +11,23 @@
   ],
   "require": {
     "php": ">=5.3.10"
+  },
+  "autoload": {
+    "psr-0": {
+      "Drupal\\Component\\": "lib/",
+      "Drupal\\Core\\": "lib/",
+      "ServiceContainer": "lib/",
+      "Drupal": "lib/",
+      "Symfony\\Component\\DependencyInjection": "lib/",
+      "Psr": "lib/"
+    },
+    "psr-4": {
+      "Drupal\\service_container\\": "src/",
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Drupal\\service_container\\Tests\\": "tests/src/"
+    }
   }
 }
