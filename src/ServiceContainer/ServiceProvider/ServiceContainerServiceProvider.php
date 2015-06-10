@@ -232,8 +232,10 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
   /**
    * Automatically register all ctools plugins of the given types.
    *
-   * @param @todo
-   * @param @todo
+   * @param array $container_definition
+   *   The container definition to process.
+   * @param array $ctools_types
+   *   Array of plugin types, indexed by module name.
    */
   public function registerCToolsPluginTypes(&$container_definition, $ctools_types) {
     foreach($ctools_types as $module_name => $plugins) {
