@@ -2,7 +2,7 @@
   "name": "lionsad/service_container",
   "description": "Service Container based on CTools plugins with Symfony Integration",
   "type": "drupal-module",
-  "homepage": "https://github.com/LionsAd/service_container",
+  "homepage": "https://www.drupal.org/project/service_container",
   "license": "GPL-2.0+",
   "minimum-stability": "dev",
   "prefer-stable": true,
