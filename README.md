@@ -83,6 +83,6 @@ The following services contains files that has been altered from their Drupal 8 
 * KeyValueStore
 * StringTranslation
 
-### Example of modules using this module
+### Examples of modules that use this module
 * [render_cache 7.x-2.x](https://www.drupal.org/project/render_cache)
 * [openlayers 7.x-3.x](https://www.drupal.org/project/openlayers)
