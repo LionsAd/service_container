@@ -1,3 +1,3 @@
 services:
-  test_service_container_symfony_yolo:
-    class: Drupal\test_service_container_symfony\test_service_container_symfony_yolo
+  TestServiceContainerSymfonyYolo:
+    class: Drupal\test_service_container_symfony\TestServiceContainerSymfonyYolo
