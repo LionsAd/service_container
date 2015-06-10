@@ -388,7 +388,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
   /**
    * Camelizes a string.
    *
-   * @covers ::camelize()
+   * @covers ::camelize
    */
   public function test_camelize() {
     $result = $this->container->camelize('service_container');
@@ -398,7 +398,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
   /**
    * Un-camelizes a string.
    *
-   * @covers ::underscore()
+   * @covers ::underscore
    */
   public function test_underscore() {
     $result = $this->container->underscore('ServiceContainer');
