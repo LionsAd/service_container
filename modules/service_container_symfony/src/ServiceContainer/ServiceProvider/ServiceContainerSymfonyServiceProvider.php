@@ -27,8 +27,8 @@ class ServiceContainerSymfonyServiceProvider implements ServiceProviderInterface
   public function getContainerDefinition() {
     FileCacheFactory::setConfiguration(['default' => ['class' => '\Drupal\Component\FileCache\NullFileCache']]);
     $modules = module_list();
-    $container = new ContainerBuilder();
-    $yaml_loader = new YamlFileLoader($container);
+    $container_builder = new ContainerBuilder();
+    $yaml_loader = new YamlFileLoader($container_builder);
 
     foreach ($modules as $module) {
       $filename = drupal_get_filename('module', $module);
@@ -38,7 +38,8 @@ class ServiceContainerSymfonyServiceProvider implements ServiceProviderInterface
       }
     }
 
-    $dumper = new PhpArrayDumper($container);
+    $container_builder->compile();
+    $dumper = new PhpArrayDumper($container_builder);
     return $dumper->getArray();
   }
 
