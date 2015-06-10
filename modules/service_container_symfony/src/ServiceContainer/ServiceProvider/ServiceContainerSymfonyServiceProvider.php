@@ -25,12 +25,17 @@ class ServiceContainerSymfonyServiceProvider implements ServiceProviderInterface
    * {@inheritdoc}
    */
   public function getContainerDefinition() {
-    FileCacheFactory::setConfiguration(['default' => ['class' => '\Drupal\Component\FileCache\NullFileCache']]);
-    $modules = module_list();
+    FileCacheFactory::setConfiguration(
+      array(
+        'default' => array(
+          'class' => '\Drupal\Component\FileCache\NullFileCache'
+        )
+      )
+    );
     $container_builder = new ContainerBuilder();
     $yaml_loader = new YamlFileLoader($container_builder);
 
-    foreach ($modules as $module) {
+    foreach (module_list() as $module) {
       $filename = drupal_get_filename('module', $module);
       $services = dirname($filename) . "/$module.services.yml";
       if (file_exists($services)) {
