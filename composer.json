@@ -22,7 +22,7 @@
       "Psr": "lib/"
     },
     "psr-4": {
-      "Drupal\\service_container\\": "src/",
+      "Drupal\\service_container\\": "src/"
     }
   },
   "autoload-dev": {
