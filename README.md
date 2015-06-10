@@ -20,21 +20,10 @@ or any other PSR-4 autoloader.
 
 ### Registering CTools plugins
 
-By default the service\_container supports ctools discovery, to register your plugins all you need to do is:
+By default the service\_container supports CTools discovery, to register your plugins all you need to do is:
 
 ````php
-    // Plugin Managers - filled out by alterDefinition() of service_container
-    // module.
-    // This needs to exist in an empty state.
-    $services['render_cache.controller'] = array();
-
-    // Syntax is: <service_name> => <plugin_manager_definition>
-    $parameters['service_container.plugin_managers']['ctools'] = array(
-      'render_cache.controller' => array(
-        'owner' => 'render_cache',
-        'type' => 'Controller',
-      ),
-    );
+    $parameters['ctools_plugins_auto_discovery']['render_cache'] = TRUE
 ````
 
 And you can then get a plugin via:
@@ -63,7 +52,8 @@ $plugin = array(
 So you can use normal container parameter syntax.
 
 ### Example of module using this module
-* [Openlayers](https://www.drupal.org/project/openlayers)
+* [render_cache 7.x-2.x](https://www.drupal.org/project/render_cache)
+* [openlayers 7.x-3.x](https://www.drupal.org/project/openlayers)
 
 ### Provides the following services:
 
