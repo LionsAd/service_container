@@ -1,0 +1,15 @@
+{
+  "name": "lionsad/service_container",
+  "description": "Service Container based on CTools plugins with Symfony Integration",
+  "type": "drupal-module",
+  "homepage": "https://github.com/LionsAd/service_container",
+  "license": "GPL-2.0+",
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "authors": [
+    { "name": "Fabian Franz", "email": "fabian@lionsad.de" }
+  ],
+  "require": {
+    "php": ">=5.3.10"
+  }
+}
