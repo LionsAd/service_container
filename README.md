@@ -4,6 +4,10 @@
 [![Coverage Status](https://coveralls.io/repos/LionsAd/service_container/badge.png?branch=7.x-1.x)](https://coveralls.io/r/LionsAd/service_container?branch=7.x-1.x)
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/LionsAd/service_container?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+# Versions
+
+[![Latest Stable Version](https://poser.pugx.org/lionsad/service_container/v/stable)](https://packagist.org/packages/lionsad/service_container) [![Total Downloads](https://poser.pugx.org/lionsad/service_container/downloads)](https://packagist.org/packages/lionsad/service_container) [![Latest Unstable Version](https://poser.pugx.org/lionsad/service_container/v/unstable)](https://packagist.org/packages/lionsad/service_container) [![License](https://poser.pugx.org/lionsad/service_container/license)](https://packagist.org/packages/lionsad/service_container)
+
 Service Container is an API module based on [ctools](https://www.drupal.org/project/ctools) to enable a Drupal 7 quick and easy lightweight service container with 100% unit test coverage.
 
 It is very similar in syntax to a Symfony container, but was written from scratch as a symfony dependency was not wanted - using some of Drupal 8 Core and Component directly. They will likely depend on a drupal8core project in the future - but for now the copy is fine.
