@@ -38,7 +38,8 @@ class ServiceContainerSymfonyServiceProvider implements ServiceProviderInterface
       }
     }
 
-    $container_builder->compile();
+    // Disabled for now.
+    // $container_builder->compile();
     $dumper = new PhpArrayDumper($container_builder);
     return $dumper->getArray();
   }
