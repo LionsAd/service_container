@@ -35,6 +35,8 @@ class ServiceContainerSymfonyTest extends ServiceContainerIntegrationTestBase {
    */
   public function testInit() {
     $this->assertTrue(\Drupal::hasService('testservicecontainersymfonyyolo'));
+    $this->assertFalse(\Drupal::hasService('TestServiceContainerSymfonyYolo'));
+    $this->assertFalse(\Drupal::hasService('testservicecontainersymfonyyolo1'));
   }
 
 }
