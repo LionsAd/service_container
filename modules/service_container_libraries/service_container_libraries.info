@@ -1,0 +1,9 @@
+name = Services Container libraries bridge
+description = This module allows you to declare your libraries in a yaml file like in Drupal 8.
+package = Novelty
+core = 7.x
+php = 5.3.10
+
+; Dependencies
+dependencies[] = service_container_symfony
+dependencies[] = libraries
