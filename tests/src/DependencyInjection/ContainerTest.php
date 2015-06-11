@@ -389,20 +389,36 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
    * Camelizes a string.
    *
    * @covers ::camelize
+   * @dataProvider underscoreCamelizeDataProvider
    */
-  public function test_camelize() {
-    $result = $this->container->camelize('service_container');
-    $this->assertEquals('ServiceContainer', $result, 'The strings are the same.');
+  public function test_camelize($string_underscore, $string_camelize) {
+    $result = $this->container->camelize($string_underscore);
+    $this->assertEquals($string_camelize, $result, 'The strings are the same.');
   }
 
   /**
    * Un-camelizes a string.
    *
    * @covers ::underscore
+   * @dataProvider underscoreCamelizeDataProvider
    */
-  public function test_underscore() {
-    $result = $this->container->underscore('ServiceContainer');
-    $this->assertEquals('service_container', $result, 'The strings are the same.');
+  public function test_underscore($string_underscore, $string_camelize) {
+    $result = $this->container->underscore($string_camelize);
+    $this->assertEquals($string_underscore, $result, 'The strings are the same.');
+  }
+
+  /**
+   * Data Provider for ::underscore and ::camelize.
+   */
+  public function underscoreCamelizeDataProvider() {
+    return array(
+      array('service_container', 'ServiceContainer'),
+      array('service_container_symfony', 'ServiceContainerSymfony'),
+      array('123service_container', '123serviceContainer'),
+      array('123service_container_symfony', '123serviceContainerSymfony'),
+      array('123service_container', '123serviceContainer'),
+      array('123service_container_symfony', '123serviceContainerSymfony'),
+    );
   }
 
   /**
