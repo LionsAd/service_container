@@ -35,6 +35,8 @@ namespace Drupal\service_container\Legacy;
  * @method string format_plural($count, $singular, $plural, array $args = array(), array $options = array())
  * @method mixed variable_get($name, $default = NULL)
  * @method void variable_set($name, $value)
+ * @method void drupal_set_message(string $message = NULL, string $type = 'status', bool $repeat = TRUE)
+ * @method mixed drupal_get_message(string $message = NULL, string $type = 'status', bool $repeat = TRUE)
  *
  * @codeCoverageIgnore
  */
