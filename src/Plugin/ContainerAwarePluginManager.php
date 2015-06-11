@@ -66,7 +66,7 @@ class ContainerAwarePluginManager extends ContainerAware implements PluginManage
 
     array_unshift($plugin_definition['arguments'], $configuration);
 
-    return $this->container->createInstance($this->servicePrefix . $plugin_id, $configuration);
+    return $this->container->createInstance($this->servicePrefix . $plugin_id, $plugin_definition);
   }
 
   /**
