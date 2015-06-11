@@ -393,7 +393,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
    */
   public function test_camelize($string_underscore, $string_camelize) {
     $result = $this->container->camelize($string_underscore);
-    $this->assertEquals($string_camelize, $result, 'The strings are the same.');
+    $this->assertEquals($string_camelize, $result);
   }
 
   /**
@@ -404,7 +404,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
    */
   public function test_underscore($string_underscore, $string_camelize) {
     $result = $this->container->underscore($string_camelize);
-    $this->assertEquals($string_underscore, $result, 'The strings are the same.');
+    $this->assertEquals($string_underscore, $result);
   }
 
   /**
