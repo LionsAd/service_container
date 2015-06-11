@@ -235,11 +235,11 @@ class PhpArrayDumper extends Dumper
   {
     if ($id->isPublic()) {
       return [
-        'alias' => '@' . $id,
+        'alias' => $id,
       ];
     } else {
       return [
-        'alias' => '@' . $id,
+        'alias' => $id,
         'public' => FALSE,
       ];
     }
