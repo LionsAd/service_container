@@ -61,6 +61,13 @@ class ContainerAwarePluginManager extends ContainerAware implements PluginManage
   public function createInstance($plugin_id, array $configuration = array()) {
     // @todo: Use ->expandArguments() when get() disallows getting private
     //        services.
+    $service_definition = $this->getDefinition($plugin_id);
+    $service_definition += array(
+      'arguments' => array()
+    );
+
+    array_unshift($service_definition['arguments'], $configuration);
+
     return $this->container->createInstance($this->servicePrefix . $plugin_id, $configuration);
   }
 

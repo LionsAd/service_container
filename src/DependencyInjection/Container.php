@@ -230,14 +230,7 @@ class Container implements ContainerInterface {
   /**
    * {@inheritdoc}
    */
-  public function createInstance($plugin_id, $configuration) {
-    $service_definition = $this->getDefinition($plugin_id);
-    $service_definition += array(
-      'arguments' => array()
-    );
-
-    array_unshift($service_definition['arguments'], $configuration);
-
+  public function createInstance($plugin_id, $service_definition) {
     $temporary_name = 'plugin_' . $plugin_id;
     $this->serviceDefinitions[$temporary_name] = $service_definition;
 
