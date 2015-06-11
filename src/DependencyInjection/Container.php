@@ -218,8 +218,6 @@ class Container implements ContainerInterface {
     $this->services[$id] = $service;
   }
 
-
-
   /**
    * {@inheritdoc}
    */
