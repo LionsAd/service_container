@@ -8,12 +8,14 @@
 
 language: php
 
+sudo: false
+
 php:
   - 5.3
   - 5.4
   - 5.5
-  - 5.6
-  - hhvm
+#  - 5.6
+#  - hhvm
 
 matrix:
   fast_finish: true
@@ -51,7 +53,7 @@ env:
 
   matrix:
     - DRUPAL_TI_RUNNERS="phpunit"
-    - DRUPAL_TI_RUNNERS="phpunit simpletest"
+   # - DRUPAL_TI_RUNNERS="phpunit simpletest"
 
 mysql:
   database: drupal_travis_db
