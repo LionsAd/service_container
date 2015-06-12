@@ -1,0 +1,10 @@
+permission1:
+  title: 'title1'
+  description: 'description1'
+
+permission2:
+  title: 'title2'
+  description: 'description2'
+
+permission_callbacks:
+  - Drupal\test_service_container_permissions\TestServiceContainerPermissionsPermissions::permissions
