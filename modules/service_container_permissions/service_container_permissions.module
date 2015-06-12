@@ -1,0 +1,28 @@
+<?php
+/**
+ * @file
+ * Main module file for the service_container_permissions module.
+ */
+
+// -----------------------------------------------------------------------
+// Contrib Hooks
+
+/**
+ * Implements hook_permission().
+ */
+function service_container_libraries_permission() {
+  $permissions = array();
+
+  foreach (module_list() as $module) {
+    $filename = drupal_get_filename('module', $module);
+    $libraries_file = dirname($filename) . "/$module.permissions.yml";
+    if (file_exists($libraries_file)) {
+      $permissions = array_merge(
+        $permissions,
+        \Drupal\Component\Serialization\Yaml::decode(file_get_contents($libraries_file))
+      );
+    }
+  }
+
+  return $permissions;
+}
