@@ -17,12 +17,12 @@ function service_container_libraries_libraries_info() {
     $filename = drupal_get_filename('module', $module);
     $libraries_file = dirname($filename) . "/$module.libraries.yml";
     if (file_exists($libraries_file)) {
-      $new_libraries = \Drupal\Component\Serialization\Yaml::decode(file_get_contents($libraries_file));
-      $libraries = array_merge($libraries, $new_libraries);
+      $libraries = array_merge(
+        $libraries,
+        \Drupal\Component\Serialization\Yaml::decode(file_get_contents($libraries_file))
+      );
     }
   }
 
   return $libraries;
 }
-
-function service_container_libraries_libraries_info_alter(&$libraries) {}
