@@ -10,7 +10,7 @@
 /**
  * Implements hook_permission().
  */
-function service_container_libraries_permission() {
+function service_container_permissions_permission() {
   $permissions = array();
 
   foreach (module_list() as $module) {
