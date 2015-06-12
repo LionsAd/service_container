@@ -385,6 +385,41 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
     $this->assertTrue($this->container->initialized('late.service'), 'Late service is initialized after it was gotten.');
   }
 
+  /**
+   * Camelizes a string.
+   *
+   * @covers ::camelize
+   * @dataProvider underscoreCamelizeDataProvider
+   */
+  public function test_camelize($string_underscore, $string_camelize) {
+    $result = $this->container->camelize($string_underscore);
+    $this->assertEquals($string_camelize, $result);
+  }
+
+  /**
+   * Un-camelizes a string.
+   *
+   * @covers ::underscore
+   * @dataProvider underscoreCamelizeDataProvider
+   */
+  public function test_underscore($string_underscore, $string_camelize) {
+    $result = $this->container->underscore($string_camelize);
+    $this->assertEquals($string_underscore, $result);
+  }
+
+  /**
+   * Data Provider for ::underscore and ::camelize.
+   */
+  public function underscoreCamelizeDataProvider() {
+    return array(
+      array('service_container', 'ServiceContainer'),
+      array('service_container_symfony', 'ServiceContainerSymfony'),
+      array('123service_container', '123serviceContainer'),
+      array('123service_container_symfony', '123serviceContainerSymfony'),
+      array('123service_container', '123serviceContainer'),
+      array('123service_container_symfony', '123serviceContainerSymfony'),
+    );
+  }
 
   /**
    * Returns a mock container definition.
