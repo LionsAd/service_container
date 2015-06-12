@@ -77,7 +77,7 @@ after_script:
   - drupal-ti after_script
 
 after_success:
-  - bash <(curl -s https://codecov.io/bash)  # -f "$DRUPAL_TI_COVERAGE_FILE"
+  - bash <(curl -s https://codecov.io/bash) # -f "$DRUPAL_TI_COVERAGE_FILE"
 
 notifications:
   email: false
