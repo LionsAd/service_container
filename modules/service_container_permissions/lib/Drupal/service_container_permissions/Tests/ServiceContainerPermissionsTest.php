@@ -33,7 +33,7 @@ class ServiceContainerPermissionsTest extends ServiceContainerIntegrationTestBas
   /**
    * Tests some basic
    */
-  public function testInit() {
+  public function testPermissions() {
     $permissions = array(
       'permission1',
       'permission2',
