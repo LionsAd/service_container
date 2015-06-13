@@ -1,9 +1,0 @@
-name = "Service container test"
-core = 7.x
-hidden = TRUE
-
-dependencies[] = service_container
-dependencies[] = registry_autoload
-
-registry_autoload[] = PSR-0
-registry_autoload[] = PSR-4
