@@ -1,4 +1,6 @@
 services:
+  drupal7:
+    class: Drupal\service_container\Legacy\Drupal7
   messenger:
     class: Drupal\service_container\Messenger\LegacyMessenger
     arguments: ['@drupal7']
