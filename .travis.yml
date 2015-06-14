@@ -8,6 +8,9 @@
 
 language: php
 
+# @todo Remove when re-enabling simpletest.
+sudo: false
+
 php:
   - 5.3
   - 5.4
@@ -49,9 +52,13 @@ env:
     # Debug options
     #- DRUPAL_TI_DEBUG="-x -v"
 
+    # Environment
+    - DRUPAL_TI_ENVIRONMENT="drupal-8"
+
   matrix:
     - DRUPAL_TI_RUNNERS="phpunit"
-    - DRUPAL_TI_RUNNERS="phpunit simpletest"
+    # @todo Add back simpletest once tests are ported.
+    #- DRUPAL_TI_RUNNERS="phpunit simpletest"
 
 mysql:
   database: drupal_travis_db
