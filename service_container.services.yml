@@ -1,4 +1,4 @@
 services:
   messenger:
-    class: Drupal\service_container\Messenger\SessionMessenger
-    arguments: ['@session_manager', '@page_cache_kill_switch']
+    class: Drupal\service_container\Messenger\LegacyMessenger
+    arguments: ['@drupal7']
