@@ -8,6 +8,9 @@
 
 language: php
 
+# @todo Remove when re-enabling simpletest.
+sudo: false
+
 php:
   - 5.3
   - 5.4
