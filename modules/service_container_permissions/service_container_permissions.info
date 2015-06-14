@@ -5,4 +5,4 @@ core = 7.x
 php = 5.3.10
 
 ; Dependencies
-dependencies[] = service_container
+dependencies[] = service_container_symfony
