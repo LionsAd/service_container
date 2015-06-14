@@ -54,7 +54,8 @@ env:
 
   matrix:
     - DRUPAL_TI_RUNNERS="phpunit"
-    - DRUPAL_TI_RUNNERS="phpunit simpletest"
+    # @todo Add back simpletest once tests are ported.
+    #- DRUPAL_TI_RUNNERS="phpunit simpletest"
 
 mysql:
   database: drupal_travis_db
