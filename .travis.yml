@@ -49,6 +49,9 @@ env:
     # Debug options
     #- DRUPAL_TI_DEBUG="-x -v"
 
+    # Environment
+    DRUPAL_TI_ENVIRONMENT="drupal-8"
+
   matrix:
     - DRUPAL_TI_RUNNERS="phpunit"
     - DRUPAL_TI_RUNNERS="phpunit simpletest"
