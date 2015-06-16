@@ -84,8 +84,11 @@ class PhpArrayDumper extends Dumper
       while (isset($aliases[(string) $id])) {
         $id = $aliases[(string) $id];
       }
-      $services[$alias] = (string) $this->getServiceAliasDefinition($id);
+      $alias_definition = $this->getServiceAliasDefinition($id);
+      $services[$alias] = (string) $alias_definition['alias'];
     }
+
+
 
     return $services;
   }
