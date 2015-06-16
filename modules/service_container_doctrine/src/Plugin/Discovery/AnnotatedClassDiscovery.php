@@ -126,10 +126,8 @@ class AnnotatedClassDiscovery extends CToolsPluginDiscovery {
               $finder = MockFileFinder::create($fileinfo->getPathName());
               $parser = new StaticReflectionParser($class, $finder, TRUE);
 
-              /** @var $annotation \Drupal\Component\Annotation\AnnotationInterface */
               if ($annotation = $reader->getClassAnnotation($parser->getReflectionClass(), $this->pluginDefinitionAnnotationName)) {
-                // @TODO: Do we need this ?
-                //$this->prepareAnnotationDefinition($annotation, $class);
+                $this->prepareAnnotationDefinition($annotation, $class, $fileinfo);
                 $definitions[$annotation->getId()] = $annotation->get();
               }
             }
@@ -140,6 +138,8 @@ class AnnotatedClassDiscovery extends CToolsPluginDiscovery {
 
     // Don't let annotation loaders pile up.
     AnnotationRegistry::reset();
+
+    dpm($definitions);
 
     return $definitions;
   }
