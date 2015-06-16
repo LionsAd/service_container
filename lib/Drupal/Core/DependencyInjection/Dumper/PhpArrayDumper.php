@@ -88,8 +88,6 @@ class PhpArrayDumper extends Dumper
       $services[$alias] = (string) $alias_definition['alias'];
     }
 
-
-
     return $services;
   }
 
