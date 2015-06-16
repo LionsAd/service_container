@@ -228,6 +228,20 @@ class Container implements ContainerInterface {
   /**
    * {@inheritdoc}
    */
+  public function createInstance($plugin_id, $service_definition) {
+    $temporary_name = 'plugin_' . $plugin_id;
+    $this->serviceDefinitions[$temporary_name] = $service_definition;
+
+    $plugin = $this->get($temporary_name);
+    unset($this->serviceDefinitions[$temporary_name]);
+    unset($this->services[$temporary_name]);
+
+    return $plugin;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getDefinition($plugin_id, $exception_on_invalid = TRUE) {
     $definition = isset($this->serviceDefinitions[$plugin_id]) ? $this->serviceDefinitions[$plugin_id] : NULL;
 
