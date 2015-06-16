@@ -15,7 +15,7 @@ use Drupal\Component\Plugin\Exception\PluginNotFoundException;
 use Drupal\service_container\Plugin\Discovery\CToolsPluginDiscovery;
 
 /**
- * A discovery mechanism that uses ctools plugins for Drupal 7 compatibility.
+ * TODO
  *
  * This class cannot be tested as it relies on the existence of procedural code.
  * @codeCoverageIgnore
@@ -58,7 +58,12 @@ class AnnotatedClassDiscovery extends CToolsPluginDiscovery {
    */
   function __construct($plugin_manager_definition, $plugin_namespaces = array(), $plugin_definition_annotation_name = 'Drupal\Component\Annotation\Plugin') {
     parent::__construct($plugin_manager_definition);
-    $this->pluginNamespaces = $plugin_namespaces;
+
+    $directory = module_invoke($plugin_manager_definition['owner'], 'ctools_plugin_directory', $plugin_manager_definition['owner'], $plugin_manager_definition['type']);
+    $base_directory = DRUPAL_ROOT . '/' . drupal_get_path('module', $plugin_manager_definition['owner']) . '/' . $directory;
+    $namespace = new \ArrayObject(array('Drupal\\' . $plugin_manager_definition['owner'] . '\\' . $plugin_manager_definition['owner'] => array($base_directory)));
+
+    $this->pluginNamespaces = $namespace;
     $this->pluginDefinitionAnnotationName = $plugin_definition_annotation_name;
   }
 
@@ -123,7 +128,8 @@ class AnnotatedClassDiscovery extends CToolsPluginDiscovery {
 
               /** @var $annotation \Drupal\Component\Annotation\AnnotationInterface */
               if ($annotation = $reader->getClassAnnotation($parser->getReflectionClass(), $this->pluginDefinitionAnnotationName)) {
-                $this->prepareAnnotationDefinition($annotation, $class);
+                // @TODO: Do we need this ?
+                //$this->prepareAnnotationDefinition($annotation, $class);
                 $definitions[$annotation->getId()] = $annotation->get();
               }
             }
