@@ -7,7 +7,6 @@
 
 namespace Drupal\service_container_doctrine\ServiceContainer\ServiceProvider;
 
-use Drupal\service_container\DependencyInjection\Container;
 use Drupal\service_container\ServiceContainer\ServiceProvider\ServiceContainerServiceProvider;
 
 /**
@@ -38,34 +37,26 @@ class ServiceContainerDoctrineServiceProvider extends ServiceContainerServicePro
    */
   public function alterContainerDefinition(&$container_definition) {
 
-    if (!empty($container_definition['parameters']['annotated_plugins_auto_discovery']) && $this->moduleExists('ctools')) {
-      $ctools_types = $this->cToolsGetTypes();
-      $filtered_types = array_intersect_key($ctools_types, $container_definition['parameters']['annotated_plugins_auto_discovery']);
-      $this->registerAnnotatedPluginTypes($container_definition, $filtered_types);
-    }
+    if ($container_definition['parameters']['annotated_plugins_auto_discovery'] == TRUE) {
+      $module_name = $container_definition['parameters']['annotated_plugins_auto_discovery'];
+      $discovery_class = $container_definition['parameters']['service_container.plugin_manager_types']['annotated'];
 
-    // Set empty value when its not set.
-    if (empty($container_definition['tags']['plugin_manager'])) {
-      $container_definition['tags']['plugin_manager'] = array();
-    }
+      $container_definition['services'][$module_name] = array();
+      $container_definition['parameters']['service_container.plugin_managers']['annotated'][$module_name] = array(
+        'owner' => $module_name,
+      );
 
-    // Process plugin managers of different types.
-    $plugin_manager_types = $container_definition['parameters']['service_container.plugin_manager_types'];
-    $all_plugin_managers = $container_definition['parameters']['service_container.plugin_managers'];
-
-    foreach ($all_plugin_managers as $plugin_manager_type => $plugin_managers) {
-      if (empty($plugin_manager_types[$plugin_manager_type])) {
-        continue;
+      // Set empty value when its not set.
+      if (empty($container_definition['tags']['plugin_manager'])) {
+        $container_definition['tags']['plugin_manager'] = array();
       }
-      $discovery_class = $plugin_manager_types[$plugin_manager_type];
-      $this->processPluginManagers($container_definition, $discovery_class, $plugin_managers);
-    }
 
-    // Register plugin manager plugins as private services in the container.
-    foreach ($container_definition['tags']['plugin_manager'] as $service => $tags) {
-      foreach ($tags as $tag) {
+      $this->processPluginManagers($container_definition, $discovery_class, $container_definition['parameters']['service_container.plugin_managers']['annotated']);
+
+      foreach ($container_definition['tags']['plugin_manager'][$module_name] as $tag) {
         $discovery_class = $tag['discovery_class'];
-        $discovery = new $discovery_class($tag['plugin_manager_definition']);
+
+        $discovery = new $discovery_class($container_definition['parameters']['service_container.plugin_managers']['annotated'][$module_name]);
         $definitions = $discovery->getDefinitions();
         foreach ($definitions as $key => $definition) {
           // Always pass the definition as the first argument.
@@ -78,47 +69,6 @@ class ServiceContainerDoctrineServiceProvider extends ServiceContainerServicePro
           array_unshift($definition['arguments'], $definition_copy);
           $container_definition['services'][$tag['prefix'] . $key] = $definition + array('public' => FALSE);
         }
-      }
-    }
-  }
-
-  /**
-   * Automatically register all ctools plugins of the given types.
-   *
-   * @param array $container_definition
-   *   The container definition to process.
-   * @param array $ctools_types
-   *   Array of plugin types, indexed by module name.
-   */
-  public function registerAnnotatedPluginTypes(&$container_definition, $ctools_types) {
-    foreach($ctools_types as $module_name => $plugins) {
-      foreach($plugins as $plugin_type => $plugin_data) {
-
-        if (isset($container_definition['parameters']['service_container.plugin_managers']['annotated'][$module_name . '.' . $plugin_type])) {
-          continue;
-        }
-
-        // Register service with original string.
-        $name = $module_name . '.' . $plugin_type;
-        $container_definition['services'][$name] = array();
-
-        // Check candidates for needed aliases.
-        $candidates = array();
-        $candidates[$module_name . '.' . Container::underscore($plugin_type)] = TRUE;
-        $candidates[$name] = FALSE;
-
-        foreach ($candidates as $candidate => $value) {
-          if ($value) {
-            $container_definition['services'][$candidate] = array(
-              'alias' => $name,
-            );
-          }
-        }
-
-        $container_definition['parameters']['service_container.plugin_managers']['annotated'][$module_name . '.' . $plugin_type] = array(
-          'owner' => $module_name,
-          'type' => $plugin_type,
-        );
       }
     }
   }
