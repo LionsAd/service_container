@@ -11,8 +11,8 @@ use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\Common\Annotations\SimpleAnnotationReader;
 use Doctrine\Common\Reflection\StaticReflectionParser;
 use Drupal\Component\Annotation\Reflection\MockFileFinder;
+use Drupal\Component\Plugin\Discovery\DiscoveryInterface;
 use Drupal\Component\Plugin\Exception\PluginNotFoundException;
-use Drupal\service_container\Plugin\Discovery\CToolsPluginDiscovery;
 
 /**
  * TODO
@@ -20,7 +20,7 @@ use Drupal\service_container\Plugin\Discovery\CToolsPluginDiscovery;
  * This class cannot be tested as it relies on the existence of procedural code.
  * @codeCoverageIgnore
  */
-class AnnotatedClassDiscovery extends CToolsPluginDiscovery {
+class AnnotatedClassDiscovery implements DiscoveryInterface {
 
   /**
    * The namespaces within which to find plugin classes.
@@ -57,11 +57,8 @@ class AnnotatedClassDiscovery extends CToolsPluginDiscovery {
    *   Defaults to 'Drupal\Component\Annotation\Plugin'.
    */
   function __construct($plugin_manager_definition, $plugin_namespaces = array(), $plugin_definition_annotation_name = 'Drupal\Component\Annotation\Plugin') {
-    parent::__construct($plugin_manager_definition);
-
-    $directory = module_invoke($plugin_manager_definition['owner'], 'ctools_plugin_directory', $plugin_manager_definition['owner'], $plugin_manager_definition['type']);
-    $base_directory = DRUPAL_ROOT . '/' . drupal_get_path('module', $plugin_manager_definition['owner']) . '/' . $directory;
-    $namespace = new \ArrayObject(array('Drupal\\' . $plugin_manager_definition['owner'] . '\\' . $plugin_manager_definition['owner'] => array($base_directory)));
+    $base_directory = DRUPAL_ROOT . '/' . drupal_get_path('module', $plugin_manager_definition['owner']) . '/src/Plugin';
+    $namespace = new \ArrayObject(array('Drupal\\' . $plugin_manager_definition['owner'] . '\\Plugin' => array($base_directory)));
 
     $this->pluginNamespaces = $namespace;
     $this->pluginDefinitionAnnotationName = $plugin_definition_annotation_name;
@@ -139,8 +136,6 @@ class AnnotatedClassDiscovery extends CToolsPluginDiscovery {
     // Don't let annotation loaders pile up.
     AnnotationRegistry::reset();
 
-    dpm($definitions);
-
     return $definitions;
   }
 
@@ -152,7 +147,7 @@ class AnnotatedClassDiscovery extends CToolsPluginDiscovery {
    * @param string $class
    *   The class used for the plugin.
    */
-  protected function prepareAnnotationDefinition(AnnotationInterface $annotation, $class) {
+  protected function prepareAnnotationDefinition($annotation, $class) {
     $annotation->setClass($class);
   }
 
