@@ -1,0 +1,11 @@
+name = Services Container Doctrine annotation integration
+description = Services Container Doctrine annotation integration.
+package = Novelty
+core = 7.x
+php = 5.3.10
+
+; Dependencies
+dependencies[] = service_container
+
+registry_autoload[] = PSR-0
+registry_autoload[] = PSR-4
