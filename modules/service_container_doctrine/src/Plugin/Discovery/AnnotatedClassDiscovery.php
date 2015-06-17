@@ -56,7 +56,7 @@ class AnnotatedClassDiscovery implements DiscoveryInterface {
    *   (optional) The name of the annotation that contains the plugin definition.
    *   Defaults to 'Drupal\Component\Annotation\Plugin'.
    */
-  function __construct($plugin_manager_definition, $plugin_namespaces = array(), $plugin_definition_annotation_name = 'Drupal\Component\Annotation\Plugin') {
+  function __construct($plugin_manager_definition, $plugin_definition_annotation_name = 'Drupal\Component\Annotation\Plugin') {
     $base_directory = DRUPAL_ROOT . '/' . drupal_get_path('module', $plugin_manager_definition['owner']) . '/src/Plugin';
     $namespace = new \ArrayObject(array('Drupal\\' . $plugin_manager_definition['owner'] . '\\Plugin' => array($base_directory)));
 
@@ -124,7 +124,7 @@ class AnnotatedClassDiscovery implements DiscoveryInterface {
               $parser = new StaticReflectionParser($class, $finder, TRUE);
 
               if ($annotation = $reader->getClassAnnotation($parser->getReflectionClass(), $this->pluginDefinitionAnnotationName)) {
-                $this->prepareAnnotationDefinition($annotation, $class, $fileinfo);
+                $this->prepareAnnotationDefinition($annotation, $class);
                 $definitions[$annotation->getId()] = $annotation->get();
               }
             }
