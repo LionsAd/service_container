@@ -1,11 +1,10 @@
 <?php
-
-/*
+/**
  * @file
- * Contains \Drupal\service_container_symfony\DependencyInjection\Dumper
+ * Contains \Drupal\Core\DependencyInjection\Dumper\PhpArrayDumper
  */
 
-namespace Drupal\service_container_symfony\DependencyInjection\Dumper;
+namespace Drupal\Core\DependencyInjection\Dumper;
 
 use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -13,9 +12,7 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Parameter;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\Exception\RuntimeException;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Dumper\Dumper;
-use Symfony\Component\ExpressionLanguage\Expression;
 
 /**
  * PhpArrayDumper dumps a service container as a serialized PHP array.
