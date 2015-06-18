@@ -38,15 +38,15 @@ class FileCacheFactory {
    * @return \Drupal\Component\FileCache\FileCacheInterface
    *   The initialized FileCache object.
    */
-  public static function get($collection, $default_configuration = []) {
-    $default_configuration += [
+  public static function get($collection, $default_configuration = array()) {
+    $default_configuration += array(
       'class' => '\Drupal\Component\FileCache\FileCache',
       'collection' => $collection,
       'cache_backend_class' => NULL,
-      'cache_backend_configuration' => [],
-    ];
+      'cache_backend_configuration' => array(),
+    );
 
-    $configuration = [];
+    $configuration = array();
     if (isset(static::$configuration[$collection])) {
       $configuration = static::$configuration[$collection];
     }
