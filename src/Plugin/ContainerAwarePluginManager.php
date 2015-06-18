@@ -9,7 +9,6 @@ namespace Drupal\service_container\Plugin;
 
 use Drupal\Component\Plugin\PluginManagerInterface;
 use Drupal\service_container\DependencyInjection\ContainerAware;
-use Drupal\service_container\DependencyInjection\ContainerInterface;
 
 /**
  * Base class for plugin managers.
