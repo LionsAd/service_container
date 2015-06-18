@@ -3,6 +3,7 @@
 namespace Drupal\service_container_doctrine_test\Plugin\PluginB;
 
 use Drupal\Component\Annotation\Plugin;
+use Drupal\Component\Plugin\PluginBase;
 
 /**
  * Class pluginB
@@ -14,6 +15,6 @@ use Drupal\Component\Annotation\Plugin;
  *
  * @package Drupal\service_container_doctrine_test\Plugin\PluginB
  */
-class pluginB {
+class pluginB extends PluginBase {
 
 }

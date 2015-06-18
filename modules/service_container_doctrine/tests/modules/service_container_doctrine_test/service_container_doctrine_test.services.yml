@@ -1,2 +1,2 @@
 parameters:
-  annotated_plugins_auto_discovery: 'service_container_doctrine_test'
+  - annotated_plugins_auto_discovery: 'service_container_doctrine_test'
