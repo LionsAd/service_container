@@ -7,9 +7,9 @@
 
 namespace Drupal\service_container\Flood;
 
-use Drupal\service_container\Legacy\Drupal7;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Flood\FloodInterface;
+use Drupal\service_container\Legacy\Drupal7;
 
 /**
  * Defines the database flood backend. This is the default Drupal backend.

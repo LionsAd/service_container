@@ -6,8 +6,8 @@
 
 namespace Drupal\service_container\Plugin;
 
-use Drupal\Component\Plugin\Factory\DefaultFactory;
 use Drupal\Component\Plugin\Discovery\DiscoveryInterface;
+use Drupal\Component\Plugin\Factory\DefaultFactory;
 
 /**
  * Defines a plugin manager used for discovering generic plugins.

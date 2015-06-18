@@ -7,9 +7,9 @@
 
 namespace Drupal\service_container\Plugin;
 
-use Drupal\Component\Plugin\PluginManagerInterface;
-use Drupal\Component\Plugin\FallbackPluginManagerInterface;
 use Drupal\Component\Plugin\Exception\PluginNotFoundException;
+use Drupal\Component\Plugin\FallbackPluginManagerInterface;
+use Drupal\Component\Plugin\PluginManagerInterface;
 
 /**
  * Base class for plugin managers.

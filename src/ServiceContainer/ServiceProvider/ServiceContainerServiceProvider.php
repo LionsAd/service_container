@@ -7,8 +7,8 @@
 
 namespace Drupal\service_container\ServiceContainer\ServiceProvider;
 
-use Drupal\service_container\DependencyInjection\ServiceProviderInterface;
 use Drupal\service_container\DependencyInjection\Container;
+use Drupal\service_container\DependencyInjection\ServiceProviderInterface;
 
 /**
  * Provides render cache service definitions.

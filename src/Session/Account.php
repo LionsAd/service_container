@@ -8,8 +8,8 @@
 namespace Drupal\service_container\Session;
 
 use Drupal\Core\Session\AccountInterface;
-use Drupal\service_container\Variable;
 use Drupal\service_container\Legacy\Drupal7;
+use Drupal\service_container\Variable;
 
 /**
  * Wraps the global user to provide the account interface.
