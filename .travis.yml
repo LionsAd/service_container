@@ -20,6 +20,16 @@ matrix:
   allow_failures:
     - php: 5.6
     - php: hhvm
+  exclude:
+  # Don't need to test twice on all versions, PHP 5.4 is enough.
+    - php: 5.3
+      env: DRUPAL_TI_RUNNERS="phpunit"
+    - php: 5.5
+      env: DRUPAL_TI_RUNNERS="phpunit"
+    - php: 5.6
+      env: DRUPAL_TI_RUNNERS="phpunit"
+    - php: hhvm
+      env: DRUPAL_TI_RUNNERS="phpunit"
 
 env:
   global:
