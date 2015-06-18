@@ -11,7 +11,7 @@ use Drupal\Core\DependencyInjection\Dumper\PhpArrayDumper;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
- * @coversDefaultClass \Drupal\service_container\DependencyInjection\Dumper\PhpArrayDumper
+ * @coversDefaultClass \Drupal\Core\DependencyInjection\Dumper\PhpArrayDumper
  * @group dic
  */
 class PhpArrayDumperTest extends \PHPUnit_Framework_TestCase {
@@ -36,7 +36,17 @@ class PhpArrayDumperTest extends \PHPUnit_Framework_TestCase {
   }
 
   /**
-   * @covers ::getArray()
+   * @covers ::dump
+   */
+  public function test_dump() {
+    $dump = unserialize($this->dumper->dump());
+
+    $this->assertTrue(is_array($dump));
+    $this->assertEquals($dump['services']['bar'], 'foo');
+  }
+
+  /**
+   * @covers ::getArray
    */
   public function test_getArray() {
     $dump = $this->dumper->getArray();
