@@ -1,11 +1,10 @@
 <?php
-
-/*
+/**
  * @file
- * Contains \Drupal\service_container_symfony\DependencyInjection\Dumper
+ * Contains \Drupal\Core\DependencyInjection\Dumper\PhpArrayDumper
  */
 
-namespace Drupal\service_container_symfony\DependencyInjection\Dumper;
+namespace Drupal\Core\DependencyInjection\Dumper;
 
 use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -13,9 +12,7 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Parameter;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\Exception\RuntimeException;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Dumper\Dumper;
-use Symfony\Component\ExpressionLanguage\Expression;
 
 /**
  * PhpArrayDumper dumps a service container as a serialized PHP array.
@@ -38,7 +35,7 @@ class PhpArrayDumper extends Dumper
    */
   public function getArray()
   {
-    $definition = [];
+    $definition = array();
     $definition['parameters'] = $this->getParameters();
     $definition['services'] = $this->getServiceDefinitions();
     return $definition;
@@ -54,7 +51,7 @@ class PhpArrayDumper extends Dumper
   protected function getParameters()
   {
     if (!$this->container->getParameterBag()->all()) {
-      return [];
+      return array();
     }
 
     $parameters = $this->container->getParameterBag()->all();
@@ -71,10 +68,10 @@ class PhpArrayDumper extends Dumper
   protected function getServiceDefinitions()
   {
     if (!$this->container->getDefinitions()) {
-      return [];
+      return array();
     }
 
-    $services = [];
+    $services = array();
     foreach ($this->container->getDefinitions() as $id => $definition) {
       $services[$id] = $this->getServiceDefinition($definition);
     }
@@ -84,7 +81,7 @@ class PhpArrayDumper extends Dumper
       while (isset($aliases[(string) $id])) {
         $id = $aliases[(string) $id];
       }
-      $services[$alias] = (string) $this->getServiceAliasDefinition($id);
+      $services[$alias] = $this->getServiceAliasDefinition($id);
     }
 
     return $services;
@@ -153,7 +150,7 @@ class PhpArrayDumper extends Dumper
    */
   protected function getServiceDefinition($definition)
   {
-    $service = [];
+    $service = array();
     if ($definition->getClass()) {
       $service['class'] = $definition->getClass();
     }
@@ -234,14 +231,14 @@ class PhpArrayDumper extends Dumper
   protected function getServiceAliasDefinition($id)
   {
     if ($id->isPublic()) {
-      return [
-        'alias' => $id,
-      ];
+      return array(
+        'alias' => (string) $id,
+      );
     } else {
-      return [
-        'alias' => $id,
+      return array(
+        'alias' => (string) $id,
         'public' => FALSE,
-      ];
+      );
     }
   }
   /**
@@ -281,11 +278,11 @@ class PhpArrayDumper extends Dumper
   protected function getPrivateService(Definition $definition) {
     $service_definition = $this->getServiceDefinition($definition);
     $hash = sha1(serialize($service_definition));
-    return (object) [
+    return (object) array(
       'type' => 'service',
       'id' => 'private__' . $hash,
       'value' => $service_definition,
-    ];
+    );
   }
 
   /**

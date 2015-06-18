@@ -10,7 +10,7 @@ namespace Drupal\service_container_symfony\ServiceContainer\ServiceProvider;
 use Drupal\Component\FileCache\FileCacheFactory;
 use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\DependencyInjection\YamlFileLoader;
-use Drupal\service_container_symfony\DependencyInjection\Dumper\PhpArrayDumper;
+use Drupal\Core\DependencyInjection\Dumper\PhpArrayDumper;
 use Drupal\service_container\DependencyInjection\ServiceProviderInterface;
 
 /**
