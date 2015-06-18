@@ -40,7 +40,7 @@ class NullFileCache implements FileCacheInterface {
    * {@inheritdoc}
    */
   public function getMultiple(array $filepaths) {
-    return [];
+    return array();
   }
 
   /**
