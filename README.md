@@ -87,4 +87,4 @@ See the file HACK.md for more details.
 ### Examples of modules that use this module
 * [render_cache 7.x-2.x](https://www.drupal.org/project/render_cache)
 * [openlayers 7.x-3.x](https://www.drupal.org/project/openlayers)
-* [vardumper 7.x-3.x](https://www.drupal.org/project/vardumper)
+* [vardumper 7.x-1.x](https://www.drupal.org/project/vardumper)
