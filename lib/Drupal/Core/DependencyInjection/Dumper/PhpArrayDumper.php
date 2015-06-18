@@ -81,8 +81,7 @@ class PhpArrayDumper extends Dumper
       while (isset($aliases[(string) $id])) {
         $id = $aliases[(string) $id];
       }
-      $alias_definition = $this->getServiceAliasDefinition($id);
-      $services[$alias] = (string) $alias_definition['alias'];
+      $services[$alias] = $this->getServiceAliasDefinition($id);
     }
 
     return $services;
@@ -233,11 +232,11 @@ class PhpArrayDumper extends Dumper
   {
     if ($id->isPublic()) {
       return array(
-        'alias' => $id,
+        'alias' => (string) $id,
       );
     } else {
       return array(
-        'alias' => $id,
+        'alias' => (string) $id,
         'public' => FALSE,
       );
     }

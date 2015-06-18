@@ -42,7 +42,7 @@ class PhpArrayDumperTest extends \PHPUnit_Framework_TestCase {
     $dump = unserialize($this->dumper->dump());
 
     $this->assertTrue(is_array($dump));
-    $this->assertEquals($dump['services']['bar'], 'foo');
+    $this->assertEquals($dump['services']['bar'], array('alias' => 'foo'));
   }
 
   /**
@@ -52,7 +52,7 @@ class PhpArrayDumperTest extends \PHPUnit_Framework_TestCase {
     $dump = $this->dumper->getArray();
 
     $this->assertTrue(is_array($dump));
-    $this->assertEquals($dump['services']['bar'], 'foo');
+    $this->assertEquals($dump['services']['bar'], array('alias' => 'foo'));
   }
 
 }
