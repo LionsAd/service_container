@@ -15,11 +15,4 @@ use Drupal\service_container\DependencyInjection\ContainerInterface;
  *
  * @codeCoverageIgnore
  */
-class KeyValueFactory extends BaseKeyValueFactory {
-
-  function __construct(ContainerInterface $container, array $options = array()) {
-    $this->container = $container;
-    $this->options = $options;
-  }
-
-}
+class KeyValueFactory extends BaseKeyValueFactory {}

@@ -7,7 +7,6 @@
 namespace Drupal\service_container\DependencyInjection;
 
 use Drupal\Component\Plugin\Discovery\DiscoveryInterface;
-
 use Symfony\Component\DependencyInjection\IntrospectableContainerInterface;
 
 /**

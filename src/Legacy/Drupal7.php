@@ -150,7 +150,7 @@ class Drupal7 {
    *   - 'context' (defaults to the empty context): The context the source string
    *     belongs to.
    *
-   * @return
+   * @return string
    *   The translated string.
    *
    * @see st()
@@ -224,7 +224,7 @@ class Drupal7 {
    *   - 'entity': The entity object (such as a node) for which the URL is being
    *     generated. Only set if url() is invoked by entity_uri().
    *
-   * @return
+   * @return string
    *   A string containing a URL to the given path.
    */
   public function url($path = NULL, array $options = array()) {
@@ -244,7 +244,7 @@ class Drupal7 {
    * @param ...
    *   Arguments to pass to the hook implementation.
    *
-   * @return
+   * @return mixed
    *   The return value of the hook implementation.
    *
    * @see drupal_alter()
@@ -268,7 +268,7 @@ class Drupal7 {
    * @param ...
    *   Arguments to pass to the hook.
    *
-   * @return
+   * @return array
    *   An array of return values of the hook implementations. If modules return
    *   arrays from their implementations, those are merged into one array.
    *
@@ -352,7 +352,7 @@ class Drupal7 {
    * @param $name
    *   The name of the item to load.
    *
-   * @return
+   * @return bool
    *   TRUE if the item is loaded or has already been loaded.
    */
   public function drupal_load($type, $name) {

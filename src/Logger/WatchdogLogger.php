@@ -7,9 +7,9 @@
 
 namespace Drupal\service_container\Logger;
 
+use Drupal\service_container\Legacy\Drupal7;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
-use Drupal\service_container\Legacy\Drupal7;
 
 /**
  * Implements the PSR-3 logger with watchdog.
