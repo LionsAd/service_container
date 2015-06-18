@@ -24,7 +24,7 @@ class DefaultPluginManagerTest extends \PHPUnit_Framework_TestCase {
    */
   public function setUp() {
     $foo = Mockery::mock('\stdClass');
-    $foo_class = get_class($foo); 
+    $foo_class = get_class($foo);
     $this->definitions = array(
       'foo' => array(
         'class' => $foo_class,
@@ -46,7 +46,7 @@ class DefaultPluginManagerTest extends \PHPUnit_Framework_TestCase {
 
     $discovery->shouldReceive('getDefinition')
       ->with('bar', FALSE);
-    
+
     $discovery->shouldReceive('getDefinition')
       ->with('bar', TRUE)
       ->andThrow(new PluginNotFoundException('bar'));
@@ -82,7 +82,7 @@ class DefaultPluginManagerTest extends \PHPUnit_Framework_TestCase {
       ->with('bar', array())
       ->andReturn('foo');
   }
- 
+
   /**
    * @covers ::__construct()
    */
@@ -146,7 +146,7 @@ class DefaultPluginManagerTest extends \PHPUnit_Framework_TestCase {
    */
   public function test_getInstance() {
     $this->assertInstanceOf($this->definitions['foo']['class'], $this->pluginManager->getInstance(array('id' => 'foo')), 'Returned foo instance matches.');
-    $this->assertNull($this->pluginManager->getInstance(array('x' => 'y')), 'No instance returned for wrong definition.');
+    $this->assertFalse($this->pluginManager->getInstance(array('x' => 'y')), 'No instance returned for wrong definition.');
   }
 }
 

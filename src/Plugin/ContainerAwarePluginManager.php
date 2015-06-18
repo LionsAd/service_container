@@ -8,8 +8,8 @@
 namespace Drupal\service_container\Plugin;
 
 use Drupal\Component\Plugin\PluginManagerInterface;
-use Drupal\Component\Plugin\Exception\PluginNotFoundException;
 use Drupal\service_container\DependencyInjection\ContainerAware;
+use Drupal\service_container\DependencyInjection\ContainerInterface;
 
 /**
  * Base class for plugin managers.
@@ -79,5 +79,6 @@ class ContainerAwarePluginManager extends ContainerAware implements PluginManage
     if (isset($options['id'])) {
       return $this->createInstance($options['id']);
     }
+    return FALSE;
   }
 }

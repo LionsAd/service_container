@@ -6,9 +6,6 @@
 
 namespace Drupal\service_container\DependencyInjection;
 
-use Drupal\Component\Plugin\PluginManagerBase;
-use Drupal\Component\Plugin\Factory\DefaultFactory;
-use Drupal\Component\Plugin\Discovery\DiscoveryInterface;
 use Drupal\service_container\Plugin\Discovery\CToolsPluginDiscovery;
 use Drupal\service_container\Plugin\DefaultPluginManager;
 

@@ -299,15 +299,14 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
   /**
    * Gets plugin manager definition to make it simpler to register plugins.
    *
-   * @param string $owner
+   * @param string $name
    *   The owning module of the plugin.
-   * @param string $identifier
-   *   The internal identifier of the plugin, used for getting from the
-   *   container via $owner.$identifier and for storing the internal class.
-   * @param string $type
-   *   The type of the plugin.
-   * @param string $plugin_type
-   *   The used plugin type, e.g. ctools.plugin. (default)
+   * @param string $discovery_class
+   *   The discovery class in use to discover plugins.
+   * @param array $plugin_manager
+   *   The plugin manager definition
+   *
+   * @return array
    */
   protected function getPluginManagerDefinition($name, $discovery_class, $plugin_manager) {
     $prefix = "$name.internal.";
@@ -349,7 +348,7 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
   /**
    * Determines whether a given module exists.
    *
-   * @param string $module
+   * @param string $name
    *   The name of the module (without the .module extension).
    *
    * @return bool

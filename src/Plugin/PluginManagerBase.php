@@ -80,5 +80,6 @@ abstract class PluginManagerBase implements PluginManagerInterface {
     if (isset($options['id'])) {
       return $this->createInstance($options['id']);
     }
+    return FALSE;
   }
 }

@@ -6,7 +6,6 @@
 
 namespace Drupal\service_container\Plugin;
 
-use Drupal\service_container\Plugin\PluginManagerBase;
 use Drupal\Component\Plugin\Factory\DefaultFactory;
 use Drupal\Component\Plugin\Discovery\DiscoveryInterface;
 

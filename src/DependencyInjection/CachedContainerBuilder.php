@@ -113,6 +113,9 @@ class CachedContainerBuilder extends ContainerBuilder {
 
   /**
    * Caches the builded container definition.
+   *
+   * @param array
+   *   The container definition array.
    */
   protected function setCache(array $definition) {
     $this->cache->set($this->getCacheId(), $definition);

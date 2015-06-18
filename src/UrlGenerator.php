@@ -97,7 +97,7 @@ class UrlGenerator {
    *   - 'entity': The entity object (such as a node) for which the URL is being
    *     generated. Only set if url() is invoked by entity_uri().
    *
-   * @return
+   * @return string
    *   A string containing a URL to the given path.
    */
   public function url($path = NULL, array $options = array()) {

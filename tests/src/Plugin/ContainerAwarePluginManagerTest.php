@@ -18,7 +18,7 @@ use Mockery;
  * @group dic
  */
 class ContainerAwarePluginManagerTest extends \PHPUnit_Framework_TestCase {
- 
+
   /**
    * {@inheritdoc}
    */
@@ -68,7 +68,7 @@ class ContainerAwarePluginManagerTest extends \PHPUnit_Framework_TestCase {
     $block_controller = $this->controllerPluginManager->getInstance(array('id' => 'block'));
     $this->assertInstanceof('\Drupal\render_cache_block\RenderCache\Controller\BlockController', $block_controller, 'getInstance() returns the right class.');
     $block_controller2 = $this->controllerPluginManager->getInstance(array());
-    $this->assertNull($block_controller2, 'getInstance() returns the null, when definition not specified.');
+    $this->assertFalse($block_controller2, 'getInstance() returns the null, when definition not specified.');
   }
 
   /**
