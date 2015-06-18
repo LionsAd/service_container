@@ -232,14 +232,14 @@ class PhpArrayDumper extends Dumper
   protected function getServiceAliasDefinition($id)
   {
     if ($id->isPublic()) {
-      return [
+      return array(
         'alias' => $id,
-      ];
+      );
     } else {
-      return [
+      return array(
         'alias' => $id,
         'public' => FALSE,
-      ];
+      );
     }
   }
   /**
@@ -279,11 +279,11 @@ class PhpArrayDumper extends Dumper
   protected function getPrivateService(Definition $definition) {
     $service_definition = $this->getServiceDefinition($definition);
     $hash = sha1(serialize($service_definition));
-    return (object) [
+    return (object) array(
       'type' => 'service',
       'id' => 'private__' . $hash,
       'value' => $service_definition,
-    ];
+    );
   }
 
   /**
