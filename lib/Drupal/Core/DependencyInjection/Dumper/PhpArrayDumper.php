@@ -35,7 +35,7 @@ class PhpArrayDumper extends Dumper
    */
   public function getArray()
   {
-    $definition = [];
+    $definition = array();
     $definition['parameters'] = $this->getParameters();
     $definition['services'] = $this->getServiceDefinitions();
     return $definition;
@@ -51,7 +51,7 @@ class PhpArrayDumper extends Dumper
   protected function getParameters()
   {
     if (!$this->container->getParameterBag()->all()) {
-      return [];
+      return array();
     }
 
     $parameters = $this->container->getParameterBag()->all();
@@ -68,10 +68,10 @@ class PhpArrayDumper extends Dumper
   protected function getServiceDefinitions()
   {
     if (!$this->container->getDefinitions()) {
-      return [];
+      return array();
     }
 
-    $services = [];
+    $services = array();
     foreach ($this->container->getDefinitions() as $id => $definition) {
       $services[$id] = $this->getServiceDefinition($definition);
     }
@@ -151,7 +151,7 @@ class PhpArrayDumper extends Dumper
    */
   protected function getServiceDefinition($definition)
   {
-    $service = [];
+    $service = array();
     if ($definition->getClass()) {
       $service['class'] = $definition->getClass();
     }
