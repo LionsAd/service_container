@@ -1,2 +1,4 @@
 parameters:
-  annotated_plugin_discovery: {owner: 'service_container_doctrine_test', type: 'Plugin'}
+  annotated_plugins_auto_discovery:
+    - { owner: 'service_container_doctrine_test', type: 'Plugin1', directory: 'src/Plugin/Plugin1' }
+    - { owner: 'service_container_doctrine_test', type: 'Plugin2', directory: 'src/Plugin/Plugin2' }

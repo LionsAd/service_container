@@ -191,8 +191,8 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
       $this->registerCToolsPluginTypes($container_definition, $filtered_types);
     }
 
-    if (!empty($container_definition['parameters']['annotated_plugin_discovery']) && $this->moduleExists('service_container_doctrine')) {
-      $this->registerAnnotatedPluginTypes($container_definition, $container_definition['parameters']['annotated_plugin_discovery']);
+    if (!empty($container_definition['parameters']['annotated_plugins_auto_discovery']) && $this->moduleExists('service_container_doctrine')) {
+      $this->registerAnnotatedPluginTypes($container_definition, $container_definition['parameters']['annotated_plugins_auto_discovery']);
     }
 
     // Set empty value when its not set.
@@ -231,6 +231,7 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
         }
       }
     }
+    dpm($container_definition);
   }
 
   /**
@@ -241,15 +242,14 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
    * @param array $definition
    *   The parameter definition.
    */
-  public function registerAnnotatedPluginTypes(&$container_definition, $definition) {
-    $owner = $definition['owner'];
-    $type = $definition['type'];
+  public function registerAnnotatedPluginTypes(&$container_definition, $parameter_definitions) {
+    foreach($parameter_definitions as $definition) {
+      $owner = $definition['owner'];
+      $type = $definition['type'];
 
-    $container_definition['services'][$owner . '.' . $type] = array();
-    $container_definition['parameters']['service_container.plugin_managers']['annotated'][$owner . '.' . $type] = array(
-      'owner' => $owner,
-      'type' => $type,
-    );
+      $container_definition['services'][$owner . '.' . $type] = array();
+      $container_definition['parameters']['service_container.plugin_managers']['annotated'][$owner . '.' . $type] = $definition;
+    }
   }
 
   /**

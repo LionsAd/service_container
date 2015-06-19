@@ -49,7 +49,7 @@ class AnnotatedClassDiscovery implements DiscoveryInterface {
   /**
    * Constructs a new instance.
    *
-   * @param string[] $plugin_namespaces
+   * @param string[] $plugin_manager_definition
    *   (optional) An array of namespace that may contain plugin implementations.
    *   Defaults to an empty array.
    * @param string $plugin_definition_annotation_name
@@ -57,8 +57,13 @@ class AnnotatedClassDiscovery implements DiscoveryInterface {
    *   Defaults to 'Drupal\Component\Annotation\Plugin'.
    */
   function __construct($plugin_manager_definition, $plugin_definition_annotation_name = 'Drupal\Component\Annotation\Plugin') {
-    $base_directory = DRUPAL_ROOT . '/' . drupal_get_path('module', $plugin_manager_definition['owner']) . '/src/Plugin';
-    $namespace = new \ArrayObject(array('Drupal\\' . $plugin_manager_definition['owner'] . '\\Plugin' => array($base_directory)));
+    $directories = array();
+
+    foreach(module_list() as $module_name) {
+      $directories[] = DRUPAL_ROOT . '/' . drupal_get_path('module', $module_name) . '/' . trim($plugin_manager_definition['directory'], DIRECTORY_SEPARATOR);
+    }
+
+    $namespace = new \ArrayObject(array('Drupal\\' . $plugin_manager_definition['owner'] . '\\Plugin' => $directories));
 
     $this->pluginNamespaces = $namespace;
     $this->pluginDefinitionAnnotationName = $plugin_definition_annotation_name;
@@ -155,14 +160,7 @@ class AnnotatedClassDiscovery implements DiscoveryInterface {
    * {@inheritdoc}
    */
   public function getDefinition($plugin_id, $exception_on_invalid = TRUE) {
-    ctools_include('plugins');
-    $definition = ctools_get_plugins($this->pluginOwner, $this->pluginType, $plugin_id);
-
-    if (!$definition && $exception_on_invalid) {
-      throw new PluginNotFoundException($plugin_id, sprintf('The "%s" plugin does not exist.', $plugin_id));
-    }
-
-    return $definition;
+    // @TODO: See why this is never called.
   }
 
   /**
