@@ -7,6 +7,7 @@
 
 namespace Drupal\service_container_doctrine\Tests;
 
+use Drupal\Component\Plugin\PluginBase;
 use Drupal\service_container\Tests\ServiceContainerIntegrationTestBase;
 use Mockery\CountValidator\Exception;
 use Symfony\Component\Yaml\Exception\RuntimeException;
@@ -52,6 +53,8 @@ class ServiceContainerDoctrineIntegrationTest extends ServiceContainerIntegratio
     foreach($plugins as $plugin) {
       $plugin_manager = $this->container->get($plugin['module'] . '.' . $plugin['type']);
       $this->assertTrue($plugin_manager->hasDefinition($plugin['name']));
+      $object = $plugin_manager->createInstance($plugin['name']);
+      $this->assertTrue($object instanceof PluginBase);
     }
 
     $plugin = array(

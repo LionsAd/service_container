@@ -118,7 +118,7 @@ class AnnotatedClassDiscovery implements DiscoveryInterface {
             if ($fileinfo->getExtension() == 'php') {
               $sub_path = $iterator->getSubIterator()->getSubPath();
               $sub_path = $sub_path ? str_replace(DIRECTORY_SEPARATOR, '\\', $sub_path) . '\\' : '';
-              $class = $namespace . '\\' . $sub_path . $fileinfo->getBasename('.php');
+              $class = $namespace . '\\Plugin\\' . $sub_path . $fileinfo->getBasename('.php');
 
               // The filename is already known, so there is no need to find the
               // file. However, StaticReflectionParser needs a finder, so use a

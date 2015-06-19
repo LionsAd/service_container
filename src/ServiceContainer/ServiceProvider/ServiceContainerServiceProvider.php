@@ -277,6 +277,16 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
     }
   }
 
+  /**
+   * Register aliases for the service.
+   *
+   * @param array $container_definition
+   *   The container definition to process.
+   * @param string $module_name
+   *   The name of the module
+   * @param string $plugin_type
+   *   The type of plugin
+   */
   public function registerAliasServices(&$container_definition, $module_name, $plugin_type) {
     // Register service with original string.
     $name = $module_name . '.' . $plugin_type;

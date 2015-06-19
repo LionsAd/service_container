@@ -1,20 +1,20 @@
 <?php
 
-namespace Drupal\service_container_doctrine_test\Plugin\Plugin1\Plugin2B;
+namespace Drupal\service_container_doctrine_test\Plugin\Plugin1B;
 
 use Drupal\Component\Annotation\Plugin;
 use Drupal\Component\Plugin\PluginBase;
 
 /**
- * Class Plugin2B
+ * Class Plugin1B
  *
  * @Plugin(
- *   id = "Plugin2B",
- *   label = "Label Plugin2B"
+ *   id = "Plugin1B",
+ *   label = "Label Plugin1B"
  * )
  *
- * @package Drupal\service_container_doctrine_test\Plugin\Plugin1\Plugin2B
+ * @package Drupal\service_container_doctrine_test\Plugin\Plugin1\Plugin1B
  */
-class Plugin2B extends PluginBase {
+class Plugin1B extends PluginBase {
 
 }

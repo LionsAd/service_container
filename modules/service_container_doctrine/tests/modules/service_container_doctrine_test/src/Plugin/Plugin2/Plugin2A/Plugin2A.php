@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\service_container_doctrine_test\Plugin\Plugin2\Plugin2A;
+namespace Drupal\service_container_doctrine_test\Plugin\Plugin2A;
 
 use Drupal\Component\Annotation\Plugin;
 use Drupal\Component\Plugin\PluginBase;
