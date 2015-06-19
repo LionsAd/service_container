@@ -8,6 +8,7 @@
 namespace Drupal\service_container_doctrine\Tests;
 
 use Drupal\service_container\Tests\ServiceContainerIntegrationTestBase;
+use Mockery\CountValidator\Exception;
 
 class ServiceContainerDoctrineIntegrationTest extends ServiceContainerIntegrationTestBase {
 
@@ -57,7 +58,11 @@ class ServiceContainerDoctrineIntegrationTest extends ServiceContainerIntegratio
       'type' => 'Plugin3',
       'name' => 'Plugin1C',
     );
-    $this->assertFalse($this->container->get($service['module'] . '.' . $service['type']));
+    try {
+      $this->container->get($service['module'] . '.' . $service['type']);
+    } catch (Exception $e) {
+      $this->fail("This should fail as the service doesn't exists.");
+    }
 
     $service = array(
       'module' => 'service_container_doctrine_test',
