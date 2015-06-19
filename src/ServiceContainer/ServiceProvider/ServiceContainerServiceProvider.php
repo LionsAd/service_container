@@ -231,7 +231,6 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
         }
       }
     }
-    dpm($container_definition);
   }
 
   /**
