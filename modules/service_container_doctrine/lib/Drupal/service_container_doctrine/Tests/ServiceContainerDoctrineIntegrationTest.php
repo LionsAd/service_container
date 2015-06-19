@@ -9,6 +9,7 @@ namespace Drupal\service_container_doctrine\Tests;
 
 use Drupal\service_container\Tests\ServiceContainerIntegrationTestBase;
 use Mockery\CountValidator\Exception;
+use Symfony\Component\Yaml\Exception\RuntimeException;
 
 class ServiceContainerDoctrineIntegrationTest extends ServiceContainerIntegrationTestBase {
 
@@ -60,8 +61,8 @@ class ServiceContainerDoctrineIntegrationTest extends ServiceContainerIntegratio
     );
     try {
       $this->container->get($plugin['module'] . '.' . $plugin['type']);
-    } catch (\RuntimeException $e) {
-      $this->fail("This should fail as the service doesn't exists.");
+    }  catch (\RuntimeException $e) {
+      $this->pass('Bad input correctly threw an exception');
     }
 
     $plugin = array(
