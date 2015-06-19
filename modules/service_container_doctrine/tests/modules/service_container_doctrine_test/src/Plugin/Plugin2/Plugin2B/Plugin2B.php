@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\service_container_doctrine_test\Plugin\Plugin2B;
+namespace Drupal\service_container_doctrine_test\Plugin\Plugin2\Plugin2B;
 
 use Drupal\Component\Annotation\Plugin;
 use Drupal\Component\Plugin\PluginBase;
@@ -13,7 +13,7 @@ use Drupal\Component\Plugin\PluginBase;
  *   label = "Label Plugin2B"
  * )
  *
- * @package Drupal\service_container_doctrine_test\Plugin\Plugin1\Plugin2B
+ * @package Drupal\service_container_doctrine_test\Plugin\Plugin2\Plugin2B
  */
 class Plugin2B extends PluginBase {
 

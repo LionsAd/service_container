@@ -23,6 +23,13 @@ use Drupal\Component\Plugin\Exception\PluginNotFoundException;
 class AnnotatedClassDiscovery implements DiscoveryInterface {
 
   /**
+   * The plugin definition.
+   *
+   * @var array
+   */
+  protected $pluginManagerDefinition;
+
+  /**
    * The namespaces within which to find plugin classes.
    *
    * @var string[]
@@ -66,6 +73,7 @@ class AnnotatedClassDiscovery implements DiscoveryInterface {
 
     $this->pluginNamespaces = new \ArrayObject($namespaces);
     $this->pluginDefinitionAnnotationName = isset($plugin_manager_definition['class']) ? $plugin_manager_definition['class'] : $plugin_definition_annotation_name;
+    $this->pluginManagerDefinition = $plugin_manager_definition;
   }
 
   /**
@@ -118,7 +126,7 @@ class AnnotatedClassDiscovery implements DiscoveryInterface {
             if ($fileinfo->getExtension() == 'php') {
               $sub_path = $iterator->getSubIterator()->getSubPath();
               $sub_path = $sub_path ? str_replace(DIRECTORY_SEPARATOR, '\\', $sub_path) . '\\' : '';
-              $class = $namespace . '\\Plugin\\' . $sub_path . $fileinfo->getBasename('.php');
+              $class = $namespace . '\\' . str_replace(DIRECTORY_SEPARATOR, '\\', $this->pluginManagerDefinition['directory']) . '\\' . $sub_path . $fileinfo->getBasename('.php');
 
               // The filename is already known, so there is no need to find the
               // file. However, StaticReflectionParser needs a finder, so use a
@@ -160,7 +168,7 @@ class AnnotatedClassDiscovery implements DiscoveryInterface {
    */
   public function getDefinition($plugin_id, $exception_on_invalid = TRUE) {
     $definitions = $this->getDefinitions();
-    $definition = ctools_get_plugins($this->pluginOwner, $this->pluginType, $plugin_id);
+    $definition = isset($definitions[$plugin_id]) ? $definitions['$plugin_id'] : FALSE;
 
     if (!$definition && $exception_on_invalid) {
       throw new PluginNotFoundException($plugin_id, sprintf('The "%s" plugin does not exist.', $plugin_id));
