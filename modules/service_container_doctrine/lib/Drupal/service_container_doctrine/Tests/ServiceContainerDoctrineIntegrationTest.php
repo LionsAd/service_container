@@ -38,22 +38,25 @@ class ServiceContainerDoctrineIntegrationTest extends ServiceContainerIntegratio
     $services = array(
       array(
         'module' => 'service_container_doctrine_test',
-        'plugin' => 'PluginA',
+        'type' => 'Plugin',
+        'name' => 'PluginA',
       ),
       array(
         'module' => 'service_container_doctrine_test',
-        'plugin' => 'PluginB',
+        'type' => 'Plugin',
+        'name' => 'PluginB',
       ),
     );
     foreach($services as $service) {
-      $this->assertTrue($this->container->has($service['module']), "Container has plugin manager " . $service['module']);
-      $this->assertTrue($this->container->hasDefinition($service['module'] . '.internal.' . $service['plugin']), "Container has plugin definition " . $service['plugin']);
+      $this->assertTrue($this->container->has($service['module'] . '.' . $service['type']), "Container has plugin manager.");
+      $this->assertTrue($this->container->hasDefinition($service['module']  . '.' . $service['type'] . '.internal.' . $service['name']), "Container has plugin definition.");
     }
 
     $service = array(
       'module' => 'service_container_doctrine_test',
-      'plugin' => 'PluginC',
+      'type' => 'Plugin',
+      'name' => 'PluginC',
     );
-    $this->assertFalse($this->container->hasDefinition($service['module'] . '.internal.' . $service['plugin']), "Container has plugin definition " . $service['plugin']);
+    $this->assertFalse($this->container->hasDefinition($service['module']  . '.' . $service['type'] . '.internal.' . $service['name']));
   }
 }

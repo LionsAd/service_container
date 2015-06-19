@@ -191,6 +191,10 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
       $this->registerCToolsPluginTypes($container_definition, $filtered_types);
     }
 
+    if (!empty($container_definition['parameters']['annotated_plugin_discovery']) && $this->moduleExists('service_container_doctrine')) {
+      $this->registerAnnotatedPluginTypes($container_definition, $container_definition['parameters']['annotated_plugin_discovery']);
+    }
+
     // Set empty value when its not set.
     if (empty($container_definition['tags']['plugin_manager'])) {
       $container_definition['tags']['plugin_manager'] = array();
@@ -227,6 +231,25 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
         }
       }
     }
+  }
+
+  /**
+   * Automatically register all annotated Plugins.
+   *
+   * @param array $container_definition
+   *   The container definition to process.
+   * @param array $definition
+   *   The parameter definition.
+   */
+  public function registerAnnotatedPluginTypes(&$container_definition, $definition) {
+    $owner = $definition['owner'];
+    $type = $definition['type'];
+
+    $container_definition['services'][$owner . '.' . $type] = array();
+    $container_definition['parameters']['service_container.plugin_managers']['annotated'][$owner . '.' . $type] = array(
+      'owner' => $owner,
+      'type' => $type,
+    );
   }
 
   /**

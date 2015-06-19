@@ -1,8 +1,9 @@
 name = Services Container Doctrine annotation integration
 description = Services Container Doctrine annotation integration.
-package = Novelty
+package = Utility
 core = 7.x
 php = 5.3.10
+hidden = TRUE
 
 ; Dependencies
 dependencies[] = service_container_symfony
