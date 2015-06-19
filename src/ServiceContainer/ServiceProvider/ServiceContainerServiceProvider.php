@@ -246,6 +246,8 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
       $owner = $definition['owner'];
       $type = $definition['type'];
 
+      $this->registerAliasServices($container_definition, $owner, $type);
+
       $container_definition['services'][$owner . '.' . $type] = array();
       $container_definition['parameters']['service_container.plugin_managers']['annotated'][$owner . '.' . $type] = $definition;
     }
@@ -265,26 +267,30 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
         if (isset($container_definition['parameters']['service_container.plugin_managers']['ctools'][$module_name . '.' . $plugin_type])) {
           continue;
         }
-        // Register service with original string.
-        $name = $module_name . '.' . $plugin_type;
-        $container_definition['services'][$name] = array();
-
-        // Check candidates for needed aliases.
-        $candidates = array();
-        $candidates[$module_name . '.' . Container::underscore($plugin_type)] = TRUE;
-        $candidates[$name] = FALSE;
-
-        foreach ($candidates as $candidate => $value) {
-          if ($value) {
-            $container_definition['services'][$candidate] = array(
-              'alias' => $name,
-            );
-          }
-        }
+        $this->registerAliasServices($container_definition, $module_name, $plugin_type);
 
         $container_definition['parameters']['service_container.plugin_managers']['ctools'][$module_name . '.' . $plugin_type] = array(
           'owner' => $module_name,
           'type' => $plugin_type,
+        );
+      }
+    }
+  }
+
+  public function registerAliasServices(&$container_definition, $module_name, $plugin_type) {
+    // Register service with original string.
+    $name = $module_name . '.' . $plugin_type;
+    $container_definition['services'][$name] = array();
+
+    // Check candidates for needed aliases.
+    $candidates = array();
+    $candidates[$module_name . '.' . Container::underscore($plugin_type)] = TRUE;
+    $candidates[$name] = FALSE;
+
+    foreach ($candidates as $candidate => $value) {
+      if ($value) {
+        $container_definition['services'][$candidate] = array(
+          'alias' => $name,
         );
       }
     }

@@ -1,4 +1,4 @@
 parameters:
   annotated_plugins_auto_discovery:
-    - { owner: 'service_container_doctrine_test', type: 'Plugin1', directory: 'src/Plugin/Plugin1' }
-    - { owner: 'service_container_doctrine_test', type: 'Plugin2', directory: 'src/Plugin/Plugin2' }
+    - { owner: 'sc_doctrine_test', type: 'Plugin1', directory: 'Plugin/Plugin1', class: 'Drupal\Component\Annotation\Block' }
+    - { owner: 'sc_doctrine_test', type: 'Plugin2', directory: 'Plugin/Plugin2', class: 'Drupal\Component\Annotation\Block' }

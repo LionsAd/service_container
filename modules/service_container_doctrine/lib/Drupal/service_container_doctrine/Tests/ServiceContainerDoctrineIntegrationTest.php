@@ -36,40 +36,40 @@ class ServiceContainerDoctrineIntegrationTest extends ServiceContainerIntegratio
    * Tests if plugins with annotations are available as services.
    */
   public function testDoctrinePlugin() {
-    $services = array(
+    $plugins = array(
       array(
-        'module' => 'service_container_doctrine_test',
+        'module' => 'sc_doctrine_test',
         'type' => 'Plugin1',
         'name' => 'Plugin1A',
       ),
       array(
-        'module' => 'service_container_doctrine_test',
+        'module' => 'sc_doctrine_test',
         'type' => 'Plugin2',
         'name' => 'Plugin2B',
       ),
     );
-    foreach($services as $service) {
-      $plugin_manager = $this->container->get($service['module'] . '.' . $service['type']);
-      $this->assertTrue($plugin_manager->hasDefinition($service['name']));
+    foreach($plugins as $plugin) {
+      $plugin_manager = $this->container->get($plugin['module'] . '.' . $plugin['type']);
+      $this->assertTrue($plugin_manager->hasDefinition($plugin['name']));
     }
 
-    $service = array(
-      'module' => 'service_container_doctrine_test',
+    $plugin = array(
+      'module' => 'sc_doctrine_test',
       'type' => 'Plugin3',
       'name' => 'Plugin1C',
     );
     try {
-      $this->container->get($service['module'] . '.' . $service['type']);
-    } catch (Exception $e) {
+      $this->container->get($plugin['module'] . '.' . $plugin['type']);
+    } catch (\RuntimeException $e) {
       $this->fail("This should fail as the service doesn't exists.");
     }
 
-    $service = array(
-      'module' => 'service_container_doctrine_test',
+    $plugin = array(
+      'module' => 'sc_doctrine_test',
       'type' => 'Plugin1',
       'name' => 'Plugin3A',
     );
-    $plugin_manager = $this->container->get($service['module'] . '.' . $service['type']);
-    $this->assertFalse($plugin_manager->hasDefinition($service['name']));
+    $plugin_manager = $this->container->get($plugin['module'] . '.' . $plugin['type']);
+    $this->assertFalse($plugin_manager->hasDefinition($plugin['name']));
   }
 }
