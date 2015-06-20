@@ -1,0 +1,12 @@
+name = Services Container Doctrine Block
+description = Services Container Doctrine Block integration.
+package = Utility
+core = 7.x
+php = 5.3.10
+
+; Dependencies
+dependencies[] = service_container_doctrine
+dependencies[] = service_container_symfony
+
+registry_autoload[] = PSR-0
+registry_autoload[] = PSR-4

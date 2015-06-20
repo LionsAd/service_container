@@ -1,0 +1,29 @@
+<?php
+
+/**
+ * Implements hook_block_info().
+ */
+function service_container_doctrine_block_block_info() {
+  $blocks = array();
+  $plugin_manager = \Drupal::service(basename(__FILE__, '.module'). '.block');
+
+  foreach($plugin_manager->getDefinitions() as $definition) {
+    $blocks[$definition['id']]['info'] = $definition['admin_label'];
+  }
+
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function service_container_doctrine_block_block_view($delta = '') {
+  $definition = \Drupal::service(basename(__FILE__, '.module'). '.block')->getDefinition($delta);
+
+  if ($definition) {
+    $block = new $definition['class'];
+    return array(
+      'content' => $block->build()
+    );
+  }
+}
