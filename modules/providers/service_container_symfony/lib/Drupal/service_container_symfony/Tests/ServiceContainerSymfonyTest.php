@@ -18,7 +18,7 @@ class ServiceContainerSymfonyTest extends ServiceContainerIntegrationTestBase {
     return array(
       'name' => 'ServiceContainerSymfonyTest',
       'description' => 'Tests the \ServiceContainerSymfony class',
-      'group' => 'service_container_symfony',
+      'group' => 'service_container',
     );
   }
 

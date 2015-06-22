@@ -1,0 +1,22 @@
+<?php
+/**
+ * @file
+ * Main module file for the service_container_annotation_discovery module.
+ */
+
+// -----------------------------------------------------------------------
+// Contrib Hooks
+
+/**
+ * Implements hook_ctools_plugin_directory().
+ */
+function service_container_annotation_discovery_ctools_plugin_directory($owner, $plugin_type) {
+  if ($owner == 'service_container') {
+    return 'src/ServiceContainer/' . $plugin_type;
+  }
+
+  return NULL;
+}
+
+// -----------------------------------------------------------------------
+// Public API

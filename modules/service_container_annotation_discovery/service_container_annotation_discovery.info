@@ -1,0 +1,11 @@
+name = Services Container Annotation Discovery
+description = Services Container Annotation discovery integration.
+package = Utility
+core = 7.x
+php = 5.3.10
+
+; Dependencies
+dependencies[] = service_container_symfony
+
+registry_autoload[] = PSR-0
+registry_autoload[] = PSR-4

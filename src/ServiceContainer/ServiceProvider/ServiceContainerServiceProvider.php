@@ -191,7 +191,7 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
       $this->registerCToolsPluginTypes($container_definition, $filtered_types);
     }
 
-    if (!empty($container_definition['parameters']['annotated_plugins_auto_discovery']) && $this->moduleExists('service_container_doctrine')) {
+    if (!empty($container_definition['parameters']['annotated_plugins_auto_discovery']) && $this->moduleExists('service_container_annotation_discovery')) {
       $this->registerAnnotatedPluginTypes($container_definition, $container_definition['parameters']['annotated_plugins_auto_discovery']);
     }
 
