@@ -40,40 +40,40 @@ class ServiceContainerDoctrineIntegrationTest extends ServiceContainerIntegratio
   public function testDoctrinePlugin() {
     $plugins = array(
       array(
-        'module' => 'sc_doctrine_test',
+        'owner' => 'sc_doctrine_test',
         'type' => 'Plugin1',
         'name' => 'Plugin1A',
       ),
       array(
-        'module' => 'sc_doctrine_test',
+        'owner' => 'sc_doctrine_test',
         'type' => 'Plugin2',
         'name' => 'Plugin2B',
       ),
     );
     foreach($plugins as $plugin) {
-      $plugin_manager = $this->container->get($plugin['module'] . '.' . $plugin['type']);
+      $plugin_manager = $this->container->get($plugin['owner'] . '.' . $plugin['type']);
       $this->assertTrue($plugin_manager->hasDefinition($plugin['name']));
       $object = $plugin_manager->createInstance($plugin['name']);
       $this->assertTrue($object instanceof PluginBase);
     }
 
     $plugin = array(
-      'module' => 'sc_doctrine_test',
+      'owner' => 'sc_doctrine_test',
       'type' => 'Plugin3',
       'name' => 'Plugin1C',
     );
     try {
-      $this->container->get($plugin['module'] . '.' . $plugin['type']);
+      $this->container->get($plugin['owner'] . '.' . $plugin['type']);
     }  catch (\RuntimeException $e) {
       $this->pass('Bad input correctly threw an exception');
     }
 
     $plugin = array(
-      'module' => 'sc_doctrine_test',
+      'owner' => 'sc_doctrine_test',
       'type' => 'Plugin1',
       'name' => 'Plugin3A',
     );
-    $plugin_manager = $this->container->get($plugin['module'] . '.' . $plugin['type']);
+    $plugin_manager = $this->container->get($plugin['owner'] . '.' . $plugin['type']);
     $this->assertFalse($plugin_manager->hasDefinition($plugin['name']));
   }
 }

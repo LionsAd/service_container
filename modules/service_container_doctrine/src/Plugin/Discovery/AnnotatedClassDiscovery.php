@@ -67,7 +67,7 @@ class AnnotatedClassDiscovery implements DiscoveryInterface {
     $namespaces = array();
 
     foreach(module_list() as $module_name) {
-      $directory = DRUPAL_ROOT . DIRECTORY_SEPARATOR . drupal_get_path('module', $module_name) . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . trim($plugin_manager_definition['directory'], DIRECTORY_SEPARATOR);
+      $directory = DRUPAL_ROOT . '/' . drupal_get_path('module', $module_name) . '/src/' . trim($plugin_manager_definition['directory'], DIRECTORY_SEPARATOR);
       $namespaces['Drupal\\' . $module_name] = array($directory);
     }
 

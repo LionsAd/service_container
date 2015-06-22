@@ -3,6 +3,7 @@ description = Services Container Doctrine Block integration.
 package = Utility
 core = 7.x
 php = 5.3.10
+hidden=TRUE
 
 ; Dependencies
 dependencies[] = service_container_doctrine

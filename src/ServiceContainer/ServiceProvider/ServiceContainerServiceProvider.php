@@ -262,15 +262,15 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
    *   Array of plugin types, indexed by module name.
    */
   public function registerCToolsPluginTypes(&$container_definition, $ctools_types) {
-    foreach($ctools_types as $module_name => $plugins) {
+    foreach($ctools_types as $owner => $plugins) {
       foreach($plugins as $plugin_type => $plugin_data) {
-        if (isset($container_definition['parameters']['service_container.plugin_managers']['ctools'][$module_name . '.' . $plugin_type])) {
+        if (isset($container_definition['parameters']['service_container.plugin_managers']['ctools'][$owner . '.' . $plugin_type])) {
           continue;
         }
-        $this->registerAliasServices($container_definition, $module_name, $plugin_type);
+        $this->registerAliasServices($container_definition, $owner, $plugin_type);
 
-        $container_definition['parameters']['service_container.plugin_managers']['ctools'][$module_name . '.' . $plugin_type] = array(
-          'owner' => $module_name,
+        $container_definition['parameters']['service_container.plugin_managers']['ctools'][$owner . '.' . $plugin_type] = array(
+          'owner' => $owner,
           'type' => $plugin_type,
         );
       }
@@ -282,19 +282,19 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
    *
    * @param array $container_definition
    *   The container definition to process.
-   * @param string $module_name
-   *   The name of the module
+   * @param string $owner
+   *   The owner, here, the name of the module
    * @param string $plugin_type
    *   The type of plugin
    */
-  public function registerAliasServices(&$container_definition, $module_name, $plugin_type) {
+  public function registerAliasServices(&$container_definition, $owner, $plugin_type) {
     // Register service with original string.
-    $name = $module_name . '.' . $plugin_type;
+    $name = $owner . '.' . $plugin_type;
     $container_definition['services'][$name] = array();
 
     // Check candidates for needed aliases.
     $candidates = array();
-    $candidates[$module_name . '.' . Container::underscore($plugin_type)] = TRUE;
+    $candidates[$owner . '.' . Container::underscore($plugin_type)] = TRUE;
     $candidates[$name] = FALSE;
 
     foreach ($candidates as $candidate => $value) {
