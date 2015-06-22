@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains \Drupal\service_container_annotation_discovery\ServiceContainer\ServiceProvider\ServiceContainerAnnotatedDiscoveryServiceProvider
+ * Contains \Drupal\service_container_annotation_discovery\ServiceContainer\ServiceProvider\ServiceContainerAnnotationDiscoveryServiceProvider
  */
 
 namespace Drupal\service_container_annotation_discovery\ServiceContainer\ServiceProvider;
@@ -15,7 +15,7 @@ use Drupal\service_container\ServiceContainer\ServiceProvider\ServiceContainerSe
  * @codeCoverageIgnore
  *
  */
-class ServiceContainerAnnotatedDiscoveryServiceProvider extends ServiceContainerServiceProvider {
+class ServiceContainerAnnotationDiscoveryServiceProvider extends ServiceContainerServiceProvider {
 
   /**
    * {@inheritdoc}
