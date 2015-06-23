@@ -191,6 +191,10 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
       $this->registerCToolsPluginTypes($container_definition, $filtered_types);
     }
 
+    if (!empty($container_definition['parameters']['annotated_plugins_auto_discovery']) && $this->moduleExists('service_container_annotation_discovery')) {
+      $this->registerAnnotatedPluginTypes($container_definition, $container_definition['parameters']['annotated_plugins_auto_discovery']);
+    }
+
     // Set empty value when its not set.
     if (empty($container_definition['tags']['plugin_manager'])) {
       $container_definition['tags']['plugin_manager'] = array();
@@ -230,6 +234,26 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
   }
 
   /**
+   * Automatically register all annotated Plugins.
+   *
+   * @param array $container_definition
+   *   The container definition to process.
+   * @param array $definition
+   *   The parameter definition.
+   */
+  public function registerAnnotatedPluginTypes(&$container_definition, $parameter_definitions) {
+    foreach($parameter_definitions as $definition) {
+      $owner = $definition['owner'];
+      $type = $definition['type'];
+
+      $this->registerAliasServices($container_definition, $owner, $type);
+
+      $container_definition['services'][$owner . '.' . $type] = array();
+      $container_definition['parameters']['service_container.plugin_managers']['annotated'][$owner . '.' . $type] = $definition;
+    }
+  }
+
+  /**
    * Automatically register all ctools plugins of the given types.
    *
    * @param array $container_definition
@@ -238,31 +262,45 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
    *   Array of plugin types, indexed by module name.
    */
   public function registerCToolsPluginTypes(&$container_definition, $ctools_types) {
-    foreach($ctools_types as $module_name => $plugins) {
+    foreach($ctools_types as $owner => $plugins) {
       foreach($plugins as $plugin_type => $plugin_data) {
-        if (isset($container_definition['parameters']['service_container.plugin_managers']['ctools'][$module_name . '.' . $plugin_type])) {
+        if (isset($container_definition['parameters']['service_container.plugin_managers']['ctools'][$owner . '.' . $plugin_type])) {
           continue;
         }
-        // Register service with original string.
-        $name = $module_name . '.' . $plugin_type;
-        $container_definition['services'][$name] = array();
+        $this->registerAliasServices($container_definition, $owner, $plugin_type);
 
-        // Check candidates for needed aliases.
-        $candidates = array();
-        $candidates[$module_name . '.' . Container::underscore($plugin_type)] = TRUE;
-        $candidates[$name] = FALSE;
-
-        foreach ($candidates as $candidate => $value) {
-          if ($value) {
-            $container_definition['services'][$candidate] = array(
-              'alias' => $name,
-            );
-          }
-        }
-
-        $container_definition['parameters']['service_container.plugin_managers']['ctools'][$module_name . '.' . $plugin_type] = array(
-          'owner' => $module_name,
+        $container_definition['parameters']['service_container.plugin_managers']['ctools'][$owner . '.' . $plugin_type] = array(
+          'owner' => $owner,
           'type' => $plugin_type,
+        );
+      }
+    }
+  }
+
+  /**
+   * Register aliases for the service.
+   *
+   * @param array $container_definition
+   *   The container definition to process.
+   * @param string $owner
+   *   The owner, here, the name of the module
+   * @param string $plugin_type
+   *   The type of plugin
+   */
+  public function registerAliasServices(&$container_definition, $owner, $plugin_type) {
+    // Register service with original string.
+    $name = $owner . '.' . $plugin_type;
+    $container_definition['services'][$name] = array();
+
+    // Check candidates for needed aliases.
+    $candidates = array();
+    $candidates[$owner . '.' . Container::underscore($plugin_type)] = TRUE;
+    $candidates[$name] = FALSE;
+
+    foreach ($candidates as $candidate => $value) {
+      if ($value) {
+        $container_definition['services'][$candidate] = array(
+          'alias' => $name,
         );
       }
     }

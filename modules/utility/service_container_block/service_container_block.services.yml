@@ -1,0 +1,3 @@
+parameters:
+  annotated_plugins_auto_discovery:
+    - { owner: 'plugin.manager', type: 'block', directory: 'Plugin/Block', class: 'Drupal\Core\Block\Annotation\Block' }

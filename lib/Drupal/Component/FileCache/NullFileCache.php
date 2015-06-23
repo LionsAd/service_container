@@ -26,7 +26,7 @@ class NullFileCache implements FileCacheInterface {
    * @param array $cache_backend_configuration
    *   (optional) The configuration for the backend class.
    */
-  public function __construct($prefix, $collection, $cache_backend_class = NULL, array $cache_backend_configuration = []) {
+  public function __construct($prefix, $collection, $cache_backend_class = NULL, array $cache_backend_configuration = array()) {
   }
 
   /**
@@ -40,7 +40,7 @@ class NullFileCache implements FileCacheInterface {
    * {@inheritdoc}
    */
   public function getMultiple(array $filepaths) {
-    return [];
+    return array();
   }
 
   /**
