@@ -7,7 +7,6 @@
 namespace Drupal\service_container\Plugin;
 
 use Drupal\Component\Plugin\Discovery\DiscoveryInterface;
-use Drupal\Component\Plugin\Factory\DefaultFactory;
 use Drupal\Core\Plugin\Factory\ContainerFactory;
 
 /**
