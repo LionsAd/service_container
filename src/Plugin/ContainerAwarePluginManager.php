@@ -63,6 +63,7 @@ class ContainerAwarePluginManager extends ContainerAware implements PluginManage
       'arguments' => array(),
     );
 
+    array_unshift($plugin_definition['arguments'], $this->getDefinition($plugin_id));
     array_unshift($plugin_definition['arguments'], $plugin_id);
     array_unshift($plugin_definition['arguments'], $configuration);
 
