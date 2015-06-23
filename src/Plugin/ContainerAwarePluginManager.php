@@ -66,7 +66,7 @@ class ContainerAwarePluginManager extends ContainerAware implements PluginManage
     $plugin_class = static::getPluginClass($plugin_id, $plugin_definition);
 
     // If the plugin provides a factory method, pass the container to it.
-    if (is_subclass_of($plugin_class, 'Drupal\Core\Plugin\ContainerFactoryPluginInterface')) {
+    if (is_subclass_of($plugin_class, 'Drupal\service_container\Plugin\ContainerAwarePluginManager')) {
       return $plugin_class::create(\Drupal::getContainer(), $configuration, $plugin_id, $plugin_definition);
     }
 
