@@ -1,3 +1,0 @@
-parameters:
-  service_container.plugin_manager_types:
-    {annotated: \Drupal\service_container_annotation_discovery\Plugin\Discovery\AnnotatedClassDiscovery}
