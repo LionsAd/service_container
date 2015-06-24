@@ -13,7 +13,7 @@ use Drupal\service_container\Tests\ServiceContainerIntegrationTestBase;
 use Mockery\CountValidator\Exception;
 use Symfony\Component\Yaml\Exception\RuntimeException;
 
-class ServiceContainerBlockIntegrationTest extends ServiceContainerIntegrationTestBase {
+class ServiceContainerAnnotationDiscoveryIntegrationTest extends ServiceContainerIntegrationTestBase {
 
   /**
    * {@inheritdoc}
@@ -76,6 +76,16 @@ class ServiceContainerBlockIntegrationTest extends ServiceContainerIntegrationTe
     );
     $plugin_manager = $this->container->get($plugin['owner'] . '.' . $plugin['type']);
     $this->assertFalse($plugin_manager->hasDefinition($plugin['name']));
+
+    $plugin = array(
+      'owner' => 'sc_doctrine_test',
+      'type' => 'Plugin3',
+      'name' => 'Plugin3A',
+    );
+    $plugin_manager = $this->container->get($plugin['owner'] . '.' . $plugin['type']);
+    $this->assertTrue($plugin_manager->hasDefinition($plugin['name']));
+    $object = $plugin_manager->createInstance($plugin['name']);
+    $this->assertEqual($object->getData(), 'Hello world!');
 
     $plugin = array(
       'owner' => 'sc_doctrine_test',

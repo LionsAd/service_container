@@ -6,6 +6,7 @@ php = 5.3.10
 hidden = TRUE
 
 ; Dependencies
+dependencies[] = service_container_symfony
 dependencies[] = service_container_annotation_discovery
 
 registry_autoload[] = PSR-0
