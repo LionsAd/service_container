@@ -219,14 +219,6 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
         $discovery = new $discovery_class($tag['plugin_manager_definition']);
         $definitions = $discovery->getDefinitions();
         foreach ($definitions as $key => $definition) {
-          // Always pass the definition as the first argument.
-          $definition += array(
-            'arguments' => array(),
-          );
-          // array_unshift() internally uses a reference, therefore creates an
-          // endless recursion. Use a copy to prevent that.
-          $definition_copy = $definition;
-          array_unshift($definition['arguments'], $definition_copy);
           $container_definition['services'][$tag['prefix'] . $key] = $definition + array('public' => FALSE);
         }
       }

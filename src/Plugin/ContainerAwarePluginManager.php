@@ -58,12 +58,12 @@ class ContainerAwarePluginManager extends ContainerAware implements PluginManage
    * {@inheritdoc}
    */
   public function createInstance($plugin_id, array $configuration = array()) {
-    $plugin_definition = $this->getDefinition($plugin_id);
+    $plugin_definition_copy = $plugin_definition = $this->getDefinition($plugin_id);
     $plugin_definition += array(
       'arguments' => array(),
     );
 
-    array_unshift($plugin_definition['arguments'], $this->getDefinition($plugin_id));
+    array_unshift($plugin_definition['arguments'], $plugin_definition_copy);
     array_unshift($plugin_definition['arguments'], $plugin_id);
     array_unshift($plugin_definition['arguments'], $configuration);
 
