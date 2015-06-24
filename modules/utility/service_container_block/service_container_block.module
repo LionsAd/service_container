@@ -12,7 +12,9 @@ function service_container_block_block_info() {
   $plugin_manager = \Drupal::service('plugin.manager.block');
 
   foreach($plugin_manager->getDefinitions() as $definition) {
-    $blocks[$definition['id']]['info'] = $definition['admin_label'];
+    if (strlen($definition['id']) <= 32) {
+      $blocks[$definition['id']]['info'] = $definition['admin_label'];
+    }
   }
 
   return $blocks;
