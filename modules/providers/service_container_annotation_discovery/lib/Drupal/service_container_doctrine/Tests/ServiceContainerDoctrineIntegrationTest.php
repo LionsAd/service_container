@@ -8,6 +8,7 @@
 namespace Drupal\service_container_annotation_discovery\Tests;
 
 use Drupal\Component\Plugin\PluginBase;
+use Drupal\service_container\Messenger\MessengerInterface;
 use Drupal\service_container\Tests\ServiceContainerIntegrationTestBase;
 use Mockery\CountValidator\Exception;
 use Symfony\Component\Yaml\Exception\RuntimeException;
@@ -75,5 +76,15 @@ class ServiceContainerBlockIntegrationTest extends ServiceContainerIntegrationTe
     );
     $plugin_manager = $this->container->get($plugin['owner'] . '.' . $plugin['type']);
     $this->assertFalse($plugin_manager->hasDefinition($plugin['name']));
+
+    $plugin = array(
+      'owner' => 'sc_doctrine_test',
+      'type' => 'Plugin4',
+      'name' => 'Plugin4A',
+    );
+    $plugin_manager = $this->container->get($plugin['owner'] . '.' . $plugin['type']);
+    $this->assertTrue($plugin_manager->hasDefinition($plugin['name']));
+    $object = $plugin_manager->createInstance($plugin['name']);
+    $this->assertTrue($object->getMessenger() instanceof MessengerInterface);
   }
 }
