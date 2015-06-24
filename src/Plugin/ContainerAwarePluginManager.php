@@ -60,19 +60,20 @@ class ContainerAwarePluginManager extends ContainerAware implements PluginManage
    */
   public function createInstance($plugin_id, array $configuration = array()) {
     $plugin_definition_copy = $plugin_definition = $this->getDefinition($plugin_id);
+    $plugin_class = static::getPluginClass($plugin_id, $plugin_definition);
+
     $plugin_definition += array(
       'arguments' => array(),
     );
-    $plugin_class = static::getPluginClass($plugin_id, $plugin_definition);
-
-    // If the plugin provides a factory method, pass the container to it.
-    if (is_subclass_of($plugin_class, 'Drupal\service_container\Plugin\ContainerAwarePluginManager')) {
-      return $plugin_class::create(\Drupal::getContainer(), $configuration, $plugin_id, $plugin_definition);
-    }
 
     array_unshift($plugin_definition['arguments'], $plugin_definition_copy);
     array_unshift($plugin_definition['arguments'], $plugin_id);
     array_unshift($plugin_definition['arguments'], $configuration);
+
+    // If the plugin provides a factory method, pass the container to it.
+    if (is_subclass_of($plugin_class, 'Drupal\Core\Plugin\Factory\ContainerFactory')) {
+      return $plugin_class::create(\Drupal::getContainer(), $configuration, $plugin_id, $plugin_definition);
+    }
 
     // Otherwise, create the plugin directly.
     return $this->container->createInstance($this->servicePrefix . $plugin_id, $plugin_definition);
