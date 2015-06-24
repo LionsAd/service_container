@@ -5,7 +5,7 @@ core = 7.x
 php = 5.3.10
 
 ; Dependencies
-dependencies[] = service_container_symfony
+dependencies[] = service_container
 
 registry_autoload[] = PSR-0
 registry_autoload[] = PSR-4
