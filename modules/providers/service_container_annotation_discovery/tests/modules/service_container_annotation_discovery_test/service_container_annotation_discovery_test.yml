@@ -2,3 +2,4 @@ parameters:
   annotated_plugins_auto_discovery:
     - { owner: 'sc_doctrine_test', type: 'Plugin1', directory: 'Plugin/Plugin1', class: 'Drupal\Component\Annotation\Plugin' }
     - { owner: 'sc_doctrine_test', type: 'Plugin2', directory: 'Plugin/Plugin2', class: 'Drupal\Component\Annotation\Plugin' }
+    - { owner: 'sc_doctrine_test', type: 'Plugin4', directory: 'Plugin/Plugin4', class: 'Drupal\Component\Annotation\Plugin' }
