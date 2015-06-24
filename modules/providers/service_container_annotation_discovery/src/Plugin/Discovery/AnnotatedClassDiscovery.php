@@ -137,9 +137,7 @@ class AnnotatedClassDiscovery implements DiscoveryInterface {
 
               if ($annotation = $reader->getClassAnnotation($parser->getReflectionClass(), $this->pluginDefinitionAnnotationName)) {
                 $this->prepareAnnotationDefinition($annotation, $class);
-                if (strlen($annotation->getId()) <= 32) {
-                  $definitions[$annotation->getId()] = $annotation->get();
-                }
+                $definitions[$annotation->getId()] = $annotation->get();
               }
             }
           }
