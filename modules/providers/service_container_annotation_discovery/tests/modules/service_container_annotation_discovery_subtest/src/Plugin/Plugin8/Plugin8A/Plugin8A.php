@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\service_container_annotation_discovery_test\Plugin\Plugin4\Plugin4A;
+namespace Drupal\service_container_annotation_discovery_subtest\Plugin\Plugin8\Plugin8A;
 
 use Drupal\Component\Annotation\PluginID;
 use Drupal\Component\Plugin\PluginBase;
@@ -8,19 +8,19 @@ use Drupal\service_container\Messenger\MessengerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Class Plugin4A
+ * Class Plugin8A
  *
  * @Plugin(
- *   id = "Plugin4A",
- *   label = "Label Plugin4A",
+ *   id = "Plugin8A",
+ *   label = "Label Plugin8A",
  *   arguments = {
  *    "@messenger"
  *   }
  * )
  *
- * @package Drupal\service_container_annotation_discovery_test\Plugin\Plugin4\Plugin4A
+ * @package Drupal\service_container_annotation_discovery_subtest\Plugin\Plugin8\Plugin8A
  */
-class Plugin4A extends PluginBase {
+class Plugin8A extends PluginBase {
 
   /**
    * @var \Drupal\service_container\Messenger\MessengerInterface
