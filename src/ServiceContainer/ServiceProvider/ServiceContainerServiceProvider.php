@@ -184,15 +184,10 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
    * {@inheritdoc}
    */
   public function alterContainerDefinition(&$container_definition) {
-
     if (!empty($container_definition['parameters']['ctools_plugins_auto_discovery']) && $this->moduleExists('ctools')) {
       $ctools_types = $this->cToolsGetTypes();
       $filtered_types = array_intersect_key($ctools_types, $container_definition['parameters']['ctools_plugins_auto_discovery']);
       $this->registerCToolsPluginTypes($container_definition, $filtered_types);
-    }
-
-    if (!empty($container_definition['parameters']['annotated_plugins_auto_discovery']) && $this->moduleExists('service_container_annotation_discovery')) {
-      $this->registerAnnotatedPluginTypes($container_definition, $container_definition['parameters']['annotated_plugins_auto_discovery']);
     }
 
     // Set empty value when its not set.
@@ -222,26 +217,6 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
           $container_definition['services'][$tag['prefix'] . $key] = $definition + array('public' => FALSE);
         }
       }
-    }
-  }
-
-  /**
-   * Automatically register all annotated Plugins.
-   *
-   * @param array $container_definition
-   *   The container definition to process.
-   * @param array $definition
-   *   The parameter definition.
-   */
-  public function registerAnnotatedPluginTypes(&$container_definition, $parameter_definitions) {
-    foreach($parameter_definitions as $definition) {
-      $owner = $definition['owner'];
-      $type = $definition['type'];
-
-      $this->registerAliasServices($container_definition, $owner, $type);
-
-      $container_definition['services'][$owner . '.' . $type] = array();
-      $container_definition['parameters']['service_container.plugin_managers']['annotated'][$owner . '.' . $type] = $definition;
     }
   }
 
