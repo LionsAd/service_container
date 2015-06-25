@@ -34,20 +34,19 @@ class ServiceContainerSymfonyServiceProvider implements ServiceProviderInterface
     );
     $container_builder = new ContainerBuilder();
     $yaml_loader = new YamlFileLoader($container_builder);
-    $dumper = new PhpArrayDumper($container_builder);
-    $container_definitions = array();
 
     foreach (module_list() as $module) {
-      $services = drupal_get_path('module', $module) . '/' . $module . '.services.yml';
+      $filename = drupal_get_filename('module', $module);
+      $services = dirname($filename) . "/$module.services.yml";
       if (file_exists($services)) {
         $yaml_loader->load($services);
-        $container_definitions = array_merge_recursive($container_definitions, $dumper->getArray());
       }
     }
 
     // Disabled for now.
     // $container_builder->compile();
-    return $container_definitions;
+    $dumper = new PhpArrayDumper($container_builder);
+    return $dumper->getArray();
   }
 
   /**
