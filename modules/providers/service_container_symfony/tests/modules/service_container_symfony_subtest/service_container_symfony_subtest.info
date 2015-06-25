@@ -1,0 +1,11 @@
+name = Test Symfony's Services Container (Subtest)
+description = Test Symfony's Services Container (Subtest)
+core = 7.x
+php = 5.3.10
+hidden = TRUE
+
+; Dependencies
+dependencies[] = service_container_symfony_test
+
+registry_autoload[] = PSR-0
+registry_autoload[] = PSR-4

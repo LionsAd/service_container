@@ -19,8 +19,9 @@ class ServiceContainerAnnotationDiscoveryIntegrationTest extends ServiceContaine
    * {@inheritdoc}
    */
   protected function setUp() {
-    parent::setUp('service_container_annotation_discovery_test');
-
+    $modules[] = 'service_container_annotation_discovery_test';
+    $modules[] = 'service_container_annotation_discovery_subtest';
+    parent::setUp($modules);
     $this->container = \Drupal::getContainer();
   }
 
@@ -96,5 +97,29 @@ class ServiceContainerAnnotationDiscoveryIntegrationTest extends ServiceContaine
     $this->assertTrue($plugin_manager->hasDefinition($plugin['name']));
     $object = $plugin_manager->createInstance($plugin['name']);
     $this->assertTrue($object->getMessenger() instanceof MessengerInterface);
+  }
+
+  /**
+   * Tests if multiple module with plugins annotations are available as services.
+   */
+  function testMultiple() {
+    $plugins = array(
+      array(
+        'owner' => 'sc_doctrine_test',
+        'type' => 'Plugin1',
+        'name' => 'Plugin1A',
+      ),
+      array(
+        'owner' => 'sc_doctrine_test',
+        'type' => 'Plugin5',
+        'name' => 'Plugin5B',
+      ),
+    );
+    foreach ($plugins as $plugin) {
+      $plugin_manager = $this->container->get($plugin['owner'] . '.' . $plugin['type']);
+      $this->assertTrue($plugin_manager->hasDefinition($plugin['name']));
+      $object = $plugin_manager->createInstance($plugin['name']);
+      $this->assertTrue($object instanceof PluginBase);
+    }
   }
 }

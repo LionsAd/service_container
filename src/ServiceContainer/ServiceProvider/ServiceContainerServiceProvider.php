@@ -184,10 +184,18 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
    * {@inheritdoc}
    */
   public function alterContainerDefinition(&$container_definition) {
+    foreach(array('annotated_plugins_auto_discovery', 'ctools_plugins_auto_discovery') as $prefix) {
+      $container_definition['parameters'][$prefix] = array();
+      foreach($container_definition['parameters'] as $parameter => $value) {
+        if (strpos($parameter, $prefix) === 0) {
+          $container_definition['parameters'][$prefix] = array_merge($container_definition['parameters'][$prefix], $value);
+        }
+      }
+    }
 
     if (!empty($container_definition['parameters']['ctools_plugins_auto_discovery']) && $this->moduleExists('ctools')) {
       $ctools_types = $this->cToolsGetTypes();
-      $filtered_types = array_intersect_key($ctools_types, $container_definition['parameters']['ctools_plugins_auto_discovery']);
+      $filtered_types = array_intersect_key($ctools_types, array_flip($container_definition['parameters']['ctools_plugins_auto_discovery']));
       $this->registerCToolsPluginTypes($container_definition, $filtered_types);
     }
 

@@ -21,7 +21,7 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
    */
   public function getContainerDefinition() {
     $services = array();
-    $parameters['ctools_plugins_auto_discovery']['service_container_test_ctools'] = TRUE;
+    $parameters['ctools_plugins_auto_discovery.service_container_test_ctools'] = array('service_container_test_ctools');
 
     return array(
       'parameters' => $parameters,

@@ -1,5 +1,5 @@
 name = Test Symfony's Services Container
-description =
+description = Test Symfony's Services Container
 core = 7.x
 php = 5.3.10
 hidden = TRUE

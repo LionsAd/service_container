@@ -1,5 +1,5 @@
 parameters:
-  annotated_plugins_auto_discovery:
+  annotated_plugins_auto_discovery.service_container_annotation_discovery_test:
     - { owner: 'sc_doctrine_test', type: 'Plugin1', directory: 'Plugin/Plugin1', class: 'Drupal\Component\Annotation\Plugin' }
     - { owner: 'sc_doctrine_test', type: 'Plugin2', directory: 'Plugin/Plugin2', class: 'Drupal\Component\Annotation\Plugin' }
     - { owner: 'sc_doctrine_test', type: 'Plugin3', directory: 'Plugin/Plugin3', class: 'Drupal\Component\Annotation\Plugin' }
