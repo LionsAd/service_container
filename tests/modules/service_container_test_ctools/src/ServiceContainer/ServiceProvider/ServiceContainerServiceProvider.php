@@ -32,8 +32,6 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
   /**
    * {@inheritdoc}
    */
-  public function alterContainerDefinition(&$container_definition) {
-    return;
-  }
+  public function alterContainerDefinition(&$container_definition) {}
 
 }

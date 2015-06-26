@@ -35,19 +35,13 @@ class ServiceContainerCToolsIntegrationTest extends ServiceContainerIntegrationT
    * Tests if CTools plugin types are available as services.
    */
   public function testCToolsPluginTypes() {
-    foreach(ctools_plugin_get_plugin_type_info() as $module_name => $plugins) {
-      if ($module_name != 'service_container_test_ctools') {
-        continue;
-      }
-      foreach($plugins as $plugin_type => $plugin_data) {
-        $services = array();
-        $services[$module_name . '.' . $plugin_type] = TRUE;
-        $services[$module_name . '.' . Container::underscore($plugin_type)] = TRUE;
+    $plugins = ctools_plugin_get_plugin_type_info();
+    $module_name = 'service_container_test_ctools';
 
-        foreach($services as $service => $value) {
-          $this->assertTrue($this->container->has($service), "Container has plugin manager $service for $module_name / $plugin_type.");
-        }
-      }
+    foreach($plugins[$module_name] as $plugin_type => $plugin_data) {
+      $service = $module_name . '.' . $plugin_type;
+      $this->assertTrue($this->container->has($service), "Container has plugin manager $service for $module_name / $plugin_type.");
+      $this->assertTrue($this->container->has($module_name . '.' . Container::underscore($plugin_type)), "Container has plugin manager $service for $module_name / $plugin_type.");
     }
   }
 
