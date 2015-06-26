@@ -4,3 +4,4 @@ parameters:
     - { owner: 'sc_doctrine_test', type: 'Plugin2', directory: 'Plugin/Plugin2', class: 'Drupal\Component\Annotation\Plugin' }
     - { owner: 'sc_doctrine_test', type: 'Plugin3', directory: 'Plugin/Plugin3', class: 'Drupal\Component\Annotation\Plugin' }
     - { owner: 'sc_doctrine_test', type: 'Plugin4', directory: 'Plugin/Plugin4', class: 'Drupal\Component\Annotation\Plugin' }
+    - { plugin_manager_name: 'drupal8ftw', directory: 'Plugin/Plugin5' }
