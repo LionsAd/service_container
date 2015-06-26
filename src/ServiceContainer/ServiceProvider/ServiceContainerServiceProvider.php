@@ -243,15 +243,13 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
    */
   public function registerAnnotatedPluginTypes(&$container_definition, $parameter_definitions) {
     foreach($parameter_definitions as $definition) {
-      if (!isset($definition['type']) || empty($definition['type'])) {
-        $service = $definition['owner'];
-      } else {
-        $service = $definition['owner'] . '.' . $definition['type'];
-      }
-      $this->registerAliasServices($container_definition, $service);
+      $owner = $definition['owner'];
+      $type = $definition['type'];
 
-      $container_definition['services'][$service] = array();
-      $container_definition['parameters']['service_container.plugin_managers']['annotated'][$service] = $definition;
+      $this->registerAliasServices($container_definition, $owner, $type);
+
+      $container_definition['services'][$owner . '.' . $type] = array();
+      $container_definition['parameters']['service_container.plugin_managers']['annotated'][$owner . '.' . $type] = $definition;
     }
   }
 
@@ -269,11 +267,9 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
         if (isset($container_definition['parameters']['service_container.plugin_managers']['ctools'][$owner . '.' . $plugin_type])) {
           continue;
         }
-        $service = $owner . '.' . $plugin_type;
-        $this->registerAliasServices($container_definition, $service);
+        $this->registerAliasServices($container_definition, $owner, $plugin_type);
 
-        $container_definition['services'][$service] = array();
-        $container_definition['parameters']['service_container.plugin_managers']['ctools'][$service] = array(
+        $container_definition['parameters']['service_container.plugin_managers']['ctools'][$owner . '.' . $plugin_type] = array(
           'owner' => $owner,
           'type' => $plugin_type,
         );
@@ -291,12 +287,22 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
    * @param string $plugin_type
    *   The type of plugin
    */
-  public function registerAliasServices(&$container_definition, $service) {
-    $service_tmp = Container::underscore($service);
-    if ($service_tmp != $service) {
-      $container_definition['services'][$service_tmp] = array(
-        'alias' => $service,
-      );
+  public function registerAliasServices(&$container_definition, $owner, $plugin_type) {
+    // Register service with original string.
+    $name = $owner . '.' . $plugin_type;
+    $container_definition['services'][$name] = array();
+
+    // Check candidates for needed aliases.
+    $candidates = array();
+    $candidates[$owner . '.' . Container::underscore($plugin_type)] = TRUE;
+    $candidates[$name] = FALSE;
+
+    foreach ($candidates as $candidate => $value) {
+      if ($value) {
+        $container_definition['services'][$candidate] = array(
+          'alias' => $name,
+        );
+      }
     }
   }
 
