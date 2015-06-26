@@ -122,4 +122,22 @@ class ServiceContainerAnnotationDiscoveryIntegrationTest extends ServiceContaine
       $this->assertTrue($object instanceof PluginBase);
     }
   }
+
+  /**
+   * Tests plugin_manager_name key in definition.
+   */
+  function testPluginManagerKey() {
+    $plugins = array(
+      array(
+        'plugin_manager_name' => 'drupal8ftw',
+        'name' => 'Plugin5A',
+      ),
+    );
+    foreach ($plugins as $plugin) {
+      $plugin_manager = $this->container->get($plugin['plugin_manager_name']);
+      $this->assertTrue($plugin_manager->hasDefinition($plugin['name']));
+      $object = $plugin_manager->createInstance($plugin['name']);
+      $this->assertTrue($object instanceof PluginBase);
+    }
+  }
 }

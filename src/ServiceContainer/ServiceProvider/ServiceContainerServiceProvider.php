@@ -243,13 +243,15 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
    */
   public function registerAnnotatedPluginTypes(&$container_definition, $parameter_definitions) {
     foreach($parameter_definitions as $definition) {
-      $owner = $definition['owner'];
-      $type = $definition['type'];
+      if (isset($definition['plugin_manager_name']) && !empty($definition['plugin_manager_name'])) {
+        $plugin_manager_name = $definition['plugin_manager_name'];
+      } else {
+        $plugin_manager_name  = $definition['owner'] . '.' . $definition['type'];
+        $this->registerAliasServices($container_definition, $definition['owner'], $definition['type']);
+      }
 
-      $this->registerAliasServices($container_definition, $owner, $type);
-
-      $container_definition['services'][$owner . '.' . $type] = array();
-      $container_definition['parameters']['service_container.plugin_managers']['annotated'][$owner . '.' . $type] = $definition;
+      $container_definition['services'][$plugin_manager_name] = array();
+      $container_definition['parameters']['service_container.plugin_managers']['annotated'][$plugin_manager_name] = $definition;
     }
   }
 
