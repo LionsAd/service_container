@@ -43,7 +43,15 @@ namespace Drupal\service_container\Legacy;
 class Drupal7 {
 
   public function __call($method, $args) {
-    return call_user_func_array($method, $args);
+    // This is a necessary hack to ensure that things that have been passed by
+    // reference continue to being passed by reference.
+    // More info: See http://goo.gl/aM5fra
+    $args_reference = array();
+    foreach($args as $key => &$arg){
+      $args_reference[$key] = &$arg;
+    }
+
+    return call_user_func_array($method, $args_reference);
   }
 
   /**
