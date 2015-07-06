@@ -1,6 +1,6 @@
 name = Service Container
 description = A light-weight service container based on CTools plugins.
-package = Novelty
+package = Utility
 core = 7.x
 php = 5.3.10
 

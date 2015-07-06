@@ -1,6 +1,6 @@
 name = Symfony's Services Container
 description = A light-weight symfony's services container.
-package = Novelty
+package = Utility
 core = 7.x
 php = 5.3.10
 
