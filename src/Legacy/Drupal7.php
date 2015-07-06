@@ -43,15 +43,50 @@ namespace Drupal\service_container\Legacy;
 class Drupal7 {
 
   public function __call($method, $args) {
-    // This is a necessary hack to ensure that things that have been passed by
-    // reference continue to being passed by reference.
-    // More info: See http://goo.gl/aM5fra
-    $args_reference = array();
-    foreach($args as $key => &$arg){
-      $args_reference[$key] = &$arg;
+    switch(count($args)) {
+      case 0:
+        return $method();
+        break;
+      case 1:
+        return $method($args[0]);
+        break;
+      case 2:
+        return $method($args[0], $args[1]);
+        break;
+      case 3:
+        return $method($args[0], $args[1], $args[2]);
+        break;
+      case 4:
+        return $method($args[0], $args[1], $args[2], $args[3]);
+        break;
+      case 5:
+        return $method($args[0], $args[1], $args[2], $args[3], $args[4]);
+        break;
+      case 6:
+        return $method($args[0], $args[1], $args[2], $args[3], $args[4], $args[5]);
+        break;
+      case 7:
+        return $method($args[0], $args[1], $args[2], $args[3], $args[4], $args[5], $args[6]);
+        break;
+      case 8:
+        return $method($args[0], $args[1], $args[2], $args[3], $args[4], $args[5], $args[6], $args[7]);
+        break;
+      case 9:
+        return $method($args[0], $args[1], $args[2], $args[3], $args[4], $args[5], $args[6], $args[7], $args[8]);
+        break;
+      case 10:
+        return $method($args[0], $args[1], $args[2], $args[3], $args[4], $args[5], $args[6], $args[7], $args[8], $args[9]);
+        break;
+      default:
+        // This is a necessary hack to ensure that things that have been passed
+        // by reference continue to being passed by reference.
+        // More info: See http://goo.gl/aM5fra
+        $args_reference = array();
+        foreach($args as $key => &$arg) {
+          $args_reference[$key] = &$arg;
+        }
+        return call_user_func_array($method, $args_reference);
     }
-
-    return call_user_func_array($method, $args_reference);
   }
 
   /**
