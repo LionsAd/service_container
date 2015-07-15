@@ -8,7 +8,9 @@
 
 language: php
 
-sudo: false
+# Need to fix clean urls via php-fpm first.
+sudo: required
+# sudo: false
 
 php:
   - 5.3
