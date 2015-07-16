@@ -96,8 +96,8 @@ before_install:
   # Update composer
   - composer self-update
 
-  # Download drupal_ti
-  - composer global require "lionsad/drupal_ti:dev-master"
+  # Download drupal_ti  - if not cached
+  - if [ -f "$HOME/.composer/vendor/bin/drupal-ti" ]; then composer global install; else composer global require "lionsad/drupal_ti:dev-master"; fi
 
   # Restore caches from $DRUPAL_TI_CACHE_DIR/TRAVIS_BUILD_DIR to $TRAVIS_BUILD_DIR
   # Note: HOME dir was already synced manually above.
