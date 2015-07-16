@@ -8,9 +8,7 @@
 
 language: php
 
-# Need to fix clean urls via php-fpm first.
-sudo: required
-# sudo: false
+sudo: false
 
 php:
   - 5.3
@@ -18,6 +16,11 @@ php:
   - 5.5
   - 5.6
   - hhvm
+  
+branches:
+  only:
+    - "7.x-1.x"
+    - "8.x-1.x"
 
 matrix:
   fast_finish: true
@@ -75,7 +78,7 @@ mysql:
 before_install:
   - cd ./tests
   - composer self-update
-  - composer global require "lionsad/drupal_ti:1.2.*"
+  - composer global require "lionsad/drupal_ti:dev-master"
   - drupal-ti before_install
 
 install:
