@@ -111,6 +111,7 @@ install:
   - drupal-ti install
 
 before_script:
+  - if [ "$DRUPAL_TI_RUNNERS" != "phpunit" ]; then drupal-ti --include .travis-before-script.sh; fi
   - drupal-ti before_script
 
 script:

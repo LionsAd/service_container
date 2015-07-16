@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "4da9c5f6bf259094ae254925aa6b8f24",
+    "hash": "1f155378f40468a7b038f329ad1add17",
     "packages": [],
     "packages-dev": [
         {
@@ -51,6 +51,46 @@
                 "test"
             ],
             "time": "2015-05-11 14:41:42"
+        },
+        {
+            "name": "lionsad/service_container_libraries",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/LionsAd/service_container_libraries.git",
+                "reference": "2c68a74828583373ef7cc5d804cf0313e254270d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/LionsAd/service_container_libraries/zipball/2c68a74828583373ef7cc5d804cf0313e254270d",
+                "reference": "2c68a74828583373ef7cc5d804cf0313e254270d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.10"
+            },
+            "type": "drupal-module",
+            "autoload": {
+                "psr-0": {
+                    "Drupal\\Component\\": "lib/",
+                    "Drupal\\Core\\": "lib/",
+                    "Doctrine\\": "lib/",
+                    "Symfony\\Component\\DependencyInjection\\": "lib/",
+                    "Symfony\\Component\\HttpFoundation\\": "lib/",
+                    "Symfony\\Component\\Yaml\\": "lib/",
+                    "Psr\\Log\\": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Fabian Franz",
+                    "email": "fabian@lionsad.de"
+                }
+            ],
+            "description": "Service Container Libraries",
+            "homepage": "https://www.drupal.org/project/service_container",
+            "time": "2015-07-16 14:30:37"
         },
         {
             "name": "mockery/mockery",
@@ -541,16 +581,16 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v2.7.1",
+            "version": "v2.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Yaml.git",
-                "reference": "9808e75c609a14f6db02f70fccf4ca4aab53c160"
+                "reference": "4bfbe0ed3909bfddd75b70c094391ec1f142f860"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Yaml/zipball/9808e75c609a14f6db02f70fccf4ca4aab53c160",
-                "reference": "9808e75c609a14f6db02f70fccf4ca4aab53c160",
+                "url": "https://api.github.com/repos/symfony/Yaml/zipball/4bfbe0ed3909bfddd75b70c094391ec1f142f860",
+                "reference": "4bfbe0ed3909bfddd75b70c094391ec1f142f860",
                 "shasum": ""
             },
             "require": {
@@ -586,12 +626,14 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2015-06-10 15:30:22"
+            "time": "2015-07-01 11:25:50"
         }
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "lionsad/service_container_libraries": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
