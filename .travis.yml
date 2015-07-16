@@ -10,6 +10,8 @@ language: php
 
 sudo: false
 
+
+
 php:
   - 5.3
   - 5.4
@@ -21,6 +23,11 @@ branches:
   only:
     - "7.x-1.x"
     - "8.x-1.x"
+    
+cache:
+  apt: true
+  directories:
+    - $HOME/drupal-ti-cache
 
 matrix:
   fast_finish: true
@@ -66,6 +73,19 @@ env:
     # Debug options
     #- DRUPAL_TI_DEBUG="-x -v"
 
+    # Cache options
+    # Use this variable to use another cache directory, usually not needed to be changed.
+    - DRUPAL_TI_CACHE_DIR="$HOME/drupal-ti-cache/"
+    # Set to 0 or comment out to disable cache loading.
+    - DRUPAL_TI_LOAD_CACHE="1"
+    # Set to 0 to disable cache saving, useful with many variants.
+    # Note: Setting this to "0" will remove the .casher directory to
+    #       avoid race conditions between builds.
+    - DRUPAL_TI_SAVE_CACHE="1"
+    # Setup dirs to cache relative to another environment variable.
+    - DRUPAL_TI_CACHE_DIRS_HOME=".composer|.drush|.dist"
+    - DRUPAL_TI_CACHE_DIRS_TRAVIS_BUILD_DIR="tests/vendor"
+
   matrix:
     - DRUPAL_TI_RUNNERS="phpunit"
     - DRUPAL_TI_RUNNERS="phpunit simpletest"
@@ -76,9 +96,22 @@ mysql:
   encoding: utf8
 
 before_install:
-  - cd ./tests
+  # Restore home directory from cache.
+  - mkdir -p "$DRUPAL_TI_CACHE_DIR"/HOME
+  - if [ "$DRUPAL_TI_LOAD_CACHE" = "1" ]; then rsync -a "$DRUPAL_TI_CACHE_DIR"/HOME/ "$HOME/"; fi
+
+  # Update composer
   - composer self-update
+
+  # Download drupal_ti
   - composer global require "lionsad/drupal_ti:dev-master"
+
+  # Restore caches from $DRUPAL_TI_CACHE_DIR/TRAVIS_BUILD_DIR to $TRAVIS_BUILD_DIR
+  # Note: HOME dir was already synced manually above.
+  - drupal-ti --load-cache TRAVIS_BUILD_DIR
+
+  # Setup tests
+  - cd ./tests
   - drupal-ti before_install
 
 install:
@@ -89,6 +122,21 @@ before_script:
 
 script:
   - drupal-ti script
+
+  # Syncs $DRUPAL_TI_CACHE_DIRS_{*} to $DRUPAL_TI_CACHE_DIR/{*}
+  # Has internal optimizations for .composer and .drush.
+  - drupal-ti --save-cache TRAVIS_BUILD_DIR HOME
+
+  # Do some manual caching as well
+  - if [ "$DRUPAL_TI_SAVE_CACHE" = "1" ]; then rsync -a composer.{json,lock} "$DRUPAL_TI_CACHE_DIR"/TRAVIS_BUILD_DIR/tests/; fi
+
+  # Delete composer generated files that screw up cache detection.
+  - rm -f "$DRUPAL_TI_CACHE_DIR"/TRAVIS_BUILD_DIR/tests/.composer/vendor/composer/*.php
+  - rm -f "$DRUPAL_TI_CACHE_DIR"/TRAVIS_BUILD_DIR/tests/.composer/vendor/autoload.php
+
+  # Tests for differences and touches a file if any are detected (optional).
+  - du -sh "$DRUPAL_TI_CACHE_DIR"
+  - drupal-ti --sync-cache
 
 after_script:
   - drupal-ti after_script
