@@ -70,7 +70,7 @@ env:
     # Use this variable to use another cache directory, usually not needed to be changed.
     - DRUPAL_TI_CACHE_DIR="$HOME/drupal-ti-cache/"
     # Set to 0 or comment out to disable cache loading.
-    - DRUPAL_TI_LOAD_CACHE="1"
+    - DRUPAL_TI_LOAD_CACHE="0"
     # Set to 0 to disable cache saving, useful with many variants.
     # Note: Setting this to "0" will remove the .casher directory to
     #       avoid race conditions between builds.
