@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains Drupal\Core\KeyValueStore\DatabaseStorage.
+ * Contains \Drupal\Core\KeyValueStore\DatabaseStorage.
  */
 
 namespace Drupal\Core\KeyValueStore;
@@ -152,7 +152,7 @@ class DatabaseStorage extends StorageBase {
     // Delete in chunks when a large array is passed.
     while ($keys) {
       $this->connection->delete($this->table)
-        ->condition('name', array_splice($keys, 0, 1000))
+        ->condition('name', array_splice($keys, 0, 1000), 'IN')
         ->condition('collection', $this->collection)
         ->execute();
     }
