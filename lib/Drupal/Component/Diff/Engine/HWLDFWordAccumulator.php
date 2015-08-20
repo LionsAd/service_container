@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Contains \Drupal\Component\Diff\Engine\HWLDFWordAccumulator.
+ */
+
 namespace Drupal\Component\Diff\Engine;
 
 use Drupal\Component\Utility\Unicode;
@@ -33,12 +38,11 @@ class HWLDFWordAccumulator {
   protected function _flushGroup($new_tag) {
     if ($this->group !== '') {
       if ($this->tag == 'mark') {
-        $format_string = '@original_line<span class="diffchange">@group</span>';
+        $this->line = SafeMarkup::format('@original_line<span class="diffchange">@group</span>', ['@original_line' => $this->line, '@group' => $this->group]);
       }
       else {
-        $format_string = '@original_line@group';
+        $this->line = SafeMarkup::format('@original_line@group', ['@original_line' => $this->line, '@group' => $this->group]);
       }
-      $this->line = SafeMarkup::format($format_string, ['@original_line' => $this->line, '@group' => $this->group]);
     }
     $this->group = '';
     $this->tag = $new_tag;

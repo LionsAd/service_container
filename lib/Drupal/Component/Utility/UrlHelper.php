@@ -244,7 +244,7 @@ class UrlHelper {
     $base_parts = parse_url($base_url);
 
     if (empty($base_parts['host']) || empty($url_parts['host'])) {
-      throw new \InvalidArgumentException(SafeMarkup::format('A path was passed when a fully qualified domain was expected.'));
+      throw new \InvalidArgumentException('A path was passed when a fully qualified domain was expected.');
     }
 
     if (!isset($url_parts['path']) || !isset($base_parts['path'])) {
@@ -272,7 +272,7 @@ class UrlHelper {
     // Get the plain text representation of the attribute value (i.e. its
     // meaning).
     $string = Html::decodeEntities($string);
-    return SafeMarkup::checkPlain(static::stripDangerousProtocols($string));
+    return Html::escape(static::stripDangerousProtocols($string));
   }
 
   /**

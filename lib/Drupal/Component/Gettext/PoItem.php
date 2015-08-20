@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Definition of Drupal\Component\Gettext\PoItem.
+ * Contains \Drupal\Component\Gettext\PoItem.
  */
 
 namespace Drupal\Component\Gettext;
@@ -147,7 +147,7 @@ class PoItem {
   /**
    * Get if the translation has plural values.
    *
-   * @return boolean $plural
+   * @return bool
    */
   function isPlural() {
     return $this->_plural;
