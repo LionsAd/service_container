@@ -7,7 +7,7 @@
 
 namespace Drupal\Tests\service_container\DependencyInjection\Dumper;
 
-use Drupal\Core\DependencyInjection\Dumper\PhpArrayDumper;
+use Drupal\Component\DependencyInjection\Dumper\PhpArrayDumper;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
@@ -42,7 +42,7 @@ class PhpArrayDumperTest extends \PHPUnit_Framework_TestCase {
     $dump = unserialize($this->dumper->dump());
 
     $this->assertTrue(is_array($dump));
-    $this->assertEquals($dump['services']['bar'], array('alias' => 'foo'));
+    $this->assertEquals($dump['aliases']['bar'], 'foo');
   }
 
   /**
@@ -52,7 +52,7 @@ class PhpArrayDumperTest extends \PHPUnit_Framework_TestCase {
     $dump = $this->dumper->getArray();
 
     $this->assertTrue(is_array($dump));
-    $this->assertEquals($dump['services']['bar'], array('alias' => 'foo'));
+    $this->assertEquals($dump['aliases']['bar'], 'foo');
   }
 
 }
