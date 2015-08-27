@@ -10,6 +10,3 @@
    - Drupal\Core\KeyValueStore\DatabaseStorage
  - StringTranslation:
    - Drupal\Core\StringTranslation\TranslationWrapper
-
-## List of class that we've added ##
- -Drupal\Core\DependencyInjection\Dumper\PhpArrayDumper
