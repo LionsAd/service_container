@@ -6,9 +6,7 @@
 
 namespace Drupal\service_container\DependencyInjection;
 
-use RuntimeException;
 use Drupal\Component\DependencyInjection\PhpArrayContainer;
-use Symfony\Component\DependencyInjection\ScopeInterface;
 
 /**
  * Container is a DI container that provides services to users of the class.
@@ -47,42 +45,8 @@ class Container extends PhpArrayContainer {
   /**
    * {@inheritdoc}
    */
-  public function hasDefinition($plugin_id) {
-    return isset($this->serviceDefinitions[$plugin_id]);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getDefinition($plugin_id, $exception_on_invalid = TRUE) {
-    $definition = isset($this->serviceDefinitions[$plugin_id]) ? $this->serviceDefinitions[$plugin_id] : NULL;
-
-    if (!$definition && $exception_on_invalid) {
-      throw new RuntimeException(sprintf('The "%s" service definition does not exist.', $plugin_id));
-    }
-
-    return $definition;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function getDefinitions() {
     return $this->serviceDefinitions;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getParameter($name) {
-    return isset($this->parameters[$name]) ? $this->parameters[$name] : NULL;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function hasParameter($name) {
-    return isset($this->parameters[$name]);
   }
 
 }
