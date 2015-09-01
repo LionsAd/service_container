@@ -15,9 +15,9 @@ namespace Drupal\Component\Utility;
  * provides a store for known safe strings and methods to manage them
  * throughout the page request.
  *
- * Strings sanitized by self::checkPlain() or Xss::filter() are automatically
- * marked safe, as are markup strings created from render arrays via
- * drupal_render().
+ * Strings sanitized by self::checkPlain() and self::escape() are automatically
+ * marked safe, as are markup strings created from @link theme_render render
+ * arrays @endlink via drupal_render().
  *
  * This class should be limited to internal use only. Module developers should
  * instead use the appropriate
@@ -82,7 +82,7 @@ class SafeMarkup {
   /**
    * Checks if a string is safe to output.
    *
-   * @param string $string
+   * @param string|\Drupal\Component\Utility\SafeStringInterface $string
    *   The content to be checked.
    * @param string $strategy
    *   The escaping strategy. See self::set(). Defaults to 'html'.
@@ -91,7 +91,9 @@ class SafeMarkup {
    *   TRUE if the string has been marked secure, FALSE otherwise.
    */
   public static function isSafe($string, $strategy = 'html') {
-    return isset(static::$safeStrings[(string) $string][$strategy]) ||
+    // Do the instanceof checks first to save unnecessarily casting the object
+    // to a string.
+    return $string instanceOf SafeStringInterface || isset(static::$safeStrings[(string) $string][$strategy]) ||
       isset(static::$safeStrings[(string) $string]['all']);
   }
 
@@ -137,22 +139,6 @@ class SafeMarkup {
   }
 
   /**
-   * Applies a very permissive XSS/HTML filter for admin-only use.
-   *
-   * @param string $string
-   *   A string.
-   *
-   * @return string
-   *   The escaped string. If $string was already set as safe with
-   *   self::set(), it won't be escaped again.
-   *
-   * @see \Drupal\Component\Utility\Xss::filterAdmin()
-   */
-  public static function checkAdminXss($string) {
-    return static::isSafe($string) ? $string : Xss::filterAdmin($string);
-  }
-
-  /**
   * Gets all strings currently marked as safe.
   *
   * This is useful for the batch and form APIs, where it is important to
@@ -183,7 +169,7 @@ class SafeMarkup {
    * @see drupal_validate_utf8()
    */
   public static function checkPlain($text) {
-    $string = htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
+    $string = Html::escape($text);
     static::$safeStrings[$string]['html'] = TRUE;
     return $string;
   }
@@ -232,7 +218,7 @@ class SafeMarkup {
    *
    * @see t()
    */
-  public static function format($string, array $args = array()) {
+  public static function format($string, array $args) {
     $safe = TRUE;
 
     // Transform arguments before inserting them.
