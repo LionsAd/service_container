@@ -108,6 +108,9 @@ class SafeMarkup {
    *   A list of safe strings as previously retrieved by self::getAll().
    *
    * @throws \UnexpectedValueException
+   *
+   * @internal This is called by FormCache, StringTranslation and the Batch API.
+   *   It should not be used anywhere else.
    */
   public static function setMultiple(array $safe_strings) {
     foreach ($safe_strings as $string => $strategies) {
@@ -122,20 +125,6 @@ class SafeMarkup {
         }
       }
     }
-  }
-
-  /**
-   * Encodes special characters in a plain-text string for display as HTML.
-   *
-   * @param string $string
-   *   A string.
-   *
-   * @return string
-   *   The escaped string. If $string was already set as safe with
-   *   self::set(), it won't be escaped again.
-   */
-  public static function escape($string) {
-    return static::isSafe($string) ? $string : static::checkPlain($string);
   }
 
   /**
@@ -165,6 +154,13 @@ class SafeMarkup {
    *   UTF-8.
    *
    * @ingroup sanitization
+   *
+   * @deprecated Will be removed before Drupal 8.0.0. Rely on Twig's
+   *   auto-escaping feature, or use the @link theme_render #plain_text @endlink
+   *   key when constructing a render array that contains plain text in order to
+   *   use the renderer's auto-escaping feature. If neither of these are
+   *   possible, \Drupal\Component\Utility\Html::escape() can be used in places
+   *   where explicit escaping is needed.
    *
    * @see drupal_validate_utf8()
    */
@@ -197,8 +193,8 @@ class SafeMarkup {
    *   formatting depends on the first character of the key:
    *   - @variable: Escaped to HTML using self::escape(). Use this as the
    *     default choice for anything displayed on a page on the site.
-   *   - %variable: Escaped to HTML and formatted using self::placeholder(),
-   *     which makes the following HTML code:
+   *   - %variable: Escaped to HTML wrapped in <em> tags, which makes the
+   *     following HTML code:
    *     @code
    *       <em class="placeholder">text output here.</em>
    *     @endcode
@@ -226,13 +222,18 @@ class SafeMarkup {
       switch ($key[0]) {
         case '@':
           // Escaped only.
-          $args[$key] = static::escape($value);
+          if (!SafeMarkup::isSafe($value)) {
+            $args[$key] = Html::escape($value);
+          }
           break;
 
         case '%':
         default:
           // Escaped and placeholder.
-          $args[$key] = static::placeholder($value);
+          if (!SafeMarkup::isSafe($value)) {
+            $value = Html::escape($value);
+          }
+          $args[$key] = '<em class="placeholder">' . $value . '</em>';
           break;
 
         case '!':
@@ -249,70 +250,6 @@ class SafeMarkup {
     }
 
     return $output;
-  }
-
-  /**
-   * Formats text for emphasized display in a placeholder inside a sentence.
-   *
-   * Used automatically by self::format().
-   *
-   * @param string $text
-   *   The text to format (plain-text).
-   *
-   * @return string
-   *   The formatted text (html).
-   */
-  public static function placeholder($text) {
-    $string = '<em class="placeholder">' . static::escape($text) . '</em>';
-    static::$safeStrings[$string]['html'] = TRUE;
-    return $string;
-  }
-
-  /**
-   * Replaces all occurrences of the search string with the replacement string.
-   *
-   * Functions identically to str_replace(), but marks the returned output as
-   * safe if all the inputs and the subject have also been marked as safe.
-   *
-   * @param string|array $search
-   *   The value being searched for. An array may be used to designate multiple
-   *   values to search for.
-   * @param string|array $replace
-   *   The replacement value that replaces found search values. An array may be
-   *   used to designate multiple replacements.
-   * @param string $subject
-   *   The string or array being searched and replaced on.
-   *
-   * @return string
-   *   The passed subject with replaced values.
-   */
-  public static function replace($search, $replace, $subject) {
-    $output = str_replace($search, $replace, $subject);
-
-    // If any replacement is unsafe, then the output is also unsafe, so just
-    // return the output.
-    if (!is_array($replace)) {
-      if (!SafeMarkup::isSafe($replace)) {
-        return $output;
-      }
-    }
-    else {
-      foreach ($replace as $replacement) {
-        if (!SafeMarkup::isSafe($replacement)) {
-          return $output;
-        }
-      }
-    }
-
-    // If the subject is unsafe, then the output is as well, so return it.
-    if (!SafeMarkup::isSafe($subject)) {
-      return $output;
-    }
-    else {
-      // If we have reached this point, then all replacements were safe. If the
-      // subject was also safe, then mark the entire output as safe.
-      return SafeMarkup::set($output);
-    }
   }
 
 }
