@@ -40,13 +40,6 @@ class TranslationWrapper {
   protected $options;
 
   /**
-   * The string translation service.
-   *
-   * @var \Drupal\Core\StringTranslation\TranslationInterface
-   */
-  protected $stringTranslation;
-
-  /**
    * Constructs a new class instance.
    *
    * Parses values passed into this class through the t() function in Drupal and
@@ -89,6 +82,16 @@ class TranslationWrapper {
   }
 
   /**
+   * Gets all options from this translation wrapper.
+   *
+   * @return mixed[]
+   *   The array of options.
+   */
+  public function getOptions() {
+    return $this->options;
+  }
+
+  /**
    * Implements the magic __toString() method.
    */
   public function __toString() {
@@ -110,29 +113,6 @@ class TranslationWrapper {
    */
   public function __sleep() {
     return array('string', 'arguments', 'options');
-  }
-
-  /**
-   * Gets the string translation service.
-   *
-   * @return \Drupal\Core\StringTranslation\TranslationInterface
-   *   The string translation service.
-   */
-  protected function getStringTranslation() {
-    if (!$this->stringTranslation) {
-      $this->stringTranslation = \Drupal::service('string_translation');
-    }
-
-    return $this->stringTranslation;
-  }
-
-  /**
-   * Translates a string to the current language or to a given language.
-   *
-   * See the t() documentation for details.
-   */
-  protected function t($string, array $args = array(), array $options = array()) {
-    return $this->getStringTranslation()->translate($string, $args, $options);
   }
 
 }

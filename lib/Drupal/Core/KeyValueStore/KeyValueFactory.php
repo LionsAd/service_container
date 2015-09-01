@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains Drupal\Core\KeyValueStore\KeyValueFactory.
+ * Contains \Drupal\Core\KeyValueStore\KeyValueFactory.
  */
 
 namespace Drupal\Core\KeyValueStore;
@@ -48,13 +48,6 @@ class KeyValueFactory implements KeyValueFactoryInterface {
    * var \Symfony\Component\DependencyInjection\ContainerInterface
    */
   protected $container;
-
-  /**
-   * Collection-specific storage override options.
-   *
-   * @var array
-   */
-  protected $options;
 
   /**
    * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
