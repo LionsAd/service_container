@@ -7,6 +7,8 @@
 
 namespace Drupal\service_container\DependencyInjection;
 
+use Symfony\Component\DependencyInjection\ContainerInterface as SymfonyContainerInterface;
+
 /**
  * ContainerAware is a simple implementation of ContainerAwareInterface.
  *
@@ -23,7 +25,7 @@ abstract class ContainerAware implements ContainerAwareInterface {
   /**
    * {@inheritdoc}
    */
-  public function setContainer(ContainerInterface $container = null) {
+  public function setContainer(SymfonyContainerInterface $container = null) {
     $this->container = $container;
   }
 }

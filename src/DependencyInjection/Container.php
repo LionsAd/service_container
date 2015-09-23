@@ -6,6 +6,7 @@
 
 namespace Drupal\service_container\DependencyInjection;
 
+use Drupal\Component\DependencyInjection\PhpArrayContainer;
 use ReflectionClass;
 use RuntimeException;
 use Symfony\Component\DependencyInjection\ScopeInterface;
@@ -15,7 +16,7 @@ use Symfony\Component\DependencyInjection\ScopeInterface;
  *
  * @ingroup dic
  */
-class Container implements ContainerInterface {
+class Container extends PhpArrayContainer {
 
   /**
    * The parameters of the container.
