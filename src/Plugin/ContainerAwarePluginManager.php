@@ -22,8 +22,9 @@ class ContainerAwarePluginManager extends ContainerAware implements PluginManage
    * @param string $service_prefix
    *   The service prefix used to get the plugin instances from the container.
    */
-  public function __construct($service_prefix) {
+  public function __construct($service_prefix, $plugin_manager = array()) {
     $this->servicePrefix = $service_prefix;
+    $this->pluginManager = $plugin_manager;
   }
 
   /**
@@ -60,7 +61,8 @@ class ContainerAwarePluginManager extends ContainerAware implements PluginManage
    */
   public function createInstance($plugin_id, array $configuration = array()) {
     $plugin_definition_copy = $plugin_definition = $this->getDefinition($plugin_id);
-    $plugin_class = static::getPluginClass($plugin_id, $plugin_definition);
+    $plugin_interface = isset($this->pluginManager['interface']) ? $this->pluginManager['interface'] : NULL;
+    $plugin_class = static::getPluginClass($plugin_id, $plugin_definition, $plugin_interface);
 
     // If the plugin provides a factory method, pass the container to it.
     if (is_subclass_of($plugin_class, 'Drupal\Core\Plugin\ContainerFactoryPluginInterface')) {
@@ -121,7 +123,7 @@ class ContainerAwarePluginManager extends ContainerAware implements PluginManage
     }
 
     if ($required_interface && !is_subclass_of($plugin_definition['class'], $required_interface)) {
-      throw new PluginException(sprintf('Plugin "%s" (%s) in %s should implement interface %s.', $plugin_id, $plugin_definition['class'], $plugin_definition['provider'], $required_interface));
+      throw new PluginException(sprintf('Plugin "%s" (%s) should implement interface %s.', $plugin_id, $plugin_definition['class'], $required_interface));
     }
 
     return $class;

@@ -352,7 +352,7 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
     $prefix = "$name.internal.";
     return array(
       'class' => '\Drupal\service_container\Plugin\ContainerAwarePluginManager',
-      'arguments' => array($prefix),
+      'arguments' => array($prefix, $plugin_manager),
       'calls' => array(
         array('setContainer', array('@service_container')),
       ),
