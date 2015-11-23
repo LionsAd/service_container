@@ -33,7 +33,7 @@ namespace Drupal\Component\Utility;
  * @see \Drupal\Component\Utility\SafeMarkup::isSafe()
  * @see \Drupal\Core\Template\TwigExtension::escapeFilter()
  */
-interface SafeStringInterface extends \JsonSerializable {
+interface SafeStringInterface {
 
   /**
    * Returns a safe string.
