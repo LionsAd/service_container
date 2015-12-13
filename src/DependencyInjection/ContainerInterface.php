@@ -17,19 +17,6 @@ use Symfony\Component\DependencyInjection\IntrospectableContainerInterface;
 interface ContainerInterface extends DiscoveryInterface, IntrospectableContainerInterface {
 
   /**
-   * Returns a service from the container.
-   *
-   * @param string $name
-   *   The name of the service to retrieve.
-   * @param int $invalidBehavior
-   *   The behavior when the service does not exist
-   *
-   * @return object
-   *   Returns the object that provides the service.
-   */
-  public function get($name,  $invalidBehavior = self::EXCEPTION_ON_INVALID_REFERENCE);
-
-  /**
    * Returns a parameter from the container.
    *
    * @param string $name

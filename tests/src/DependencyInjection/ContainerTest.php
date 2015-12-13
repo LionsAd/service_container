@@ -109,7 +109,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
    *
    * @covers ::setParameter()
    *
-   * @expectedException \BadMethodCallException
+   * @expectedException \Symfony\Component\DependencyInjection\Exception\LogicException
    */
   public function test_setParameter_frozenContainer() {
     $this->containerDefinition['frozen'] = TRUE;
@@ -181,7 +181,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
 
   /**
    * Tests that Container::get() for non-existant dependencies works properly.
-   * @expectedException \RuntimeException
+   * @expectedException \Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException
    * @covers ::get()
    */
   public function test_get_exception() {
@@ -204,7 +204,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
    * @covers ::get()
    * @covers ::expandArguments()
    *
-   * @expectedException \RuntimeException
+   * @expectedException \Symfony\Component\DependencyInjection\Exception\ParameterNotFoundException
    */
   public function test_get_notFound_parameterWithExceptionOnSecondCall() {
     $service = $this->container->get('service_parameter_not_exists', ContainerInterface::NULL_ON_INVALID_REFERENCE);
@@ -217,7 +217,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
 
   /**
    * Tests that Container::get() for non-existant parameters works properly.
-   * @expectedException \RuntimeException
+   * @expectedException \Symfony\Component\DependencyInjection\Exception\ParameterNotFoundException
    * @covers ::get()
    * @covers ::expandArguments()
    */
@@ -237,7 +237,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
 
   /**
    * Tests that Container::get() for non-existant dependencies works properly.
-   * @expectedException \RuntimeException
+   * @expectedException \Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException
    * @covers ::get()
    * @covers ::expandArguments()
    */
@@ -271,9 +271,9 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
    *
    * @covers ::get()
    *
-   * @expectedException \RuntimeException
+   * @expectedException \Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException
    */
-  public function test_get_notFoundMulitpleWithExceptionOnSecondCall() {
+  public function test_get_notFoundMultipleWithExceptionOnSecondCall() {
     $this->assertNull($this->container->get('service_not_exists', ContainerInterface::NULL_ON_INVALID_REFERENCE, 'Not found service does nto throw exception.'));
     $this->container->get('service_not_exists');
   }
@@ -438,7 +438,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
       'class' => '\Drupal\Tests\service_container\DependencyInjection\MockService',
       'arguments' => array(
         (object) array(
-          'type' => 'service',
+          'type' => 'private_service',
           'value' => $private_service,
           'id' => 'private__' . $private_hash,
         ),
@@ -508,11 +508,11 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
     );
     $services['service_parameter_not_exists'] = array(
       'class' => '\Drupal\Tests\service_container\DependencyInjection\MockService',
-      'arguments' => array('@service.provider', '%not_exists', -1),
+      'arguments' => array('@service.provider', '%not_exists%', -1),
     );
     $services['service_dependency_not_exists'] = array(
       'class' => '\Drupal\Tests\service_container\DependencyInjection\MockService',
-      'arguments' => array('@service_not_exists', '%some_config'),
+      'arguments' => array('@service_not_exists', '%some_config%'),
     );
 
     return array(

@@ -15,6 +15,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface as SymfonyContainer
  * @ingroup dic
  */
 abstract class ContainerAware implements ContainerAwareInterface {
+
   /**
    * The injected container.
    *
