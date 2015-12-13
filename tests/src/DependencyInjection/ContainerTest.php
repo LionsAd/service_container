@@ -98,7 +98,8 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
    * @covers ::setParameter()
    */
   public function test_setParameter_unfrozenContainer() {
-    $this->container = new Container($this->containerDefinition, FALSE);
+    $this->containerDefinition['frozen'] = FALSE;
+    $this->container = new Container($this->containerDefinition);
     $this->container->setParameter('some_config', 'new_value');
     $this->assertEquals('new_value', $this->container->getParameter('some_config'), 'Container parameters can be set.');
   }
@@ -111,6 +112,8 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
    * @expectedException \BadMethodCallException
    */
   public function test_setParameter_frozenContainer() {
+    $this->containerDefinition['frozen'] = TRUE;
+    $this->container = new Container($this->containerDefinition);
     $this->container->setParameter('some_config', 'new_value');
   }
 
@@ -192,7 +195,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
    */
   public function test_get_notFound_parameter() {
     $service = $this->container->get('service_parameter_not_exists', ContainerInterface::NULL_ON_INVALID_REFERENCE);
-    $this->assertNull($service->getSomeParameter(), 'Some parameter is NULL.');
+    $this->assertNull($service, 'Some service is NULL.');
   }
 
   /**
@@ -205,7 +208,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
    */
   public function test_get_notFound_parameterWithExceptionOnSecondCall() {
     $service = $this->container->get('service_parameter_not_exists', ContainerInterface::NULL_ON_INVALID_REFERENCE);
-    $this->assertNull($service->getSomeParameter(), 'Some parameter is NULL.');
+    $this->assertNull($service, 'Some service is NULL.');
 
     // Reset the service.
     $this->container->set('service_parameter_not_exists', NULL);
@@ -229,7 +232,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
    */
   public function test_get_notFound_dependency() {
     $service = $this->container->get('service_dependency_not_exists', ContainerInterface::NULL_ON_INVALID_REFERENCE);
-    $this->assertNull($service->getSomeOtherService(), 'Some other service is NULL.');
+    $this->assertNull($service, 'Some service is NULL.');
   }
 
   /**
@@ -283,38 +286,6 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
     $service = $this->container->get('service.provider');
     $aliased_service = $this->container->get('service.provider_alias');
     $this->assertSame($service, $aliased_service);
-  }
-
-  /**
-   * Tests that Container::get() for factories via services works properly.
-   * @covers ::get()
-   */
-  public function test_get_factoryService() {
-    $factory_service = $this->container->get('factory_service');
-    $factory_service_class = $this->container->getParameter('factory_service_class');
-    $this->assertInstanceOf($factory_service_class, $factory_service);
-  }
-
-  /**
-   * Tests that Container::get() for factories via factory_class works.
-   * @covers ::get()
-   */
-  public function test_get_factoryClass() {
-    $service = $this->container->get('service.provider');
-    $factory_service= $this->container->get('factory_class');
-
-    $this->assertInstanceOf(get_class($service), $factory_service);
-    $this->assertEquals('bar', $factory_service->getSomeParameter(), 'Correct parameter was passed via the factory class instantiation.');
-    $this->assertEquals($this->container, $factory_service->getContainer(), 'Container was injected via setter injection.');
-  }
-
-  /**
-   * Tests that Container::get() for wrong factories works correctly.
-   * @expectedException \RuntimeException
-   * @covers ::get()
-   */
-  public function test_get_factoryWrong() {
-    $this->container->get('wrong_factory');
   }
 
   /**
@@ -474,9 +445,11 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
         '%some_config%'
       ),
     );
+    /*
     $services['service.provider_alias'] = array(
       'alias' => 'service.provider',
     );
+    */
 
     $services['service_using_array'] = array(
       'class' => '\Drupal\Tests\service_container\DependencyInjection\MockService',
@@ -545,6 +518,9 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
     return array(
       'parameters' => $parameters,
       'services' => $services,
+      'aliases' => array(
+        'service.provider_alias' => 'service.provider',
+      )
     );
   }
 }
