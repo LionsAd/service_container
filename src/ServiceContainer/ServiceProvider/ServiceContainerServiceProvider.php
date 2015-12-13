@@ -52,8 +52,7 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
 
     $services['database'] = array(
       'class' => 'Drupal\Core\Database\Connection',
-      'factory_class' => 'Drupal\Core\Database\Database',
-      'factory_method' => 'getConnection',
+      'factory' => 'Drupal\Core\Database\Database::getConnection',
       'arguments' => array('default'),
     );
 
@@ -301,8 +300,8 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
 
     foreach ($candidates as $candidate => $value) {
       if ($value) {
-        $container_definition['services'][$candidate] = array(
-          'alias' => $name,
+        $container_definition['aliases'][$candidate] = array(
+          $name,
         );
       }
     }
