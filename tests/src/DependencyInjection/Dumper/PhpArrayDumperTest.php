@@ -11,7 +11,7 @@ use Drupal\Component\DependencyInjection\Dumper\PhpArrayDumper;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
- * @coversDefaultClass \Drupal\Core\DependencyInjection\Dumper\PhpArrayDumper
+ * @coversDefaultClass \Drupal\Component\DependencyInjection\Dumper\PhpArrayDumper
  * @group dic
  */
 class PhpArrayDumperTest extends \PHPUnit_Framework_TestCase {

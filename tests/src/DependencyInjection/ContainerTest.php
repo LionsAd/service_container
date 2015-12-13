@@ -191,7 +191,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
   /**
    * Tests that Container::get() for non-existant parameters works properly.
    * @covers ::get()
-   * @covers ::expandArguments()
+   * @covers ::resolveServicesAndParameters()
    */
   public function test_get_notFound_parameter() {
     $service = $this->container->get('service_parameter_not_exists', ContainerInterface::NULL_ON_INVALID_REFERENCE);
@@ -202,7 +202,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
    * Tests Container::get() with an exception due to missing parameter on the second call.
    *
    * @covers ::get()
-   * @covers ::expandArguments()
+   * @covers ::resolveServicesAndParameters()
    *
    * @expectedException \Symfony\Component\DependencyInjection\Exception\ParameterNotFoundException
    */
@@ -219,7 +219,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
    * Tests that Container::get() for non-existant parameters works properly.
    * @expectedException \Symfony\Component\DependencyInjection\Exception\ParameterNotFoundException
    * @covers ::get()
-   * @covers ::expandArguments()
+   * @covers ::resolveServicesAndParameters()
    */
   public function test_get_notFound_parameter_exception() {
     $this->container->get('service_parameter_not_exists');
@@ -228,7 +228,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
   /**
    * Tests that Container::get() for non-existent dependencies works properly.
    * @covers ::get()
-   * @covers ::expandArguments()
+   * @covers ::resolveServicesAndParameters()
    */
   public function test_get_notFound_dependency() {
     $service = $this->container->get('service_dependency_not_exists', ContainerInterface::NULL_ON_INVALID_REFERENCE);
@@ -239,7 +239,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
    * Tests that Container::get() for non-existant dependencies works properly.
    * @expectedException \Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException
    * @covers ::get()
-   * @covers ::expandArguments()
+   * @covers ::resolveServicesAndParameters()
    */
   public function test_get_notFound_dependency_exception() {
     $this->container->get('service_dependency_not_exists');
@@ -316,9 +316,9 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
   /**
    * Tests that private services work correctly.
    * @covers ::get()
-   * @covers ::expandArguments()
+   * @covers ::resolveServicesAndParameters()
    */
-  public function test_expandArguments_privateService() {
+  public function test_resolveServicesAndParameters_privateService() {
     $service = $this->container->get('service_using_private');
     $private_service = $service->getSomeOtherService();
     $this->assertEquals($private_service->getSomeParameter(), 'really_private_lama', 'Private was found successfully');
@@ -327,9 +327,9 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
   /**
    * Tests that services with an array of arguments work correctly.
    * @covers ::get()
-   * @covers ::expandArguments()
+   * @covers ::resolveServicesAndParameters()
    */
-  public function test_expandArguments_array() {
+  public function test_resolveServicesAndParameters_array() {
     $service = $this->container->get('service_using_array');
     $other_service = $this->container->get('other.service');
     $this->assertEquals($other_service, $service->getSomeOtherService(), '@other.service was injected via constructor.');
@@ -338,9 +338,9 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
   /**
    * Tests that services that are optional work correctly.
    * @covers ::get()
-   * @covers ::expandArguments()
+   * @covers ::resolveServicesAndParameters()
    */
-  public function test_expandArguments_optional() {
+  public function test_resolveServicesAndParameters_optional() {
     $service = $this->container->get('service_with_optional_dependency');
     $this->assertNull($service->getSomeOtherService(), 'other service was NULL was expected.');
   }
