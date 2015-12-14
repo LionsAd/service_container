@@ -1,0 +1,13 @@
+diff --git a/lib/Drupal/Component/DependencyInjection/Container.php b/lib/Drupal/Component/DependencyInjection/Container.php
+index df25ae8..9596c13 100644
+--- a/lib/Drupal/Component/DependencyInjection/Container.php
++++ b/lib/Drupal/Component/DependencyInjection/Container.php
+@@ -366,7 +366,7 @@ class Container implements IntrospectableContainerInterface {
+    * {@inheritdoc}
+    */
+   public function has($id) {
+-    return isset($this->services[$id]) || isset($this->serviceDefinitions[$id]);
++    return isset($this->aliases[$id]) || isset($this->services[$id]) || isset($this->serviceDefinitions[$id]) || array_key_exists($id, $this->services);
+   }
+ 
+   /**
