@@ -297,9 +297,7 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
 
     foreach ($candidates as $candidate => $value) {
       if ($value) {
-        $container_definition['aliases'][$candidate] = array(
-          $name,
-        );
+        $container_definition['aliases'][$candidate] = $name;
       }
     }
   }
