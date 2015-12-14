@@ -19,7 +19,7 @@ abstract class ContainerAware implements ContainerAwareInterface {
   /**
    * The injected container.
    *
-   * @var ContainerInterface
+   * @var \Symfony\Component\DependencyInjection\ContainerInterface
    */
   protected $container;
 

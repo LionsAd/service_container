@@ -19,7 +19,7 @@ interface ContainerAwareInterface {
   /**
    * Sets the Container associated with this service.
    *
-   * @param SymfonyContainerInterface|null $container
+   * @param \Symfony\Component\DependencyInjection\ContainerInterface|null $container
    *   A ContainerInterface instance or NULL to be injected in the service.
    */
   public function setContainer(SymfonyContainerInterface $container = NULL);
