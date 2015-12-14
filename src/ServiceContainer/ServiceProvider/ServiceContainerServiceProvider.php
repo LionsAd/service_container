@@ -223,6 +223,11 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
         $discovery = new $discovery_class($tag['plugin_manager_definition']);
         $definitions = $discovery->getDefinitions();
         foreach ($definitions as $key => $definition) {
+          // CTools uses 'file' and 'path', while the service container uses only 'file'.
+          // To make this compatible, combine 'file' and 'path' and remove 'path'.
+          if (isset($definition['file']) && isset($definition['path'])) {
+            $definition['file'] = $definition['path'] . '/' . $definition['file'];
+          }
           $container_definition['services'][$tag['prefix'] . $key] = $definition + array('public' => FALSE);
         }
       }
