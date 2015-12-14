@@ -52,8 +52,7 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
 
     $services['database'] = array(
       'class' => 'Drupal\Core\Database\Connection',
-      'factory_class' => 'Drupal\Core\Database\Database',
-      'factory_method' => 'getConnection',
+      'factory' => 'Drupal\Core\Database\Database::getConnection',
       'arguments' => array('default'),
     );
 
@@ -155,22 +154,19 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
 
     $services['logger.channel.default'] = array(
       'class' => 'Drupal\service_container\Logger\LoggerChannel',
-      'factory_service' => 'logger.factory',
-      'factory_method' => 'get',
+      'factory' => array('@logger.factory', 'get'),
       'arguments' => array('system'),
     );
 
     $services['logger.channel.php'] = array(
       'class' => 'Drupal\service_container\Logger\LoggerChannel',
-      'factory_service' => 'logger.factory',
-      'factory_method' => 'get',
+      'factory' => array('@logger.factory', 'get'),
       'arguments' => array('php'),
     );
 
     $services['logger.channel.cron'] = array(
       'class' => 'Drupal\service_container\Logger\LoggerChannel',
-      'factory_service' => 'logger.factory',
-      'factory_method' => 'get',
+      'factory' => array('@logger.factory', 'get'),
       'arguments' => array('cron'),
     );
 
@@ -227,6 +223,11 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
         $discovery = new $discovery_class($tag['plugin_manager_definition']);
         $definitions = $discovery->getDefinitions();
         foreach ($definitions as $key => $definition) {
+          // CTools uses 'file' and 'path', while the service container uses only 'file'.
+          // To make this compatible, combine 'file' and 'path' and remove 'path'.
+          if (isset($definition['file']) && isset($definition['path'])) {
+            $definition['file'] = $definition['path'] . '/' . $definition['file'];
+          }
           $container_definition['services'][$tag['prefix'] . $key] = $definition + array('public' => FALSE);
         }
       }
@@ -301,9 +302,7 @@ class ServiceContainerServiceProvider implements ServiceProviderInterface {
 
     foreach ($candidates as $candidate => $value) {
       if ($value) {
-        $container_definition['services'][$candidate] = array(
-          'alias' => $name,
-        );
+        $container_definition['aliases'][$candidate] = $name;
       }
     }
   }

@@ -8,8 +8,7 @@
 namespace Drupal\Tests\service_container\DependencyInjection;
 
 use ReflectionClass;
-use Drupal\service_container\DependencyInjection\Container;
-use Drupal\service_container\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Helper class to test Container::get() method.

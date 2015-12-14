@@ -46,6 +46,11 @@ env:
 
     # Drupal specific vars.
     - DRUPAL_TI_MODULE_NAME="service_container"
+
+    # Define runners and environment vars to include before and after the
+    # main runners / environment vars.
+    - DRUPAL_TI_SCRIPT_DIR_BEFORE=".drupal_ti_before"
+
     - DRUPAL_TI_DB="drupal_travis_db"
     - DRUPAL_TI_DB_URL="mysql://root:@127.0.0.1/drupal_travis_db"
     # Note: Do not add a trailing slash here.

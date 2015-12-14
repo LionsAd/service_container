@@ -1,0 +1,13 @@
+diff --git a/lib/Drupal/Component/DependencyInjection/Dumper/OptimizedPhpArrayDumper.php b/lib/Drupal/Component/DependencyInjection/Dumper/OptimizedPhpArrayDumper.php
+index 23290b6..e38719b 100644
+--- a/lib/Drupal/Component/DependencyInjection/Dumper/OptimizedPhpArrayDumper.php
++++ b/lib/Drupal/Component/DependencyInjection/Dumper/OptimizedPhpArrayDumper.php
+@@ -286,7 +286,7 @@ class OptimizedPhpArrayDumper extends Dumper {
+         $arguments = $this->dumpCollection($call[1]);
+       }
+ 
+-      $code[$key] = [$method, $arguments];
++      $code[$key] = array($method, $arguments);
+     }
+ 
+     return $code;

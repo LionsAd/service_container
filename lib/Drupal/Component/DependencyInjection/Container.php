@@ -366,7 +366,7 @@ class Container implements IntrospectableContainerInterface {
    * {@inheritdoc}
    */
   public function has($id) {
-    return isset($this->services[$id]) || isset($this->serviceDefinitions[$id]);
+    return isset($this->aliases[$id]) || isset($this->services[$id]) || isset($this->serviceDefinitions[$id]) || array_key_exists($id, $this->services);
   }
 
   /**
