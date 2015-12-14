@@ -445,11 +445,6 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
         '%some_config%'
       ),
     );
-    /*
-    $services['service.provider_alias'] = array(
-      'alias' => 'service.provider',
-    );
-    */
 
     $services['service_using_array'] = array(
       'class' => '\Drupal\Tests\service_container\DependencyInjection\MockService',
