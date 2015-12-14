@@ -7,6 +7,7 @@
 
 namespace Drupal\service_container\StringTranslation;
 
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\StringTranslation\TranslationInterface;
 use Drupal\service_container\Legacy\Drupal7;
 
@@ -39,6 +40,13 @@ class StringTranslation implements TranslationInterface {
    */
   public function translate($string, array $args = array(), array $options = array()) {
     return $this->drupal7->t($string, $args, $options);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function translateString(TranslatableMarkup $translated_string) {
+    // @TODO
   }
 
   /**

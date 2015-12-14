@@ -156,4 +156,18 @@ class Account implements AccountInterface {
     return $GLOBALS['user']->hostname;
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function getDisplayName() {
+    return $GLOBALS['user']->name;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getAccountName() {
+    return $GLOBALS['user']->name;
+  }
+
 }
