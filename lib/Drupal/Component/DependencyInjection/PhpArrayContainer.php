@@ -242,7 +242,7 @@ class PhpArrayContainer extends Container {
       }
 
       // Resolve parameters.
-      if ($argument[0] === '%') {
+      if (isset($argument[0]) && $argument[0] === '%') {
         $name = substr($argument, 1, -1);
         if (!isset($this->parameters[$name])) {
           $arguments[$key] = $this->getParameter($name);
@@ -254,7 +254,7 @@ class PhpArrayContainer extends Container {
       }
 
       // Resolve services.
-      if ($argument[0] === '@') {
+      if (isset($argument[0]) && $argument[0] === '@') {
         $id = substr($argument, 1);
         $invalid_behavior = ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE;
         if ($id[0] === '?') {

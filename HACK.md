@@ -1,4 +1,6 @@
 ## List of classes that we've altered ##
+ - DependencyInjection:
+   - Drupal\Component\DependencyInjection\PhpArrayContainer
  - Database:
    - Drupal\Core\Database\Connection
    - Drupal\Core\Database\Database
