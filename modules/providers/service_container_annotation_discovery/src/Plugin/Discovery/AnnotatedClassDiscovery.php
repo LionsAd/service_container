@@ -168,7 +168,7 @@ class AnnotatedClassDiscovery implements DiscoveryInterface {
    */
   public function getDefinition($plugin_id, $exception_on_invalid = TRUE) {
     $definitions = $this->getDefinitions();
-    $definition = isset($definitions[$plugin_id]) ? $definitions['$plugin_id'] : FALSE;
+    $definition = isset($definitions[$plugin_id]) ? $definitions[$plugin_id] : FALSE;
 
     if (!$definition && $exception_on_invalid) {
       throw new PluginNotFoundException($plugin_id, sprintf('The "%s" plugin does not exist.', $plugin_id));

@@ -37,7 +37,7 @@ class ServiceContainerSymfonyServiceProvider implements ServiceProviderInterface
 
     foreach (module_list() as $module) {
       $filename = drupal_get_filename('module', $module);
-      $services = dirname($filename) . "/$module.services.yml";
+      $services = dirname($filename) . '/' . $module . '.services.yml';
       if (file_exists($services)) {
         $yaml_loader->load($services);
       }
