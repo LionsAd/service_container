@@ -58,7 +58,7 @@ class ServiceContainer extends Drupal {
    *   The arguments to pass.
    */
   protected static function dispatchStaticEvent($event, $arguments) {
-    $event_listeners = static::$container->getParameter('service_container.static_event_listeners');
+    $event_listeners = (array) static::$container->getParameter('service_container.static_event_listeners');
     foreach ($event_listeners as $class) {
       $function = $class . '::' . $event;
       if (is_callable($function)) {
