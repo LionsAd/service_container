@@ -1,0 +1,51 @@
+<?php
+/**
+ * @file
+ * Main module file for the service_container_permissions module.
+ */
+
+// -----------------------------------------------------------------------
+// Contrib Hooks
+
+/**
+ * Implements hook_permission().
+ */
+function service_container_permissions_permission() {
+  $all_permissions = array();
+
+  foreach (module_list() as $module) {
+    $filename = drupal_get_filename('module', $module);
+    $libraries_file = dirname($filename) . "/$module.permissions.yml";
+    if (file_exists($libraries_file)) {
+      $permissions = \Drupal\Component\Serialization\Yaml::decode(file_get_contents($libraries_file));
+
+      if (!empty($permissions['permission_callbacks'])) {
+        foreach ($permissions['permission_callbacks'] as $index => $permission_callback) {
+          list($class, $method) = explode('::', $permission_callback, 2);
+          $permissionClass = new $class;
+          // must instanciate the class to avoid strict warning.
+          $callback_permissions = call_user_func(array($permissionClass, $method));
+
+          foreach ($callback_permissions as $name => $callback_permission) {
+            if (!is_array($callback_permission)) {
+              $callback_permission = array(
+                'title' => $callback_permission,
+              );
+            }
+            $callback_permission += array(
+              'description' => NULL,
+            );
+            $callback_permission['provider'] = $module;
+
+            $all_permissions[$name] = $callback_permission;
+          }
+          unset($permissions['permission_callbacks'][$index]);
+        }
+      }
+      $all_permissions = array_merge_recursive($all_permissions, $permissions);
+    }
+  }
+  unset($all_permissions['permission_callbacks']);
+
+  return $all_permissions;
+}
