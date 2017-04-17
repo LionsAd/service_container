@@ -7,7 +7,7 @@
 namespace Drupal\service_container\Plugin;
 
 use Drupal\Component\Plugin\Discovery\DiscoveryInterface;
-use Drupal\Component\Plugin\Factory\DefaultFactory;
+use Drupal\Core\Plugin\Factory\ContainerFactory;
 
 /**
  * Defines a plugin manager used for discovering generic plugins.
@@ -23,6 +23,6 @@ class DefaultPluginManager extends PluginManagerBase {
   public function __construct(DiscoveryInterface $discovery) {
     $this->discovery = $discovery;
     // Use a generic factory.
-    $this->factory = new DefaultFactory($this->discovery);
+    $this->factory = new ContainerFactory($this->discovery);
   }
 }
